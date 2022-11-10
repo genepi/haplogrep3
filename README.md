@@ -1,4 +1,4 @@
-[![Java CI with Maven](https://github.com/genepi/haplogrep3/actions/workflows/maven.yml/badge.svg)](https://github.com/genepi/covidgrep/actions/workflows/maven.yml)
+[![Java CI with Maven](https://github.com/genepi/haplogrep3/actions/workflows/maven.yml/badge.svg)](https://github.com/genepi/haplogrep3/actions/workflows/maven.yml)
 
 # Haplogrep 3
 
@@ -11,7 +11,7 @@ You will need the following things properly installed on your computer.
 
 * Java 11 or higher
 
-CovGrep works on Linux, macOS and Windows.
+Haplogrep works on Linux, macOS and Windows.
 
 ## Download and Install
 

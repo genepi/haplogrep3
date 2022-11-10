@@ -29,7 +29,7 @@ public class App implements Runnable {
 
 	public static final int PORT = 7000;
 
-	public static final String CONFIG_FILENAME = "haplogrep.yaml";
+	public static final String CONFIG_FILENAME = "haplogrep3.yaml";
 
 	private static App instance;
 
