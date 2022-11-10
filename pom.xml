@@ -1,0 +1,212 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>genepi</groupId>
+	<artifactId>haplogrep3</artifactId>
+	<version>1.0.0</version>
+	<packaging>jar</packaging>
+
+	<name>CovGrep</name>
+	<description>Free mtDNA Haplogroup Classification Service</description>
+	<url>https://github.com/genepi/covidgrep</url>
+
+	<licenses>
+		<license>
+			<name>MIT License</name>
+			<url>http://www.opensource.org/licenses/mit-license.php</url>
+		</license>
+	</licenses>
+
+
+	<properties>
+		<java.version>1.9</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<repositories>
+		<repository>
+			<id>jfrog-genepi-maven</id>
+			<name>jfrog-genepi-maven</name>
+			<url>https://genepi.jfrog.io/artifactory/maven/</url>
+		</repository>
+	</repositories>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>io.javalin</groupId>
+			<artifactId>javalin</artifactId>
+			<version>4.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.8.0-beta4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>1.8.0-beta4</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.marioslab.basis</groupId>
+			<artifactId>template</artifactId>
+			<version>1.7</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.esotericsoftware.yamlbeans</groupId>
+			<artifactId>yamlbeans</artifactId>
+			<version>1.06</version>
+		</dependency>
+
+		<dependency>
+			<groupId>genepi</groupId>
+			<artifactId>haplogrep-core</artifactId>
+			<version>3.0.0-beta5</version>
+		</dependency>
+
+		<dependency>
+			<groupId>genepi</groupId>
+			<artifactId>genepi-annotate</artifactId>
+			<version>0.2.0-alpha</version>
+		</dependency>
+
+		<dependency>
+			<groupId>info.picocli</groupId>
+			<artifactId>picocli</artifactId>
+			<version>4.2.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.8.8</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-xml</artifactId>
+			<version>2.12.5</version>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<plugins>
+
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>2.3</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<finalName>${project.artifactId}</finalName>
+							<transformers>
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<mainClass>genepi.haplogrep3.App</mainClass>
+								</transformer>
+							</transformers>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Create windows binaries -->
+
+			<plugin>
+				<groupId>com.akathist.maven.plugins.launch4j</groupId>
+				<artifactId>launch4j-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>covgrep-exe</id>
+						<phase>package</phase>
+						<goals>
+							<goal>launch4j</goal>
+						</goals>
+						<configuration>
+							<headerType>console</headerType>
+							<outfile>${project.build.directory}/${project.artifactId}.exe</outfile>
+							<jar>${project.build.directory}/${project.artifactId}.jar</jar>
+							<errTitle>enccg</errTitle>
+							<classPath>
+								<mainClass>genepi.haplogrep3.App</mainClass>
+							</classPath>
+							<jre>
+								<minVersion>1.8.0</minVersion>
+								<maxHeapSize>500</maxHeapSize>
+							</jre>
+							<versionInfo>
+								<fileDescription>imputation-bot</fileDescription>
+								<copyright>Lukas Forer, Hansi Weissensteiner, Sebastian
+									Schoenherr</copyright>
+								<fileVersion>${project.version}.0</fileVersion>
+								<txtFileVersion>${project.version}.0</txtFileVersion>
+								<productVersion>${project.version}.0</productVersion>
+								<txtProductVersion>${project.version}.0</txtProductVersion>
+								<productName>covgrep</productName>
+								<companyName>Genepi Innsbruck</companyName>
+								<internalName>imputation-bot</internalName>
+								<originalFilename>imputationbot.exe</originalFilename>
+							</versionInfo>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+
+			<!-- Build final directory structure and zip files -->
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.4</version>
+				<executions>
+					<execution>
+						<id>create-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<descriptors>
+								<descriptor>src/main/assembly/linux.xml</descriptor>
+								<descriptor>src/main/assembly/windows.xml</descriptor>
+							</descriptors>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+
+
+		</plugins>
+	</build>
+</project>

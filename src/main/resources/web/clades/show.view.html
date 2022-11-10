@@ -1,0 +1,46 @@
+{{ title = "Clade" }}
+{{include "../layouts/header.view.html"}}
+
+<div id="page-content">
+  <div class="container">
+
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{routeUrl("phylogenies_index",{})}}">Phylogenies</a></li>
+        <li class="breadcrumb-item"><a href="{{routeUrl("phylogenies_show",{phylotree: tree.id})}}">{{tree.name}}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{clade}}</li>
+      </ol>
+    </nav>
+
+    <h1>{{clade}}</h1>
+
+    <p>This clade is defined by the following mutations:</p>
+    <table>
+      <tr>
+        <td style="width: 200px;">
+          <p>
+            <b>Nucleotide Changes</b><br>
+            {{for polymorphism in polymorphisms}}
+              <span class="badge badge-info">{{polymorphism.nuc}}</span><br>
+            {{end}}
+          </p>
+        </td>
+        <td>
+          <p>
+            <b>Amino Acid Changes</b><br>
+            {{for polymorphism in polymorphisms}}
+              {{if polymorphism.aac != null}}
+                <span class="badge badge-info">{{polymorphism.aac}}</span> <br>
+              {{else}}
+              <br>
+              {{end}}
+            {{end}}
+          </p>
+        </td>
+      </tr>
+    </table>
+
+  </div>
+</div>
+
+{{include "../layouts/footer.view.html"}}

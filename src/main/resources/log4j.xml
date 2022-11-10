@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration PUBLIC "-//Apache//log4j LOG4J 1.0//EN"
+"http://logging.apache.org/log4j/docs/api/org/apache/log4j/xml/log4j.dtd" >
+<log4j:configuration>
+	<root>
+		<priority value="DEBUG"/>
+	</root>
+</log4j:configuration>

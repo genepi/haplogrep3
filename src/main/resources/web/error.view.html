@@ -1,0 +1,25 @@
+{{include "layouts/header.view.html"}}
+
+<div id="page-content" class="text-center">
+
+  <h2 class="text-danger">
+    {{title != null ? title : "Error"}}
+  </h2>
+
+  <p class="text-danger">
+    {{message}}
+  </p>
+
+</div>
+
+
+{{if stackTrace != ""}}
+<div class="alert">
+<br><hr><br>
+<b>Stack Trace (Debug Mode only):</b>
+<pre><code>{{stackTrace}}</code></pre>
+</div>
+{{end}}
+
+
+{{include "layouts/footer.view.html"}}

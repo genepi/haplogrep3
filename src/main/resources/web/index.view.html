@@ -1,0 +1,61 @@
+{{ title = application }}
+{{include "layouts/header.view.html"}}
+
+<div class="text-header bg-primary">
+  <h1 class="jumbotron-heading text-center">
+    {{application}}
+  </h1>
+
+  <p class="lead text-center">
+    Free mtDNA Haplogroup Classification Service
+  </p>
+</div>
+
+<div class="text-center" style="padding-top:40px; padding-bottom:40px">
+   Upload your mtDNA profiles aligned to rCRS or RSRS and<br>receive mitochondrial haplogroups in return.
+ </div>
+
+<div id="container" class="container">
+  <div class="row justify-content-md-center">
+    <div class="col-sm-5 text-center">
+        <form action="{{routeUrl("jobs_create",{})}}" method="post" enctype="multipart/form-data" onSubmit="waitDialog()">
+        <div class="form-group">
+          <label for="files">Upload one or more fasta, hds or vcf files <small>(<30 MB)</small>:</label>
+          <input type="file" id="files" name="files" multiple class="form-control"  accept=".fasta,.fna,.hsd,.vcf,.vcf.gz">
+        </div>
+        <div class="form-group">
+          <label for="phylotree">Choose the phylogenetic tree:</label>
+          <select id="phylotree" name="phylotree" class="form-control">
+            {{for tree in trees}}
+            <option value="{{tree.id}}">{{tree.name}}</option>
+            {{end}}
+          </select>
+        </div>
+        <br>
+        <button type="submit" id="submit" class="btn btn-primary btn-lg btn-upload">Upload and Classify</button>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<div id="container" class="container mt-5">
+  <div class="row justify-content-md-center">
+    <div class="col-sm-5 text-center">
+
+      <p><b>No dataset at hand?</b> No problem, take one of our examples:</p>
+
+      {{for example in examples}}
+        <form action="{{routeUrl("jobs_create",{})}}" method="post" enctype="multipart/form-data">
+          <input type="hidden" name="dataset" value="{{example.id}}">
+          <input type="hidden" name="phylotree" value="{{trees[0].id}}">
+          <button type="submit" id="submit" class="btn btn-outline-secondary">
+            <i class="far fa-file-alt"></i> {{example.name}}
+          </button>
+        </form>
+      {{end}}
+    </div>
+  </div>
+</div>
+
+{{include "layouts/footer.view.html"}}
