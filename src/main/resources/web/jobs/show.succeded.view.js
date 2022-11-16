@@ -1,4 +1,4 @@
-window.view = 'aac';
+window.view = 'nuc';
 window.maxMutations = 8;
 window.gene = '';
 
