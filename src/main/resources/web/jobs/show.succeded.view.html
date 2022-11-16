@@ -1,0 +1,47 @@
+{{ title = "Results" }}
+{{include "../layouts/header.view.html"}}
+
+<div id="page-content">
+
+  Export: &nbsp;&nbsp
+  <a class="btn btn-outline-secondary" href="{{routeUrl("jobs_download", {job: job.id, file: "clades.csv"})}}" target="_blank"><i class="fas fa-file-csv"></i> CSV</a>&nbsp;
+  <a class="btn btn-outline-secondary" href="{{routeUrl("jobs_download", {job: job.id, file: "clades.xls"})}}" target="_blank"><i class="fas fa-file-excel"></i> Excel</a>
+
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mutations:
+  &nbsp;&nbsp;
+  <input type="checkbox" checked id="amino_acid_changes">
+  <label for="amino_acid_changes">Amino Acid Changes</label>
+  &nbsp;&nbsp;
+  Show:&nbsp;
+  <select  id="show_all_mutations">
+    <option value="">first 6 mutations</option>
+    <option value="all">All</option>
+    <option disabled>----- Genes -----</option>
+    {{for gene in genes}}
+    <option value="{{gene}}">{{gene}}</option>
+    {{end}}
+  </select>
+
+  <table class="table table-hover data-table">
+    <thead>
+      <th>Sample</th>
+      <th>Clade</th>
+      <th>Match</th>
+      <th>Ns</th>
+      <th>iSNV</th>
+      <th>Coverage</th>
+      <th>Range</th>
+      <th>Mutations</th>
+    </thead>
+  </table>
+  <br><br>
+  <small class="text-muted">
+    Classification Time: {{ job.executionTime / 1000 }} sec
+  </small>
+</div>
+
+<script>
+{{include "show.succeded.view.js"}}
+</script>
+
+{{include "../layouts/footer.view.html"}}

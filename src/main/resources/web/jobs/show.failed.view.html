@@ -1,0 +1,20 @@
+{{ title = "Results" }}
+{{include "../layouts/header.view.html"}}
+
+<div id="page-content" class="text-center">
+
+  <h2 class="text-danger">
+    Job failed
+  </h2>
+
+  <p class="text-danger mt-3">
+    {{job.error}}
+  </p>
+
+  <p class="mt-5">
+    More information about typical errors can be found in the <a href="https://covgrep.readthedocs.io/" target="_blank">documentation</a>.
+  </p>
+
+</div>
+
+{{include "../layouts/footer.view.html"}}

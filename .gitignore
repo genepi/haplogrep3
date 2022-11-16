@@ -24,7 +24,7 @@ hs_err_pid*
 /target/
 /.classpath
 /.project
-jobs
+
 jobs/*
 jbwa-*
 .settings

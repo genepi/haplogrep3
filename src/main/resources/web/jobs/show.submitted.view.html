@@ -1,0 +1,13 @@
+{{ title = "Results" }}
+{{include "../layouts/header.view.html"}}
+
+<div id="page-content"  class="text-center">
+  <p> <i class="fas fa-circle-notch fa-spin"></i> Your job starts soon...</p>
+</div>
+<script>
+  setTimeout(function() {
+    Turbolinks.visit(window.location);
+  }, 2000);
+</script>
+
+{{include "../layouts/footer.view.html"}}
