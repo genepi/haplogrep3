@@ -1,10 +1,17 @@
 package genepi.haplogrep3.web.util;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
 import java.util.Map;
 import java.util.function.Function;
 
 import com.google.gson.Gson;
 
+import genepi.io.FileUtil;
+import genepi.haplogrep3.web.WebApp;
 import genepi.haplogrep3.web.util.functions.DecimalFunction;
 import genepi.haplogrep3.web.util.functions.DoubleFormatFunction;
 import genepi.haplogrep3.web.util.functions.IncludeScriptFunction;
@@ -17,9 +24,12 @@ import io.javalin.http.Context;
 import io.javalin.http.HandlerType;
 import io.javalin.http.staticfiles.Location;
 import io.javalin.plugin.rendering.FileRenderer;
+import io.marioslab.basis.template.Error;
 import io.marioslab.basis.template.Template;
 import io.marioslab.basis.template.TemplateContext;
 import io.marioslab.basis.template.TemplateLoader;
+import io.marioslab.basis.template.TemplateLoader.CachingTemplateLoader;
+import io.marioslab.basis.template.parsing.Span;
 
 public class BasisTemplateFileRenderer implements FileRenderer {
 
@@ -38,7 +48,7 @@ public class BasisTemplateFileRenderer implements FileRenderer {
 		if (location == Location.EXTERNAL) {
 			loader = new TemplateLoader.FileTemplateLoader();
 		} else {
-			loader = new TemplateLoader.ClasspathTemplateLoader();
+			loader = new MyClasspathTemplateLoader();
 		}
 
 		this.server = server;
@@ -49,6 +59,8 @@ public class BasisTemplateFileRenderer implements FileRenderer {
 		// reload external files on every call (hot reloading for development)
 		if (location == Location.EXTERNAL) {
 			loader = new TemplateLoader.FileTemplateLoader();
+		} else {
+			loader = new MyClasspathTemplateLoader();
 		}
 
 		TemplateContext templateContext = new TemplateContext();
@@ -93,8 +105,43 @@ public class BasisTemplateFileRenderer implements FileRenderer {
 	}
 
 	public Template loadTemplate(String path) {
-		String filename = root + "/" + path;
+		String filename = "";
+		if (path.startsWith("/")) {
+			filename = root + path;
+		} else {
+			filename = root + "/" + path;
+		}
 		return loader.load(filename);
 	}
 
+	/** A TemplateLoader to load templates from the classpath. Extended to support relative paths with ../ **/
+	public static class MyClasspathTemplateLoader extends CachingTemplateLoader {
+		@Override
+		protected Source loadSource (String path) {
+			try {
+								
+				String filename = FileUtil.getFilename(path);				
+				URI uri = URI.create(path);
+				String resolvedPath =  uri.resolve("").toString() + filename;
+				
+				return new Source(path, MyStreamUtils.readString(WebApp.class.getResourceAsStream(resolvedPath)));
+			} catch (Throwable t) {
+				t.printStackTrace();
+				Error.error("Couldn't load template '" + path + "'.", new Span(new Source(path, " "), 0, 0), t);
+				throw new RuntimeException(""); // never reached
+			}
+		}
+	}
+	
+	static class MyStreamUtils {
+		private static String readString (InputStream in) throws IOException {
+			byte[] buffer = new byte[1024 * 10];
+			int read = 0;
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			while ((read = in.read(buffer)) != -1) {
+				out.write(buffer, 0, read);
+			}
+			return new String(out.toByteArray(), "UTF-8");
+		}
+	}
 }
