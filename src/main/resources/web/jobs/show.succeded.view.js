@@ -18,12 +18,10 @@ window.table = $(".data-table").DataTable({
     "data": "clade"
   }, {
     "render": function(data, type, row) {
-      return renderProgressBar(row.found, row.expected);
+      return renderProgressBar(row.quality);
     }
   }, {
     "data": "ns"
-  }, {
-    "data": "mixCount"
   }, {
     "data": "coverage"
   }, {
@@ -55,8 +53,8 @@ $('.data-table tbody').on('click', 'tr', function() {
         }
       }
     },
-    message: '<div style="height: 600px; overflow-y: scroll"><b>Clade</b><br>' + data.clade + '<br><br>' +
-      '<b>Ranking Quality</b><br>' + data.quality + '<br><br>' +
+    message: '<div style="height: 600px; overflow-y: scroll"><b>Haplogroup</b><br>' + data.clade + '<br><br>' +
+      '<b>Quality</b><br>' + data.quality + '<br><br>' +
       '<b>Match</b><br>' + data.found + ' of ' + data.expected + ' mutations found<br><br>' +
       '<b>Ranges</b><br>' + formatRange(data.ranges) + '<br><br>' +
       '<b>Amino Acid Changes</b><br>' + formatMutations(data.annotatedPolymorphisms, 500, 'aac', '') + '<br><br>' +
@@ -155,11 +153,11 @@ function formatRange(data) {
 }
 
 
-function renderProgressBar(value, total) {
-  var percentage = (value / total * 100).toFixed(0);
-  return '<div class="progress" style="width: 60px;" title="' + value + ' of ' + total + ' mutations found">' +
+function renderProgressBar(value) {
+  var percentage = value * 100;
+  return '<div class="progress" style="width: 60px;" title="Quality: ' + value + '">' +
     '<div class="progress-bar bg-success" role="progressbar" aria-valuenow="' + percentage + '" aria-valuemin="0" aria-valuemax="100" style="width: ' + percentage + '%">' +
-    '<span class="sr-only">' + value + ' of ' + total + ' mutations found</span>' +
+    '<span class="sr-only">Quality: ' + value + '</span>' +
     '</div>' +
     '</div>';
 }

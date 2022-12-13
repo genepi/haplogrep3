@@ -45,7 +45,7 @@ public class ExportDataTask {
 		for (AnnotatedSample sample : samples) {
 			writer.setString("sample", sample.getSample());
 			writer.setString("clade", sample.getClade());
-			writer.setString("quality", sample.getQuality());
+			writer.setDouble("quality", sample.getQuality());
 			writer.next();
 		}
 		writer.close();
