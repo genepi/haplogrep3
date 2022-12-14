@@ -68,7 +68,7 @@ public class ClassificationTaskTest {
 		assertEquals(1, task.getSamples().size());
 
 		AnnotatedSample firstSample = task.getSamples().get(0);
-		assertEquals("Sample1", firstSample.getSample());
+		assertEquals("HM625681.1", firstSample.getSample());
 		assertEquals("H100", firstSample.getClade());
 		assertEquals(0, firstSample.getNs());
 
