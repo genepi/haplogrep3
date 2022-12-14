@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Vector;
 
 import core.SampleFile;
+import genepi.haplogrep3.haplogrep.io.readers.impl.FastaInputFileReader;
 import genepi.haplogrep3.haplogrep.io.readers.impl.HsdInputFileReader;
 import genepi.haplogrep3.haplogrep.io.readers.impl.VcfInputFileReader;
 import genepi.haplogrep3.model.Phylotree;
@@ -20,6 +21,7 @@ public class InputFileReaderFactory {
 		List<AbstractInputFileReader> readers = new Vector<AbstractInputFileReader>();
 		readers.add(new HsdInputFileReader());
 		readers.add(new VcfInputFileReader(chip, hetLevel));
+		readers.add(new FastaInputFileReader());
 		return readers;
 	}
 

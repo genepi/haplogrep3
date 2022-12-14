@@ -54,6 +54,28 @@ public class ClassificationTaskTest {
 
 	
 	@Test
+	public void testWithFasta() throws Exception {
+
+		Phylotree phylotree = loadPhylotree(PHYLOTREE);
+
+		List<File> files = new ArrayList<File>();
+		files.add(new File("test-data/fasta/H100.fasta"));
+
+		ClassificationTask task = new ClassificationTask(phylotree, files, Distance.KULCZYNSKI);
+		task.run();
+
+		assertTrue(task.isSuccess());
+		assertEquals(1, task.getSamples().size());
+
+		AnnotatedSample firstSample = task.getSamples().get(0);
+		assertEquals("Sample1", firstSample.getSample());
+		assertEquals("H100", firstSample.getClade());
+		assertEquals(0, firstSample.getNs());
+
+	}
+
+	
+	@Test
 	public void testWithVcf() throws Exception {
 
 		Phylotree phylotree = loadPhylotree(PHYLOTREE);
