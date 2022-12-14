@@ -43,6 +43,10 @@ public class Job implements Runnable {
 
 	private Distance _distance;
 
+	private boolean chip = false;
+
+	private double hetLevel = 0.9;
+
 	public static int EXPIRES_HOURS = 4;
 
 	public String getId() {
@@ -75,6 +79,22 @@ public class Job implements Runnable {
 
 	public void setPhylotree(String phylotree) {
 		this.phylotree = phylotree;
+	}
+
+	public void setChip(boolean chip) {
+		this.chip = chip;
+	}
+
+	public boolean isChip() {
+		return chip;
+	}
+
+	public void setHetLevel(double hetLevel) {
+		this.hetLevel = hetLevel;
+	}
+
+	public double getHetLevel() {
+		return hetLevel;
 	}
 
 	public Date getSubmittedOn() {
@@ -125,7 +145,8 @@ public class Job implements Runnable {
 		return status;
 	}
 
-	public static Job create(String id, String workspace, Phylotree phylotree, List<File> files, Distance distance) {
+	public static Job create(String id, String workspace, Phylotree phylotree, List<File> files, Distance distance,
+			boolean chip, double hetLevel) {
 		Job job = new Job();
 		job.setId(id);
 		job.setStatus(JobStatus.SUBMITTED);
@@ -136,6 +157,8 @@ public class Job implements Runnable {
 		job._phylotree = phylotree;
 		job._files = files;
 		job._distance = distance;
+		job.chip = chip;
+		job.hetLevel = hetLevel;
 		job.save();
 		return job;
 	}
@@ -150,6 +173,8 @@ public class Job implements Runnable {
 		try {
 
 			ClassificationTask task = new ClassificationTask(_phylotree, _files, _distance);
+			task.setChip(chip);
+			task.setHetLevel(hetLevel);
 			task.run();
 
 			FileUtil.deleteDirectory(dataDirectory);

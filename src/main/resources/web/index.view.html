@@ -12,17 +12,33 @@
 </div>
 
 <div class="text-center" style="padding-top:40px; padding-bottom:40px">
-   Upload your mtDNA profiles aligned to rCRS or RSRS and<br>receive mitochondrial haplogroups in return.
- </div>
+  Upload your mtDNA profiles aligned to rCRS or RSRS and<br>receive mitochondrial haplogroups in return.
+</div>
 
 <div id="container" class="container">
   <div class="row justify-content-md-center">
-    <div class="col-sm-5 text-center">
-        <form action="{{routeUrl("jobs_create",{})}}" method="post" enctype="multipart/form-data" onSubmit="waitDialog()">
+    <div class="col-sm-5">
+      <form action="{{routeUrl("jobs_create",{})}}" method="post" enctype="multipart/form-data" onSubmit="waitDialog()">
+
+        <ul class="nav nav-tabs" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" id="hsd-tab" data-toggle="tab" href="#hsd" role="tab" aria-controls="home" aria-selected="true">HSD</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="vcf-tab" data-toggle="tab" href="#vcf" role="tab" aria-controls="home" aria-selected="false">VCF</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="fasta-tab" data-toggle="tab" href="#fasta" role="tab" aria-controls="home" aria-selected="false">Fasta</a>
+          </li>
+        </ul>
+
+        <br>
+
         <div class="form-group">
-          <label for="files">Upload one or more fasta, hds or vcf files <small>(<30 MB)</small>:</label>
-          <input type="file" id="files" name="files" multiple class="form-control"  accept=".fasta,.fna,.hsd,.vcf,.gz,.txt">
+          <label for="files">Upload one or more files <small>(<30 MB)</small>:</label>
+          <input type="file" id="files" name="files" multiple class="form-control" accept=".fasta,.fna,.hsd,.vcf,.gz,.txt">
         </div>
+
         <div class="form-group">
           <label for="phylotree">Choose the phylogenetic tree:</label>
           <select id="phylotree" name="phylotree" class="form-control">
@@ -31,6 +47,43 @@
             {{end}}
           </select>
         </div>
+
+        <div class="tab-content" id="myTabContent">
+          <div class="tab-pane" id="hsd" role="tabpanel" aria-labelledby="hsd-tab">
+          </div>
+
+          <div class="tab-pane" id="vcf" role="tabpanel" aria-labelledby="vcf-tab">
+            <div class="form-group text-left" id="vcf-options">
+              <br>
+              <div class="form-group form-check">
+                <input class="form-check-input" style="margin-left: 0px;" type="checkbox" value="true" id="chip" name="chip">
+                <label class="form-check-label" for="chip">
+                  Uploaded data is from a genotyping array
+                  <a href="" target="_blank" title="Help">
+                    <i class="fas fa-question-circle"></i>
+                  </a>
+                </label>
+              </div>
+              <div class="form-inline">
+                <label for="hetLevel" class="col-form-label">
+                  Heteroplasmy level:
+                </label>
+                &nbsp;
+                <input class="form-control" type="text" value="0.9" style="width: 60px; id="hetLevel" name="hetLevel">
+                &nbsp;
+                <a href="" target="_blank" title="Help" class="col-form-label">
+                  <i class="fas fa-question-circle"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane" id="fasta" role="tabpanel" aria-labelledby="fasta-tab">
+          </div>
+
+        </div>
+
+
         <br>
         <button type="submit" id="submit" class="btn btn-primary btn-lg btn-upload">Upload and Classify</button>
       </form>
@@ -46,13 +99,13 @@
       <p><b>No dataset at hand?</b> No problem, take one of our examples:</p>
 
       {{for example in examples}}
-        <form action="{{routeUrl("jobs_create",{})}}" method="post" enctype="multipart/form-data">
-          <input type="hidden" name="dataset" value="{{example.id}}">
-          <input type="hidden" name="phylotree" value="{{trees[0].id}}">
-          <button type="submit" id="submit" class="btn btn-outline-secondary">
-            <i class="far fa-file-alt"></i> {{example.name}}
-          </button>
-        </form>
+      <form action="{{routeUrl("jobs_create",{})}}" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="dataset" value="{{example.id}}">
+        <input type="hidden" name="phylotree" value="{{trees[0].id}}">
+        <button type="submit" id="submit" class="btn btn-outline-secondary">
+          <i class="far fa-file-alt"></i> {{example.name}}
+        </button>
+      </form>
       {{end}}
     </div>
   </div>
