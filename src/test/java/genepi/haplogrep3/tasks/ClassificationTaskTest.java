@@ -23,7 +23,7 @@ public class ClassificationTaskTest {
 	public static String CONFIG_FILE = "haplogrep3.yaml";
 
 	public static String PHYLOTREE = "phylotree-17";
-	
+
 	public Phylotree loadPhylotree(String id) throws FileNotFoundException, IOException {
 		PhylotreeRepository repository = new PhylotreeRepository();
 		Configuration configuration = Configuration.loadFromFile(new File(CONFIG_FILE), "");
@@ -52,7 +52,6 @@ public class ClassificationTaskTest {
 
 	}
 
-	
 	@Test
 	public void testWithFasta() throws Exception {
 
@@ -74,7 +73,6 @@ public class ClassificationTaskTest {
 
 	}
 
-	
 	@Test
 	public void testWithVcf() throws Exception {
 
@@ -93,6 +91,29 @@ public class ClassificationTaskTest {
 		assertEquals("Sample1", firstSample.getSample());
 		assertEquals("H100", firstSample.getClade());
 		assertEquals(0, firstSample.getNs());
+		assertEquals(1, firstSample.getRanges().length);
+	}
+
+	@Test
+	public void testWithVcfAndChipParameter() throws Exception {
+
+		Phylotree phylotree = loadPhylotree(PHYLOTREE);
+
+		List<File> files = new ArrayList<File>();
+		files.add(new File("test-data/vcf/H100.vcf"));
+
+		ClassificationTask task = new ClassificationTask(phylotree, files, Distance.KULCZYNSKI);
+		task.setChip(true);
+		task.run();
+
+		assertTrue(task.isSuccess());
+		assertEquals(1, task.getSamples().size());
+
+		AnnotatedSample firstSample = task.getSamples().get(0);
+		assertEquals("Sample1", firstSample.getSample());
+		assertEquals("L2a1p", firstSample.getClade());
+		assertEquals(0, firstSample.getNs());
+		assertEquals(firstSample.getAnnotatedPolymorphisms().size(), firstSample.getRanges().length);
 	}
 
 	@Test
@@ -115,7 +136,7 @@ public class ClassificationTaskTest {
 		assertEquals(0, firstSample.getNs());
 
 	}
-	
+
 	@Test(expected = IOException.class)
 	public void testWithUnsupportedFileFormat() throws Exception {
 
@@ -128,8 +149,7 @@ public class ClassificationTaskTest {
 		task.run();
 
 		assertFalse(task.isSuccess());
-		
+
 	}
-	
-	
+
 }
