@@ -1,7 +1,6 @@
 package genepi.haplogrep3.tasks;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
