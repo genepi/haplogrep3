@@ -11,7 +11,6 @@ import com.esotericsoftware.yamlbeans.YamlReader;
 
 import genepi.haplogrep3.App;
 import genepi.haplogrep3.model.Dataset;
-import genepi.haplogrep3.model.Phylotree;
 
 public class Configuration {
 
@@ -19,7 +18,7 @@ public class Configuration {
 
 	private int maxUploadSizeMb = 200;
 
-	private List<Phylotree> phylotrees;
+	private List<String> phylotrees;
 
 	private String workspace = "jobs";
 
@@ -49,11 +48,11 @@ public class Configuration {
 		this.maxUploadSizeMb = maxUploadSizeMb;
 	}
 
-	public List<Phylotree> getPhylotrees() {
+	public List<String> getPhylotrees() {
 		return phylotrees;
 	}
 
-	public void setPhylotrees(List<Phylotree> phylotrees) {
+	public void setPhylotrees(List<String> phylotrees) {
 		this.phylotrees = phylotrees;
 	}
 
@@ -101,14 +100,10 @@ public class Configuration {
 	public static Configuration loadFromFile(File file, String parent) throws YamlException, FileNotFoundException {
 
 		YamlReader reader = new YamlReader(new FileReader(file));
-		reader.getConfig().setPropertyElementType(Configuration.class, "phylotrees", Phylotree.class);
+		reader.getConfig().setPropertyElementType(Configuration.class, "phylotrees", String.class);
 		reader.getConfig().setPropertyElementType(Configuration.class, "examples", Dataset.class);
 		Configuration configuration = reader.read(Configuration.class);
-
-		// Update relative path
-		for (Phylotree phylotree : configuration.getPhylotrees()) {
-			phylotree.updateParent(parent);
-		}
+		
 		for (Dataset dataset : configuration.getExamples()) {
 			dataset.updateParent(parent);
 		}
