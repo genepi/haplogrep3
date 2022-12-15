@@ -183,22 +183,22 @@ public class Phylotree {
 		this.genes = genes;
 	}
 
-	public void classify(SampleFile sampleFile, Distance distance) {
+	public void classify(SampleFile sampleFile, Distance distance, int hits) {
 
 		RankingMethod rankingMethod = null;
 
 		switch (distance) {
 		case HAMMING:
-			rankingMethod = new HammingRanking(1);
+			rankingMethod = new HammingRanking(hits);
 			break;
 		case JACCARD:
-			rankingMethod = new JaccardRanking(1);
+			rankingMethod = new JaccardRanking(hits);
 			break;
 		case KIMURA:
 			rankingMethod = new Kimura2PRanking(1);
 			break;
 		case KULCZYNSKI:
-			rankingMethod = new KulczynskiRanking(1);
+			rankingMethod = new KulczynskiRanking(hits);
 			break;
 		default:
 			break;
