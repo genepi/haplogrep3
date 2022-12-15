@@ -43,7 +43,7 @@ public class AlignTask {
 
 		SampleFile sampleFile = new SampleFile(lines, phylotree.getReference());
 		ArrayList<TestSample> samplesH = sampleFile.getTestSamples();
-		ExportUtils.generateFasta(samplesH, filename, phylotree.getReference());
+		ExportUtils.generateFasta(samplesH, phylotree.getReference(), filename);
 
 		// ExportUtils creates a different filename --> rename it to filename user
 		// provided.

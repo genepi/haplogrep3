@@ -32,7 +32,7 @@ public class Phylotree {
 
 	private String weights;
 
-	private String referenceID;
+	private String fasta;
 
 	private Reference reference;
 
@@ -99,16 +99,16 @@ public class Phylotree {
 		return reference;
 	}
 
-	public void setReference(Reference refObject) {
-		this.reference = refObject;
+	public void setReference(Reference reference) {
+		this.reference = reference;
 	}
 
-	public String getReferenceID() {
-		return referenceID;
+	public String getFasta() {
+		return fasta;
 	}
 
-	public void setReferenceID(String referenceID) {
-		this.referenceID = referenceID;
+	public void setFasta(String fasta) {
+		this.fasta = fasta;
 	}
 
 	public String getMaplocus() {
@@ -258,6 +258,7 @@ public class Phylotree {
 		maplocus = FileUtil.path(parent, maplocus);
 		aacTable = FileUtil.path(parent, aacTable);
 		gff = FileUtil.path(parent, gff);
+		fasta = FileUtil.path(parent, fasta);
 	}
 
 	public static Phylotree load(File file) throws IOException {

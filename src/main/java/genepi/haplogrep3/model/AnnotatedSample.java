@@ -1,6 +1,5 @@
 package genepi.haplogrep3.model;
 
-import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Vector;
 
@@ -149,4 +148,5 @@ public class AnnotatedSample {
 		return sample;
 	}
 
+	
 }

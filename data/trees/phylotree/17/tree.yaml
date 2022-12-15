@@ -5,7 +5,7 @@ url: https://github.com/genepi/covgrep/tree/main/data/trees/sarscov2/v5
 lastUpdate: 2021/07/09
 tree: tree.xml
 weights: weights.txt
-referenceID: rCRS
+fasta: rcrs.fasta
 gff: mtdna.gff
 aacTable: mtdna.aac.txt
 genes:
