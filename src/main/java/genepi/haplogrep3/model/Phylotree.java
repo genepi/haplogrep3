@@ -1,7 +1,12 @@
 package genepi.haplogrep3.model;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.List;
 import java.util.Vector;
+
+import com.esotericsoftware.yamlbeans.YamlReader;
 
 import core.Haplogroup;
 import core.Polymorphism;
@@ -247,12 +252,19 @@ public class Phylotree {
 		return null;
 	}
 
-	public void updateParent(String parent) {
+	protected void updateParent(String parent) {
 		tree = FileUtil.path(parent, tree);
 		weights = FileUtil.path(parent, weights);
 		maplocus = FileUtil.path(parent, maplocus);
 		aacTable = FileUtil.path(parent, aacTable);
 		gff = FileUtil.path(parent, gff);
+	}
+
+	public static Phylotree load(File file) throws IOException {
+		YamlReader reader = new YamlReader(new FileReader(file));
+		Phylotree phylotree = reader.read(Phylotree.class);
+		phylotree.updateParent(file.getAbsoluteFile().getParent());
+		return phylotree;
 	}
 
 	public List<Haplogroup> getHaplogroups() {
