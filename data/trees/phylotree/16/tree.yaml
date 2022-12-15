@@ -1,0 +1,50 @@
+id: phylotree-16-rcrs
+name: PhyloTree 16 (rCRS)
+description: mtDNA tree Build 16 
+url: https://github.com/genepi/
+lastUpdate: 2014/02/19
+tree: tree.xml
+weights: weights.txt
+fasta: rcrs.fasta
+gff: mtdna.gff
+aacTable: mtdna.aac.txt
+genes:
+ - "TRNF"
+ - "RNR1"
+ - "TRNV"
+ - "RNR2"
+ - "TRNL1"
+ - "ND1"
+ - "TRNI"
+ - "TRNQ"
+ - "TRNM"
+ - "ND2"
+ - "TRNW"
+ - "TRNA"
+ - "TRNN"
+ - "TRNC"
+ - "TRNY"
+ - "COX1"
+ - "TRNS1"
+ - "TRND"
+ - "COX2"
+ - "TRNK"
+ - "ATP8"
+ - "ATP6"
+ - "COX3"
+ - "TRNG"
+ - "ND3"
+ - "TRNR"
+ - "ND4L"
+ - "ND4"
+ - "TRNH"
+ - "TRNS2"
+ - "TRNL2"
+ - "ND5"
+ - "ND6"
+ - "TRNE"
+ - "CYTB"
+ - "TRNT"
+ - "TRNP"
+source:
+  - "Phylotree.org http://phylotree.org/builds/mtDNA_tree_Build_16.zip" 
