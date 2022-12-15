@@ -15,7 +15,7 @@ public class AnnotatedSample {
 
 	private String clade;
 
-	private String quality;
+	private double quality;
 
 	private int ns = 0;
 
@@ -33,8 +33,6 @@ public class AnnotatedSample {
 
 	private List<AnnotatedPolymorphism> annotatedPolymorphisms = new Vector<AnnotatedPolymorphism>();
 
-	public static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.##");
-
 	public AnnotatedSample(TestSample tsample) {
 
 		sample = tsample.getSampleID();
@@ -43,7 +41,7 @@ public class AnnotatedSample {
 
 		clade = topResult.getHaplogroup().toString();
 		clade = clade.split("_")[0];
-		quality = DECIMAL_FORMAT.format(topResult.getDistance());
+		quality = topResult.getDistance();
 		ns = PolymorphismHelper.getNCount(detailedResult.getRemainingPolysInSample());
 		mixCount = PolymorphismHelper.getMixCount(detailedResult.getRemainingPolysInSample());
 		coverage = PolymorphismHelper.getRangeLength(tsample.getSample().getSampleRanges().toString());
@@ -74,11 +72,11 @@ public class AnnotatedSample {
 		this.clade = clade;
 	}
 
-	public String getQuality() {
+	public double getQuality() {
 		return quality;
 	}
 
-	public void setQuality(String quality) {
+	public void setQuality(double quality) {
 		this.quality = quality;
 	}
 
