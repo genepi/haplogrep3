@@ -22,7 +22,7 @@ public class ClassificationTaskTest {
 
 	public static String CONFIG_FILE = "haplogrep3.yaml";
 
-	public static String PHYLOTREE = "phylotree-17";
+	public static String PHYLOTREE = "phylotree-17-rcrs";
 
 	public Phylotree loadPhylotree(String id) throws FileNotFoundException, IOException {
 		PhylotreeRepository repository = new PhylotreeRepository();
