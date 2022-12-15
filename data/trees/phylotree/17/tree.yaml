@@ -1,28 +1,51 @@
 id: phylotree-17-rcrs
 name: Phylotree 17 (rCRS)
-description: TODO Description
+description: mtDNA tree Build 17 (18 Feb 2016)
 url: https://github.com/genepi/covgrep/tree/main/data/trees/sarscov2/v5
-lastUpdate: 2021/07/09
+lastUpdate: 2016/02/18
 tree: tree.xml
 weights: weights.txt
 fasta: rcrs.fasta
 gff: mtdna.gff
 aacTable: mtdna.aac.txt
 genes:
-  - "ORF1a"
-  - "ORF1b"
-  - "S"
-  - "ORF3a"
-  - "E"
-  - "M"
-  - "ORF6"
-  - "ORF7a"
-  - "ORF7b"
-  - "ORF8"
-  - "ORF9b"
-  - "N"
-  - "ORF10"
-  - "ORF14"
+ - "TRNF"
+ - "RNR1"
+ - "TRNV"
+ - "RNR2"
+ - "TRNL1"
+ - "ND1"
+ - "TRNI"
+ - "TRNQ"
+ - "TRNM"
+ - "ND2"
+ - "TRNW"
+ - "TRNA"
+ - "TRNN"
+ - "TRNC"
+ - "TRNY"
+ - "COX1"
+ - "TRNS1"
+ - "TRND"
+ - "COX2"
+ - "TRNK"
+ - "ATP8"
+ - "ATP6"
+ - "COX3"
+ - "TRNG"
+ - "ND3"
+ - "TRNR"
+ - "ND4L"
+ - "ND4"
+ - "TRNH"
+ - "TRNS2"
+ - "TRNL2"
+ - "ND5"
+ - "ND6"
+ - "TRNE"
+ - "CYTB"
+ - "TRNT"
+ - "TRNP"
 source:
-  - "Clades: https://github.com/nextstrain/ncov/blob/3a923476576b13348a82721653c9d8768e47465f/defaults/clades.tsv"
-  - "Covariants: https://github.com/hodcroftlab/covariants/blob/ca5f858e11095e5d7e2c3ff8918a8943cfec5a16/scripts/mutation_comparison.py"
+  - "Phylotree.org http://phylotree.org/rCRS-oriented_version.htm"
+  - "Publication: https://www.sciencedirect.com/science/article/pii/S1875176815302432"
