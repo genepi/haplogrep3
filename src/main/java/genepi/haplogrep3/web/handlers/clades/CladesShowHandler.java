@@ -17,7 +17,7 @@ import io.javalin.http.HandlerType;
 
 public class CladesShowHandler extends AbstractHandler {
 
-	public static final String PATH = PhylogeniesIndexHandler.PATH + "/{phylotree}/clades/{clade}";
+	public static final String PATH = PhylogeniesIndexHandler.PATH + "/{phylotree}/haplogroups/{clade}";
 
 	public static final HandlerType TYPE = HandlerType.GET;
 

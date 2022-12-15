@@ -18,21 +18,13 @@
       </div>
     {{end}}
     <p>{{tree.description}}</p>
+    <p><small class="text-muted"><i class="far fa-clock"></i> Last Update: {{tree.lastUpdate}}&nbsp;&nbsp;<a href="{{tree.url}}"><i class="fab fa-github"></i> View on GitHub</a></small></p>
     <p>
-      <b>Clades ({{clades.size()}}):</b><br>
+      <b>Haplogroups ({{clades.size()}}):</b><br>
       {{for clade in clades}}
         <a class="badge badge-primary" href="{{routeUrl("clades_show", {phylotree:tree.id, clade:clade.toString()})}}">{{clade}}</a>
       {{end}}
     </p>
-    <p><small class="text-muted"><i class="far fa-clock"></i> Last Update: {{tree.lastUpdate}}&nbsp;&nbsp;<a href="{{tree.url}}"><i class="fab fa-github"></i> View on GitHub</a></small></p>
-    <br>
-    <div class="card" style="width: 100%; height: 600px">
-      <div class="card-body">
-        <h5 class="card-title">Phylogenetic Tree</h5>
-    <div id="graph">
-      </div>
-    </div>
-  </div>
     <br><br>
     <p><b>Data Source: </b></p>
     <ul>
@@ -42,11 +34,5 @@
     </ul>
   </div>
 </div>
-
-<script>
-  d3.select("#graph")
-.graphviz().width('100%').height('500px').fit(true)
-.renderDot('{{dotGraph}}');
-</script>
 
 {{include "../layouts/footer.view.html"}}
