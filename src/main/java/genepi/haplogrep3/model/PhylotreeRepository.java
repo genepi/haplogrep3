@@ -1,5 +1,6 @@
 package genepi.haplogrep3.model;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collections;
@@ -25,7 +26,10 @@ public class PhylotreeRepository {
 		trees = new Vector<Phylotree>();
 
 		// TODO: reference is not yet in a file. use filename to fast in next versions
-		for (Phylotree phylotree : configuration.getPhylotrees()) {
+		for (String filename : configuration.getPhylotrees()) {
+			System.out.println("Load tree from file " + filename);
+			Phylotree phylotree = Phylotree.load(new File(filename));
+			
 			if (phylotree.getReferenceID().equalsIgnoreCase("SARSCOV2")) {
 				phylotree.setReference(fastaImporter.loadSARSCOV2());
 			} else if (phylotree.getReferenceID().equalsIgnoreCase("RCRS")) {
@@ -36,7 +40,7 @@ public class PhylotreeRepository {
 				throw new IOException("Loading phylotree " + phylotree.getId() + " failed. Reference "
 						+ phylotree.getReferenceID() + " unknown.");
 			}
-
+			System.out.println("Tree loaded.");
 			trees.add(phylotree);
 		}
 
