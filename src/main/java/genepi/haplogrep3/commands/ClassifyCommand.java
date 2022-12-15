@@ -28,7 +28,7 @@ public class ClassifyCommand extends AbstractCommand {
 	@Option(names = { "--output", "--out" }, description = "Output haplogrep file", required = true)
 	private String output;
 
-	@Option(names = { "--distance" }, description = "Distance", required = false)
+	@Option(names = { "--distance", "--metric" }, description = "Distance", required = false)
 	private Distance distance = Distance.KULCZYNSKI;
 
 	@Option(names = {
@@ -41,6 +41,10 @@ public class ClassifyCommand extends AbstractCommand {
 
 	@Option(names = { "--hits" }, description = "Calculate best n hits", required = false)
 	private int hits = 1;
+
+	@Option(names = {
+			"--extend-report" }, description = "Add flag for a extended final output", required = false, showDefaultValue = Visibility.ALWAYS)
+	private boolean extendedReport = false;
 
 	@Override
 	public Integer call() {
@@ -79,7 +83,7 @@ public class ClassifyCommand extends AbstractCommand {
 		if (classificationTask.isSuccess()) {
 
 			ExportDataTask exportTask = new ExportDataTask(classificationTask.getSamples(), output,
-					ExportDataFormat.SIMPLE, phylotree.getReference());
+					extendedReport ? ExportDataFormat.EXTENDED : ExportDataFormat.SIMPLE, phylotree.getReference());
 			try {
 				exportTask.run();
 			} catch (IOException e) {
