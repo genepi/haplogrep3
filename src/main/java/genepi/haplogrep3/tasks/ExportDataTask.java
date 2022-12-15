@@ -1,11 +1,13 @@
 package genepi.haplogrep3.tasks;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Vector;
 
+import core.Reference;
+import core.TestSample;
 import genepi.haplogrep3.model.AnnotatedSample;
-import genepi.io.table.writer.CsvTableWriter;
-import genepi.io.table.writer.ExcelTableWriter;
-import genepi.io.table.writer.ITableWriter;
+import util.ExportUtils;
 
 public class ExportDataTask {
 
@@ -13,44 +15,32 @@ public class ExportDataTask {
 
 	private List<AnnotatedSample> samples;
 
+	private Reference reference;
+
 	public static enum ExportDataFormat {
-		EXCEL, CSV
+		SIMPLE, EXTENDED
 	}
 
-	private ExportDataFormat format = ExportDataFormat.CSV;
+	private ExportDataFormat format = ExportDataFormat.SIMPLE;
 
-	public ExportDataTask(List<AnnotatedSample> samples, String filename, ExportDataFormat format) {
+	public ExportDataTask(List<AnnotatedSample> samples, String filename, ExportDataFormat format,
+			Reference reference) {
 		this.samples = samples;
 		this.filename = filename;
 		this.format = format;
+		this.reference = reference;
 	}
 
-	public void run() {
+	public void run() throws IOException {
 
-		ITableWriter writer = null;
-
-		switch (format) {
-		case CSV:
-			writer = new CsvTableWriter(filename);
-			break;
-		case EXCEL:
-			writer = new ExcelTableWriter(filename);
-			break;
-		default:
-			writer = new CsvTableWriter(filename);
-			break;
-		}
-
-		writer.setColumns(new String[] { "sample", "clade", "quality" });
+		List<TestSample> testSamples = new Vector<TestSample>();
 		for (AnnotatedSample sample : samples) {
-			writer.setString("sample", sample.getSample());
-			writer.setString("clade", sample.getClade());
-			writer.setDouble("quality", sample.getQuality());
-			writer.next();
+			testSamples.add(sample.getTestSample());
 		}
-		writer.close();
 
-		System.out.println("Written clades to file " + filename);
+		ExportUtils.createReport(testSamples, reference, filename, format == ExportDataFormat.EXTENDED);
+
+		System.out.println("Written haplogroups to file " + filename);
 
 	}
 

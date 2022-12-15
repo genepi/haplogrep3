@@ -1,6 +1,7 @@
 package genepi.haplogrep3.commands;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Vector;
 
@@ -65,7 +66,7 @@ public class ClassifyCommand extends AbstractCommand {
 		classificationTask.setChip(chip);
 		classificationTask.setHetLevel(hetLevel);
 		classificationTask.setHits(hits);
-		
+
 		try {
 
 			classificationTask.run();
@@ -78,8 +79,13 @@ public class ClassifyCommand extends AbstractCommand {
 		if (classificationTask.isSuccess()) {
 
 			ExportDataTask exportTask = new ExportDataTask(classificationTask.getSamples(), output,
-					ExportDataFormat.CSV);
-			exportTask.run();
+					ExportDataFormat.SIMPLE, phylotree.getReference());
+			try {
+				exportTask.run();
+			} catch (IOException e) {
+				System.out.println("Error: " + e);
+				return 1;
+			}
 
 			return 0;
 

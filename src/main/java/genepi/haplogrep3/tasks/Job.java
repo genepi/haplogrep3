@@ -181,13 +181,14 @@ public class Job implements Runnable {
 
 			if (task.isSuccess()) {
 
-				String csvFilename = FileUtil.path(_workspace, getId(), "clades.csv");
-				ExportDataTask exportCsvTask = new ExportDataTask(task.getSamples(), csvFilename, ExportDataFormat.CSV);
+				String csvFilename = FileUtil.path(_workspace, getId(), "haplogroups.extended.csv");
+				ExportDataTask exportCsvTask = new ExportDataTask(task.getSamples(), csvFilename,
+						ExportDataFormat.EXTENDED, _phylotree.getReference());
 				exportCsvTask.run();
 
-				String excelFilename = FileUtil.path(_workspace, getId(), "clades.xls");
+				String excelFilename = FileUtil.path(_workspace, getId(), "haplogroups.csv");
 				ExportDataTask exportExcelTask = new ExportDataTask(task.getSamples(), excelFilename,
-						ExportDataFormat.EXCEL);
+						ExportDataFormat.SIMPLE, _phylotree.getReference());
 				exportExcelTask.run();
 
 				save(task.getSamples());
@@ -214,6 +215,7 @@ public class Job implements Runnable {
 			setFinisehdOn(new Date());
 			setStatus(JobStatus.FAILED);
 			setError(e.getMessage());
+			e.printStackTrace();
 			save();
 
 			FileUtil.deleteDirectory(dataDirectory);

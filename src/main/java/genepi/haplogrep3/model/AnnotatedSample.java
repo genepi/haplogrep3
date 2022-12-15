@@ -32,10 +32,13 @@ public class AnnotatedSample {
 
 	private List<AnnotatedPolymorphism> annotatedPolymorphisms = new Vector<AnnotatedPolymorphism>();
 
-	public AnnotatedSample(TestSample tsample) {
+	private transient TestSample testSample;
 
-		sample = tsample.getSampleID();
-		RankedResult topResult = tsample.getTopResult();
+	public AnnotatedSample(TestSample testSample) {
+
+		this.testSample = testSample;
+		sample = testSample.getSampleID();
+		RankedResult topResult = testSample.getTopResult();
 		SearchResultDetailed detailedResult = topResult.getSearchResult().getDetailedResult();
 
 		clade = topResult.getHaplogroup().toString();
@@ -43,9 +46,9 @@ public class AnnotatedSample {
 		quality = topResult.getDistance();
 		ns = PolymorphismHelper.getNCount(detailedResult.getRemainingPolysInSample());
 		mixCount = PolymorphismHelper.getMixCount(detailedResult.getRemainingPolysInSample());
-		coverage = PolymorphismHelper.getRangeLength(tsample.getSample().getSampleRanges().toString());
+		coverage = PolymorphismHelper.getRangeLength(testSample.getSample().getSampleRanges().toString());
 
-		String[] rangesWithSpaces = tsample.getSample().getSampleRanges().toString().split(";");
+		String[] rangesWithSpaces = testSample.getSample().getSampleRanges().toString().split(";");
 		ranges = new String[rangesWithSpaces.length];
 		for (int i = 0; i < ranges.length; i++) {
 			ranges[i] = rangesWithSpaces[i].trim();
@@ -53,6 +56,7 @@ public class AnnotatedSample {
 
 		expected = detailedResult.getExpectedPolys().size();
 		found = detailedResult.getFoundPolys().size();
+
 	}
 
 	public String getSample() {
@@ -143,10 +147,13 @@ public class AnnotatedSample {
 		return expectedMutations;
 	}
 
+	public TestSample getTestSample() {
+		return testSample;
+	}
+
 	@Override
 	public String toString() {
 		return sample;
 	}
 
-	
 }

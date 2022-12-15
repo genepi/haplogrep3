@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 
-import core.Reference;
 import genepi.haplogrep3.config.Configuration;
 
 public class PhylotreeRepository {
@@ -26,8 +25,6 @@ public class PhylotreeRepository {
 		for (String filename : configuration.getPhylotrees()) {
 			System.out.println("Load tree from file " + filename);
 			Phylotree phylotree = Phylotree.load(new File(filename));
-			Reference reference = new Reference(phylotree.getFasta());
-			phylotree.setReference(reference);
 			System.out.println("Tree loaded.");
 			trees.add(phylotree);
 		}

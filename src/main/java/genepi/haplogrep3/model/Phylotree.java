@@ -262,10 +262,19 @@ public class Phylotree {
 	}
 
 	public static Phylotree load(File file) throws IOException {
+
 		YamlReader reader = new YamlReader(new FileReader(file));
 		Phylotree phylotree = reader.read(Phylotree.class);
 		phylotree.updateParent(file.getAbsoluteFile().getParent());
+
+		Reference reference = new Reference(phylotree.getFasta());
+		phylotree.setReference(reference);
+		
+		//TODO: set it manually as workaround on Polymorphism L480
+		reference.setName("RCRS");
+
 		return phylotree;
+
 	}
 
 	public List<Haplogroup> getHaplogroups() {
