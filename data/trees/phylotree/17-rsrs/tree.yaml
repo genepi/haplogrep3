@@ -1,0 +1,51 @@
+id: phylotree-17-rsrs
+name: Phylotree 17 (RSRS)
+description: mtDNA tree Build 17 (18 Feb 2016)
+url: https://github.com/genepi/haplogrep3
+lastUpdate: 2016/02/18
+tree: tree.xml
+weights: weights.txt
+fasta: rcrs.fasta
+gff: mtdna.gff
+aacTable: mtdna.aac.txt
+genes:
+ - "TRNF"
+ - "RNR1"
+ - "TRNV"
+ - "RNR2"
+ - "TRNL1"
+ - "ND1"
+ - "TRNI"
+ - "TRNQ"
+ - "TRNM"
+ - "ND2"
+ - "TRNW"
+ - "TRNA"
+ - "TRNN"
+ - "TRNC"
+ - "TRNY"
+ - "COX1"
+ - "TRNS1"
+ - "TRND"
+ - "COX2"
+ - "TRNK"
+ - "ATP8"
+ - "ATP6"
+ - "COX3"
+ - "TRNG"
+ - "ND3"
+ - "TRNR"
+ - "ND4L"
+ - "ND4"
+ - "TRNH"
+ - "TRNS2"
+ - "TRNL2"
+ - "ND5"
+ - "ND6"
+ - "TRNE"
+ - "CYTB"
+ - "TRNT"
+ - "TRNP"
+source:
+  - "Phylotree.org RSRS http://phylotree.org/builds/mtDNA_tree_Build_17.zip"
+  - "Publication: https://www.sciencedirect.com/science/article/pii/S0002929712001462"
