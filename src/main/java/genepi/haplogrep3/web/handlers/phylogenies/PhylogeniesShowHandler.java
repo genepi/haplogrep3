@@ -3,7 +3,6 @@ package genepi.haplogrep3.web.handlers.phylogenies;
 import genepi.haplogrep3.App;
 import genepi.haplogrep3.model.Phylotree;
 import genepi.haplogrep3.model.PhylotreeRepository;
-import genepi.haplogrep3.tasks.PhylotreeExporter;
 import genepi.haplogrep3.web.util.AbstractHandler;
 import genepi.haplogrep3.web.util.Page;
 import io.javalin.http.Context;
@@ -26,12 +25,9 @@ public class PhylogeniesShowHandler extends AbstractHandler {
 		if (phylotree == null) {
 			throw new Exception("Phylotree " + phylotreeId + " not found.");
 		}
-
-		PhylotreeExporter exporter = new PhylotreeExporter(phylotree);
 		
 		Page page = new Page(context, TEMPLATE);
 		page.put("tree", phylotree);
-		page.put("dotGraph", exporter.getAsString());
 		page.put("clades", 	phylotree.getHaplogroups());
 		page.render();
 	}

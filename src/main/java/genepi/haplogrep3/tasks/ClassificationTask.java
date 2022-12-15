@@ -31,6 +31,8 @@ public class ClassificationTask {
 	private boolean chip = false;
 
 	private double hetLevel = 0.9;
+	
+	private int hits = 1;
 
 	public ClassificationTask(Phylotree phylotree, List<File> files, Distance distance) {
 		this.phylotree = phylotree;
@@ -46,6 +48,10 @@ public class ClassificationTask {
 		this.hetLevel = hetLevel;
 	}
 
+	public void setHits(int hits) {
+		this.hits = hits;
+	}
+	
 	public void run() throws Exception {
 
 		start = System.currentTimeMillis();
@@ -62,7 +68,7 @@ public class ClassificationTask {
 
 		SampleFile sampleFile = reader.read(files, phylotree);
 
-		phylotree.classify(sampleFile, distance);
+		phylotree.classify(sampleFile, distance, hits);
 
 		AnnotationTask annotationTask = new AnnotationTask(sampleFile, phylotree);
 		annotationTask.run();

@@ -38,6 +38,9 @@ public class ClassifyCommand extends AbstractCommand {
 			"--hetLevel" }, description = "Add heteroplasmies with a level > X from the VCF file to the profile (default: 0.9)", required = false)
 	private double hetLevel = 0.9;
 
+	@Option(names = { "--hits" }, description = "Calculate best n hits", required = false)
+	private int hits = 1;
+
 	@Override
 	public Integer call() {
 
@@ -61,7 +64,8 @@ public class ClassifyCommand extends AbstractCommand {
 		ClassificationTask classificationTask = new ClassificationTask(phylotree, files, distance);
 		classificationTask.setChip(chip);
 		classificationTask.setHetLevel(hetLevel);
-
+		classificationTask.setHits(hits);
+		
 		try {
 
 			classificationTask.run();
