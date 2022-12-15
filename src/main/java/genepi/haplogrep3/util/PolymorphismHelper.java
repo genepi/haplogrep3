@@ -63,13 +63,7 @@ public class PolymorphismHelper {
 				case W:
 					countMix++;
 					break;
-				case B:
-					countMix++;
-					break;
 				case H:
-					countMix++;
-					break;
-				case V:
 					countMix++;
 					break;
 				default:
