@@ -1,6 +1,4 @@
-##gff-version 3								
-#!gff-spec-version 1.21								
-#!processor NCBI annotwriter								
+##gff-version 3								r								
 ##sequence-region NC_012920.1 1 16569								
 ##species https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=9606								
 NC_012920.1	RefSeq	region	1	16569	.	+	.	ID=NC_012920.1:1..16569;Dbxref=taxon:9606;Is_circular=true;Name=MT;country=United Kingdom: Great Britain;gbkey=Src;genome=mitochondrion;isolation-source=caucasian;mol_type=genomic DNA;note=this is the rCRS;tissue-type=placenta

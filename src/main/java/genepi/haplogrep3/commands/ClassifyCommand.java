@@ -12,22 +12,31 @@ import genepi.haplogrep3.tasks.ClassificationTask;
 import genepi.haplogrep3.tasks.ExportDataTask;
 import genepi.haplogrep3.tasks.ExportDataTask.ExportDataFormat;
 import picocli.CommandLine.Command;
+import picocli.CommandLine.Help.Visibility;
 import picocli.CommandLine.Option;
 
 @Command
 public class ClassifyCommand extends AbstractCommand {
 
-	@Option(names = { "--fasta" }, description = "Input fasta file", required = true)
+	@Option(names = { "--input", "--in" }, description = "Input fasta file", required = true)
 	private String fasta;
 
 	@Option(names = { "--tree" }, description = "Tree Id", required = true)
 	private String phylotreeId;
 
-	@Option(names = { "--output" }, description = "Output clade file", required = true)
+	@Option(names = { "--output", "--out" }, description = "Output haplogrep file", required = true)
 	private String output;
 
 	@Option(names = { "--distance" }, description = "Distance", required = false)
 	private Distance distance = Distance.KULCZYNSKI;
+
+	@Option(names = {
+			"--chip" }, description = "VCF data from a genotype chip", required = false, showDefaultValue = Visibility.ALWAYS)
+	private boolean chip = false;
+
+	@Option(names = {
+			"--hetLevel" }, description = "Add heteroplasmies with a level > X from the VCF file to the profile (default: 0.9)", required = false)
+	private double hetLevel = 0.9;
 
 	@Override
 	public Integer call() {
@@ -50,6 +59,8 @@ public class ClassifyCommand extends AbstractCommand {
 		files.add(fastaFile);
 
 		ClassificationTask classificationTask = new ClassificationTask(phylotree, files, distance);
+		classificationTask.setChip(chip);
+		classificationTask.setHetLevel(hetLevel);
 
 		try {
 

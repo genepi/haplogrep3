@@ -83,7 +83,6 @@ public class AnnotationTask {
 		for (int i = 0; i < polymorphisms.size(); i++) {
 
 			Polymorphism polymorphism = polymorphisms.get(i);
-			System.out.println(polymorphism.getPosition());
 
 			//Iterator<Node<MapLocusItem>> result = maplocus.findByPosition(polymorphism.getPosition());
 			//if (result.hasNext()) {
