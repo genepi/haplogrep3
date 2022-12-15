@@ -68,7 +68,7 @@
 		<dependency>
 			<groupId>genepi</groupId>
 			<artifactId>haplogrep-core</artifactId>
-			<version>3.0.0-beta5</version>
+			<version>3.0.0-rc1</version>
 		</dependency>
 
 		<dependency>
