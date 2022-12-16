@@ -1,0 +1,50 @@
+id: phylotree-17-fu1-rcrs
+name: Phylotree 17 - Forensic Update 1 (rCRS)
+description: Refined Phylotree 17 by Duer et al., revised version after minor issues, including 6,380 haplogroups (6,401 in publication)
+url: https://github.com/genepi/haplogrep3
+lastUpdate: 2021/11/29
+tree: tree.xml
+weights: weights.txt
+fasta: rcrs.fasta
+gff: mtdna.gff
+aacTable: mtdna.aac.txt
+genes:
+ - "TRNF"
+ - "RNR1"
+ - "TRNV"
+ - "RNR2"
+ - "TRNL1"
+ - "ND1"
+ - "TRNI"
+ - "TRNQ"
+ - "TRNM"
+ - "ND2"
+ - "TRNW"
+ - "TRNA"
+ - "TRNN"
+ - "TRNC"
+ - "TRNY"
+ - "COX1"
+ - "TRNS1"
+ - "TRND"
+ - "COX2"
+ - "TRNK"
+ - "ATP8"
+ - "ATP6"
+ - "COX3"
+ - "TRNG"
+ - "ND3"
+ - "TRNR"
+ - "ND4L"
+ - "ND4"
+ - "TRNH"
+ - "TRNS2"
+ - "TRNL2"
+ - "ND5"
+ - "ND6"
+ - "TRNE"
+ - "CYTB"
+ - "TRNT"
+ - "TRNP"
+source:
+  - "Publication: https://www.mdpi.com/1422-0067/22/11/5747"
