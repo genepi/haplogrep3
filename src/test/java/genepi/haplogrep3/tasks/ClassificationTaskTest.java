@@ -13,6 +13,7 @@ import java.util.List;
 import org.junit.Test;
 
 import genepi.haplogrep3.config.Configuration;
+import genepi.haplogrep3.model.AnnotatedPolymorphism;
 import genepi.haplogrep3.model.AnnotatedSample;
 import genepi.haplogrep3.model.Distance;
 import genepi.haplogrep3.model.Phylotree;
@@ -51,6 +52,84 @@ public class ClassificationTaskTest {
 		assertEquals(0, firstSample.getNs());
 
 	}
+
+	@Test
+	public void testWithPhylotreeRSRS() throws Exception {
+
+		String tree = "phylotree-17-rsrs";
+
+		Phylotree phylotree = loadPhylotree(tree);
+
+		List<File> files = new ArrayList<File>();
+		files.add(new File("test-data/fasta/H100.fasta"));
+
+		ClassificationTask task = new ClassificationTask(phylotree, files, Distance.KULCZYNSKI);
+		task.run();
+
+		assertTrue(task.isSuccess());
+		assertEquals(1, task.getSamples().size());
+
+		AnnotatedSample firstSample = task.getSamples().get(0);
+		assertEquals("HM625681.1", firstSample.getSample());
+		assertEquals("H100", firstSample.getClade());
+		assertEquals(0, firstSample.getNs());
+
+		// this H100 sample expects 51 variants according RSRS
+		assertEquals(51, firstSample.getAnnotatedPolymorphisms().size());
+
+	}
+
+	@Test
+	public void testWithPhylotree16() throws Exception {
+
+		String tree = "phylotree-16-rcrs";
+
+		Phylotree phylotree = loadPhylotree(tree);
+
+		List<File> files = new ArrayList<File>();
+		files.add(new File("test-data/fasta/H100.fasta"));
+
+		ClassificationTask task = new ClassificationTask(phylotree, files, Distance.KULCZYNSKI);
+		task.run();
+
+		assertTrue(task.isSuccess());
+		assertEquals(1, task.getSamples().size());
+
+		AnnotatedSample firstSample = task.getSamples().get(0);
+		assertEquals("HM625681.1", firstSample.getSample());
+		assertEquals("H100", firstSample.getClade());
+		assertEquals(0, firstSample.getNs());
+
+		// this H100 sample expects 15 variants according rCRS
+		assertEquals(15, firstSample.getAnnotatedPolymorphisms().size());
+	}
+	
+	
+	@Test
+	public void testWithPhylotree17_fu() throws Exception {
+
+		String tree = "phylotree-17-fu-rcrs";
+
+		Phylotree phylotree = loadPhylotree(tree);
+
+		List<File> files = new ArrayList<File>();
+		files.add(new File("test-data/fasta/L3i2_1.fasta"));
+
+		ClassificationTask task = new ClassificationTask(phylotree, files, Distance.KULCZYNSKI);
+		task.run();
+
+		assertTrue(task.isSuccess());
+		assertEquals(1, task.getSamples().size());
+
+		AnnotatedSample firstSample = task.getSamples().get(0);
+		assertEquals("L3i2*2", firstSample.getSample());
+		
+		//haplogroup only present in phylotree 17 FU (not in previous versions)
+		assertEquals("L3i2*2", firstSample.getClade());
+		assertEquals(0, firstSample.getNs());
+
+	}
+	
 
 	@Test
 	public void testWithFasta() throws Exception {
