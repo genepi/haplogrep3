@@ -1,7 +1,7 @@
 id: phylotree-17-rcrs
 name: Phylotree 17 (rCRS)
 description: mtDNA tree Build 17 (18 Feb 2016)
-url: https://github.com/genepi/covgrep/tree/main/data/trees/sarscov2/v5
+url: https://github.com/genepi/haplogrep3
 lastUpdate: 2016/02/18
 tree: tree.xml
 weights: weights.txt
