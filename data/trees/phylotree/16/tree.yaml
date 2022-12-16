@@ -1,7 +1,7 @@
 id: phylotree-16-rcrs
 name: PhyloTree 16 (rCRS)
-description: mtDNA tree Build 16 
-url: https://github.com/genepi/
+description: mtDNA tree Build 16 including 4,806 haplogroups
+url: https://github.com/genepi/haplogrep3/data/trees/phylotree/16
 lastUpdate: 2014/02/19
 tree: tree.xml
 weights: weights.txt
