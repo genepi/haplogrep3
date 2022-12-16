@@ -17,10 +17,17 @@ public class ExportSequenceTask {
 
 	private Reference reference;
 
-	public ExportSequenceTask(List<AnnotatedSample> samples, String filename, Reference reference) {
+	private ExportSequenceFormat format;
+
+	public static enum ExportSequenceFormat {
+		FASTA, FASTA_MSA
+	}
+
+	public ExportSequenceTask(List<AnnotatedSample> samples, String filename, ExportSequenceFormat format, Reference reference) {
 		this.samples = samples;
 		this.filename = filename;
 		this.reference = reference;
+		this.format = format;
 	}
 
 	public void run() throws IOException {
@@ -30,8 +37,14 @@ public class ExportSequenceTask {
 			testSamples.add(sample.getTestSample());
 		}
 
-		ExportUtils.generateFasta(testSamples, reference, filename);
-		ExportUtils.generateFastaMSA(testSamples, reference, filename);
+		switch (format) {
+		case FASTA:
+			ExportUtils.generateFasta(testSamples, reference, filename);
+			break;
+		case FASTA_MSA:
+			ExportUtils.generateFastaMSA(testSamples, reference, filename);
+			break;
+		}
 
 	}
 

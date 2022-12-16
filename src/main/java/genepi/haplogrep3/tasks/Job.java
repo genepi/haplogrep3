@@ -11,6 +11,7 @@ import genepi.haplogrep3.model.Distance;
 import genepi.haplogrep3.model.JobStatus;
 import genepi.haplogrep3.model.Phylotree;
 import genepi.haplogrep3.tasks.ExportReportTask.ExportDataFormat;
+import genepi.haplogrep3.tasks.ExportSequenceTask.ExportSequenceFormat;
 import genepi.io.FileUtil;
 import util.ExportUtils;
 
@@ -194,8 +195,12 @@ public class Job implements Runnable {
 
 				String seqqueneFilename = FileUtil.path(_workspace, getId(), "sequence");
 				ExportSequenceTask exportSequenceTask = new ExportSequenceTask(task.getSamples(), seqqueneFilename,
-						_phylotree.getReference());
+						ExportSequenceFormat.FASTA, _phylotree.getReference());
 				exportSequenceTask.run();
+
+				ExportSequenceTask exportSequenceMsaTask = new ExportSequenceTask(task.getSamples(), seqqueneFilename,
+						ExportSequenceFormat.FASTA_MSA, _phylotree.getReference());
+				exportSequenceMsaTask.run();
 
 				save(task.getSamples());
 

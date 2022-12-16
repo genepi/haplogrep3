@@ -11,7 +11,9 @@ import genepi.haplogrep3.model.Phylotree;
 import genepi.haplogrep3.model.PhylotreeRepository;
 import genepi.haplogrep3.tasks.ClassificationTask;
 import genepi.haplogrep3.tasks.ExportReportTask;
+import genepi.haplogrep3.tasks.ExportSequenceTask;
 import genepi.haplogrep3.tasks.ExportReportTask.ExportDataFormat;
+import genepi.haplogrep3.tasks.ExportSequenceTask.ExportSequenceFormat;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Help.Visibility;
 import picocli.CommandLine.Option;
@@ -25,7 +27,7 @@ public class ClassifyCommand extends AbstractCommand {
 	@Option(names = { "--tree" }, description = "Tree Id", required = true)
 	private String phylotreeId;
 
-	@Option(names = { "--output", "--out" }, description = "Output haplogrep file", required = true)
+	@Option(names = { "--output", "--out" }, description = "Output file location", required = true)
 	private String output;
 
 	@Option(names = { "--distance", "--metric" }, description = "Distance", required = false)
@@ -45,6 +47,14 @@ public class ClassifyCommand extends AbstractCommand {
 	@Option(names = {
 			"--extend-report" }, description = "Add flag for a extended final output", required = false, showDefaultValue = Visibility.ALWAYS)
 	private boolean extendedReport = false;
+
+	@Option(names = {
+			"--write-fasta" }, description = "Write results in fasta format", required = false, showDefaultValue = Visibility.ALWAYS)
+	private boolean writeFasta = false;
+
+	@Option(names = {
+			"--write-fasta-msa" }, description = "Write multiple sequence alignment (_MSA.fasta) ", required = false, showDefaultValue = Visibility.ALWAYS)
+	private boolean writeFastaMSA = false;
 
 	@Override
 	public Integer call() {
@@ -89,6 +99,28 @@ public class ClassifyCommand extends AbstractCommand {
 			} catch (IOException e) {
 				System.out.println("Error: " + e);
 				return 1;
+			}
+
+			if (writeFasta) {
+				ExportSequenceTask exportSequenceTask = new ExportSequenceTask(classificationTask.getSamples(), output,
+						ExportSequenceFormat.FASTA, phylotree.getReference());
+				try {
+					exportSequenceTask.run();
+				} catch (IOException e) {
+					System.out.println("Error: " + e);
+					return 1;
+				}
+			}
+
+			if (writeFastaMSA) {
+				ExportSequenceTask exportSequenceTask = new ExportSequenceTask(classificationTask.getSamples(), output,
+						ExportSequenceFormat.FASTA_MSA, phylotree.getReference());
+				try {
+					exportSequenceTask.run();
+				} catch (IOException e) {
+					System.out.println("Error: " + e);
+					return 1;
+				}
 			}
 
 			return 0;
