@@ -28,6 +28,8 @@ public class Configuration {
 
 	private List<Dataset> examples = new Vector<Dataset>();
 
+	private String baseUrl = "";
+
 	public Configuration() {
 
 	}
@@ -97,13 +99,21 @@ public class Configuration {
 		this.examples = examples;
 	}
 
+	public void setBaseUrl(String baseUrl) {
+		this.baseUrl = baseUrl;
+	}
+
+	public String getBaseUrl() {
+		return baseUrl;
+	}
+
 	public static Configuration loadFromFile(File file, String parent) throws YamlException, FileNotFoundException {
 
 		YamlReader reader = new YamlReader(new FileReader(file));
 		reader.getConfig().setPropertyElementType(Configuration.class, "phylotrees", String.class);
 		reader.getConfig().setPropertyElementType(Configuration.class, "examples", Dataset.class);
 		Configuration configuration = reader.read(Configuration.class);
-		
+
 		for (Dataset dataset : configuration.getExamples()) {
 			dataset.updateParent(parent);
 		}

@@ -154,7 +154,7 @@ public class JobsCreateHandler extends AbstractHandler {
 
 	@Override
 	public String getPath() {
-		return PATH;
+		return configuration.getBaseUrl() + PATH;
 	}
 
 	@Override
