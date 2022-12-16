@@ -10,8 +10,8 @@ import genepi.haplogrep3.model.Distance;
 import genepi.haplogrep3.model.Phylotree;
 import genepi.haplogrep3.model.PhylotreeRepository;
 import genepi.haplogrep3.tasks.ClassificationTask;
-import genepi.haplogrep3.tasks.ExportDataTask;
-import genepi.haplogrep3.tasks.ExportDataTask.ExportDataFormat;
+import genepi.haplogrep3.tasks.ExportReportTask;
+import genepi.haplogrep3.tasks.ExportReportTask.ExportDataFormat;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Help.Visibility;
 import picocli.CommandLine.Option;
@@ -82,7 +82,7 @@ public class ClassifyCommand extends AbstractCommand {
 
 		if (classificationTask.isSuccess()) {
 
-			ExportDataTask exportTask = new ExportDataTask(classificationTask.getSamples(), output,
+			ExportReportTask exportTask = new ExportReportTask(classificationTask.getSamples(), output,
 					extendedReport ? ExportDataFormat.EXTENDED : ExportDataFormat.SIMPLE, phylotree.getReference());
 			try {
 				exportTask.run();

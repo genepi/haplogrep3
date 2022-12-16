@@ -10,8 +10,9 @@ import genepi.haplogrep3.model.AnnotatedSample;
 import genepi.haplogrep3.model.Distance;
 import genepi.haplogrep3.model.JobStatus;
 import genepi.haplogrep3.model.Phylotree;
-import genepi.haplogrep3.tasks.ExportDataTask.ExportDataFormat;
+import genepi.haplogrep3.tasks.ExportReportTask.ExportDataFormat;
 import genepi.io.FileUtil;
+import util.ExportUtils;
 
 public class Job implements Runnable {
 
@@ -181,15 +182,20 @@ public class Job implements Runnable {
 
 			if (task.isSuccess()) {
 
-				String csvFilename = FileUtil.path(_workspace, getId(), "haplogroups.extended.csv");
-				ExportDataTask exportCsvTask = new ExportDataTask(task.getSamples(), csvFilename,
+				String reportFilename = FileUtil.path(_workspace, getId(), "haplogroups.extended.csv");
+				ExportReportTask exportReportTask = new ExportReportTask(task.getSamples(), reportFilename,
 						ExportDataFormat.EXTENDED, _phylotree.getReference());
-				exportCsvTask.run();
+				exportReportTask.run();
 
-				String excelFilename = FileUtil.path(_workspace, getId(), "haplogroups.csv");
-				ExportDataTask exportExcelTask = new ExportDataTask(task.getSamples(), excelFilename,
-						ExportDataFormat.SIMPLE, _phylotree.getReference());
-				exportExcelTask.run();
+				String extendedReportFilename = FileUtil.path(_workspace, getId(), "haplogroups.csv");
+				ExportReportTask exportExtendedReportTask = new ExportReportTask(task.getSamples(),
+						extendedReportFilename, ExportDataFormat.SIMPLE, _phylotree.getReference());
+				exportExtendedReportTask.run();
+
+				String seqqueneFilename = FileUtil.path(_workspace, getId(), "sequence");
+				ExportSequenceTask exportSequenceTask = new ExportSequenceTask(task.getSamples(), seqqueneFilename,
+						_phylotree.getReference());
+				exportSequenceTask.run();
 
 				save(task.getSamples());
 
