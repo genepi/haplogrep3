@@ -1,11 +1,11 @@
 id: phylotree-17-rsrs
 name: Phylotree 17 (RSRS)
-description: mtDNA tree Build 17 (18 Feb 2016)
-url: https://github.com/genepi/haplogrep3
+description: mtDNA tree Build 17 including 5,435 haplogroups (18 Feb 2016)
+url: https://github.com/genepi/haplogrep3/data/trees/phylotree/17-rsrs
 lastUpdate: 2016/02/18
 tree: tree.xml
 weights: weights.txt
-fasta: rcrs.fasta
+fasta: rsrs.fasta
 gff: mtdna.gff
 aacTable: mtdna.aac.txt
 genes:
