@@ -6,4 +6,9 @@ examples:
     file: data/examples/evaluation-data.hsd
 
 phylotrees:
+  - data/trees/phylotree/17-fu/tree.yaml
   - data/trees/phylotree/17/tree.yaml
+  - data/trees/phylotree/17-rsrs/tree.yaml
+  - data/trees/phylotree/16/tree.yaml
+  - data/trees/phylotree/15/tree.yaml
+

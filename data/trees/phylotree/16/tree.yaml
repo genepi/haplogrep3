@@ -1,8 +1,8 @@
-id: phylotree-17-rcrs
-name: Phylotree 17 (rCRS)
-description: mtDNA tree Build 17 (18 Feb 2016)
-url: https://github.com/genepi/haplogrep3/data/trees/phylotree/17
-lastUpdate: 2016/02/18
+id: phylotree-16-rcrs
+name: PhyloTree 16 (rCRS)
+description: mtDNA tree Build 16 including 4,806 haplogroups
+url: https://github.com/genepi/haplogrep3/data/trees/phylotree/16
+lastUpdate: 2014/02/19
 tree: tree.xml
 weights: weights.txt
 fasta: rcrs.fasta
@@ -47,5 +47,4 @@ genes:
  - "TRNT"
  - "TRNP"
 source:
-  - "Phylotree.org http://phylotree.org/rCRS-oriented_version.htm"
-  - "Publication: https://www.sciencedirect.com/science/article/pii/S1875176815302432"
+  - "Phylotree.org http://phylotree.org/builds/mtDNA_tree_Build_16.zip" 
