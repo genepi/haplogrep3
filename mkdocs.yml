@@ -1,0 +1,22 @@
+site_name: HaploGrep 3.0.0
+theme: readthedocs
+
+pages:
+- HaploGrep Webservice: haplogrep-webservice.md
+- HaploGrep CLI: haplogrep-cli.md
+- FAQ: faq.md
+- Contact: contact.md
+
+repo_name: genepi/haplogrep3
+repo_url: https://github.com/genepi/haplogrep3
+edit_uri: edit/master/docs
+
+extra:
+  social:
+    - type: github-alt
+      link: https://github.com/genepi/haplogrep3
+
+markdown_extensions:
+    - toc:
+        permalink:
+    - admonition:
