@@ -28,6 +28,10 @@ public class AnnotatedSample {
 
 	private String[] ranges = new String[0];
 
+	private String[] otherClades = new String[0];
+
+	private double[] otherQualities = new double[0];
+
 	private List<AnnotatedPolymorphism> expectedMutations = new Vector<AnnotatedPolymorphism>();
 
 	private List<AnnotatedPolymorphism> annotatedPolymorphisms = new Vector<AnnotatedPolymorphism>();
@@ -52,6 +56,17 @@ public class AnnotatedSample {
 		ranges = new String[rangesWithSpaces.length];
 		for (int i = 0; i < ranges.length; i++) {
 			ranges[i] = rangesWithSpaces[i].trim();
+		}
+
+		int hits = testSample.getResults().size();
+		if (hits > 1) {
+			otherClades = new String[hits - 1];
+			otherQualities = new double[hits - 1];
+			for (int i = 0; i < hits-1; i++) {
+				RankedResult result = testSample.getResults().get(i + 1);
+				otherClades[i] = result.getHaplogroup().toString();
+				otherQualities[i] = result.getDistance();
+			}
 		}
 
 		expected = detailedResult.getExpectedPolys().size();
@@ -105,6 +120,22 @@ public class AnnotatedSample {
 
 	public void setCoverage(int coverage) {
 		this.coverage = coverage;
+	}
+
+	public void setOtherClades(String[] otherClades) {
+		this.otherClades = otherClades;
+	}
+
+	public String[] getOtherClades() {
+		return otherClades;
+	}
+
+	public void setOtherQualities(double[] otherQualities) {
+		this.otherQualities = otherQualities;
+	}
+
+	public double[] getOtherQualities() {
+		return otherQualities;
 	}
 
 	public String[] getRanges() {

@@ -54,8 +54,8 @@ $('.data-table tbody').on('click', 'tr', function() {
       }
     },
     message: '<div style="height: 600px; overflow-y: scroll"><b>Haplogroup</b><br>' + data.clade + '<br><br>' +
-      '<b>Quality</b><br>' + data.quality.toFixed(2) + '<br><br>' +
-      '<b>Match</b><br>' + data.found + ' of ' + data.expected + ' mutations found<br><br>' +
+      '<b>Quality</b><br>' + data.quality.toFixed(2) + '<br>'+ data.found + ' of ' + data.expected + ' mutations found<br><br>' +
+      '<b>Other Hits:</b><br>' + formatHits(data) + ' <br>' +
       '<b>Ranges</b><br>' + formatRange(data.ranges) + '<br><br>' +
       '<b>Amino Acid Changes</b><br>' + formatMutations(data.annotatedPolymorphisms, 500, 'aac', '') + '<br><br>' +
       '<b>Nucleotide Changes</b><br>' + formatMutations(data.annotatedPolymorphisms, 500, 'nuc', '') + '<br><br>' +
@@ -150,6 +150,17 @@ function formatRange(data) {
     }
   };
   return result;
+}
+
+function formatHits(data){
+
+  var result = '<small><ol start="2" style="overflow-y: auto; height: 100px;">';
+  for (var i = 0; i < data.otherClades.length; i++) {
+      result += '<li>' + data.otherClades[i] +' (' + data.otherQualities[i].toFixed(2) + ')</li>';
+  };
+  result += "</ol></small>"
+  return result;
+
 }
 
 

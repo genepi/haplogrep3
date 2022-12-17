@@ -101,7 +101,7 @@ public class PolymorphismHelper {
 	}
 
 	public static String getLabel(Polymorphism polymorphism) {
-		return polymorphism.getReferenceBase().getMutation().toString() + polymorphism.getPosition()
+		return polymorphism.getPosition()
 				+ polymorphism.getMutation().toString();
 	}
 
