@@ -1,0 +1,2 @@
+"SampleID"	"Haplogroup"	"Rank"	"Quality"	"Range"
+"HM625681.1"	"H100"	"1"	"0.8356"	"1-16569"

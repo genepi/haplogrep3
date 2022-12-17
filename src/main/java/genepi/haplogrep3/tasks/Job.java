@@ -10,7 +10,8 @@ import genepi.haplogrep3.model.AnnotatedSample;
 import genepi.haplogrep3.model.Distance;
 import genepi.haplogrep3.model.JobStatus;
 import genepi.haplogrep3.model.Phylotree;
-import genepi.haplogrep3.tasks.ExportDataTask.ExportDataFormat;
+import genepi.haplogrep3.tasks.ExportReportTask.ExportDataFormat;
+import genepi.haplogrep3.tasks.ExportSequenceTask.ExportSequenceFormat;
 import genepi.io.FileUtil;
 
 public class Job implements Runnable {
@@ -46,6 +47,8 @@ public class Job implements Runnable {
 	private boolean chip = false;
 
 	private double hetLevel = 0.9;
+
+	private int hits = 20;
 
 	public static int EXPIRES_HOURS = 4;
 
@@ -95,6 +98,14 @@ public class Job implements Runnable {
 
 	public double getHetLevel() {
 		return hetLevel;
+	}
+
+	public void setHits(int hits) {
+		this.hits = hits;
+	}
+
+	public int getHits() {
+		return hits;
 	}
 
 	public Date getSubmittedOn() {
@@ -175,20 +186,31 @@ public class Job implements Runnable {
 			ClassificationTask task = new ClassificationTask(_phylotree, _files, _distance);
 			task.setChip(chip);
 			task.setHetLevel(hetLevel);
+			task.setHits(hits);
 			task.run();
 
 			FileUtil.deleteDirectory(dataDirectory);
 
 			if (task.isSuccess()) {
 
-				String csvFilename = FileUtil.path(_workspace, getId(), "clades.csv");
-				ExportDataTask exportCsvTask = new ExportDataTask(task.getSamples(), csvFilename, ExportDataFormat.CSV);
-				exportCsvTask.run();
+				String reportFilename = FileUtil.path(_workspace, getId(), "haplogroups.extended.csv");
+				ExportReportTask exportReportTask = new ExportReportTask(task.getSamples(), reportFilename,
+						ExportDataFormat.EXTENDED, _phylotree.getReference());
+				exportReportTask.run();
 
-				String excelFilename = FileUtil.path(_workspace, getId(), "clades.xls");
-				ExportDataTask exportExcelTask = new ExportDataTask(task.getSamples(), excelFilename,
-						ExportDataFormat.EXCEL);
-				exportExcelTask.run();
+				String extendedReportFilename = FileUtil.path(_workspace, getId(), "haplogroups.csv");
+				ExportReportTask exportExtendedReportTask = new ExportReportTask(task.getSamples(),
+						extendedReportFilename, ExportDataFormat.SIMPLE, _phylotree.getReference());
+				exportExtendedReportTask.run();
+
+				String seqqueneFilename = FileUtil.path(_workspace, getId(), "sequence");
+				ExportSequenceTask exportSequenceTask = new ExportSequenceTask(task.getSamples(), seqqueneFilename,
+						ExportSequenceFormat.FASTA, _phylotree.getReference());
+				exportSequenceTask.run();
+
+				ExportSequenceTask exportSequenceMsaTask = new ExportSequenceTask(task.getSamples(), seqqueneFilename,
+						ExportSequenceFormat.FASTA_MSA, _phylotree.getReference());
+				exportSequenceMsaTask.run();
 
 				save(task.getSamples());
 
@@ -214,6 +236,7 @@ public class Job implements Runnable {
 			setFinisehdOn(new Date());
 			setStatus(JobStatus.FAILED);
 			setError(e.getMessage());
+			e.printStackTrace();
 			save();
 
 			FileUtil.deleteDirectory(dataDirectory);

@@ -3,9 +3,17 @@
 
 <div id="page-content">
 
-  Export: &nbsp;&nbsp
-  <a class="btn btn-outline-secondary" href="{{routeUrl("jobs_download", {job: job.id, file: "clades.csv"})}}" target="_blank"><i class="fas fa-file-csv"></i> CSV</a>&nbsp;
-  <a class="btn btn-outline-secondary" href="{{routeUrl("jobs_download", {job: job.id, file: "clades.xls"})}}" target="_blank"><i class="fas fa-file-excel"></i> Excel</a>
+  <div class="btn-group" role="group">
+    <button id="btnGroupDrop1" type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <i class="fas fa-download"></i> Export
+    </button>
+    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+      <a class="dropdown-item" href="{{routeUrl("jobs_download", {job: job.id, file: "haplogroups.csv"})}}" target="_blank"><i class="fas fa-file-csv"></i> CSV</a>
+      <a class="dropdown-item" href="{{routeUrl("jobs_download", {job: job.id, file: "haplogroups.extended.csv"})}}" target="_blank"><i class="fas fa-file-csv"></i> Extended CSV</a>
+      <a class="dropdown-item" href="{{routeUrl("jobs_download", {job: job.id, file: "sequence.fasta"})}}" target="_blank"><i class="fas fa-file-csv"></i> Fasta</a>
+      <a class="dropdown-item" href="{{routeUrl("jobs_download", {job: job.id, file: "sequence_MSA.fasta"})}}" target="_blank"><i class="fas fa-file-csv"></i> MSA Fasta</a>
+    </div>
+  </div>
 
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mutations:
   &nbsp;&nbsp;
