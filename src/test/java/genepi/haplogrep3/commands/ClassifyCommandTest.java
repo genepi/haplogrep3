@@ -44,7 +44,7 @@ public class ClassifyCommandTest {
 		int exitCode = command.call();
 
 		assertEquals(0, exitCode);
-		assertEquals(FileUtil.readFileAsString("test-data/expected/H100/H100.txt"),
+		assertEquals(FileUtil.readFileAsString("test-data/expected/H100/H100.HM625681.1.txt"),
 				FileUtil.readFileAsString(FileUtil.path(output, "H100.txt")));
 	}
 
