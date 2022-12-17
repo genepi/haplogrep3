@@ -262,10 +262,16 @@ public class Phylotree {
 	}
 
 	public static Phylotree load(File file) throws IOException {
+
 		YamlReader reader = new YamlReader(new FileReader(file));
 		Phylotree phylotree = reader.read(Phylotree.class);
 		phylotree.updateParent(file.getAbsoluteFile().getParent());
+
+		Reference reference = new Reference(phylotree.getFasta());
+		phylotree.setReference(reference);
+
 		return phylotree;
+
 	}
 
 	public List<Haplogroup> getHaplogroups() {

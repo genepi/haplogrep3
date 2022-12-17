@@ -28,3 +28,4 @@ hs_err_pid*
 jobs/*
 jbwa-*
 .settings
+/test-output/
