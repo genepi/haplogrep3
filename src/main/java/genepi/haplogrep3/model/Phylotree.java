@@ -269,9 +269,6 @@ public class Phylotree {
 
 		Reference reference = new Reference(phylotree.getFasta());
 		phylotree.setReference(reference);
-		
-		//TODO: set it manually as workaround on Polymorphism L480
-		reference.setName("RCRS");
 
 		return phylotree;
 
