@@ -13,7 +13,6 @@ import genepi.haplogrep3.model.Phylotree;
 import genepi.haplogrep3.tasks.ExportReportTask.ExportDataFormat;
 import genepi.haplogrep3.tasks.ExportSequenceTask.ExportSequenceFormat;
 import genepi.io.FileUtil;
-import util.ExportUtils;
 
 public class Job implements Runnable {
 
@@ -48,6 +47,8 @@ public class Job implements Runnable {
 	private boolean chip = false;
 
 	private double hetLevel = 0.9;
+
+	private int hits = 20;
 
 	public static int EXPIRES_HOURS = 4;
 
@@ -97,6 +98,14 @@ public class Job implements Runnable {
 
 	public double getHetLevel() {
 		return hetLevel;
+	}
+
+	public void setHits(int hits) {
+		this.hits = hits;
+	}
+
+	public int getHits() {
+		return hits;
 	}
 
 	public Date getSubmittedOn() {
@@ -177,6 +186,7 @@ public class Job implements Runnable {
 			ClassificationTask task = new ClassificationTask(_phylotree, _files, _distance);
 			task.setChip(chip);
 			task.setHetLevel(hetLevel);
+			task.setHits(hits);
 			task.run();
 
 			FileUtil.deleteDirectory(dataDirectory);

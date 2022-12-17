@@ -17,6 +17,8 @@ public class ExportReportTask {
 
 	private Reference reference;
 
+	private int hits = 1;
+
 	public static enum ExportDataFormat {
 		SIMPLE, EXTENDED
 	}
@@ -31,6 +33,10 @@ public class ExportReportTask {
 		this.reference = reference;
 	}
 
+	public void setHits(int hits) {
+		this.hits = hits;
+	}
+
 	public void run() throws IOException {
 
 		List<TestSample> testSamples = new Vector<TestSample>();
@@ -38,7 +44,7 @@ public class ExportReportTask {
 			testSamples.add(sample.getTestSample());
 		}
 
-		ExportUtils.createReport(testSamples, reference, filename, format == ExportDataFormat.EXTENDED);
+		ExportUtils.createReport(testSamples, reference, filename, format == ExportDataFormat.EXTENDED, hits);
 
 		System.out.println("Written haplogroups to file " + filename);
 

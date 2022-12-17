@@ -22,46 +22,46 @@ import picocli.CommandLine.Option;
 public class ClassifyCommand extends AbstractCommand {
 
 	@Option(names = { "--input", "--in" }, description = "Input fasta file", required = true)
-	private String fasta;
+	protected String input;
 
 	@Option(names = { "--tree" }, description = "Tree Id", required = true)
-	private String phylotreeId;
+	protected String phylotreeId;
 
 	@Option(names = { "--output", "--out" }, description = "Output file location", required = true)
-	private String output;
+	protected String output;
 
 	@Option(names = { "--distance", "--metric" }, description = "Distance", required = false)
-	private Distance distance = Distance.KULCZYNSKI;
+	protected Distance distance = Distance.KULCZYNSKI;
 
 	@Option(names = {
 			"--chip" }, description = "VCF data from a genotype chip", required = false, showDefaultValue = Visibility.ALWAYS)
-	private boolean chip = false;
+	protected boolean chip = false;
 
 	@Option(names = {
 			"--hetLevel" }, description = "Add heteroplasmies with a level > X from the VCF file to the profile (default: 0.9)", required = false)
-	private double hetLevel = 0.9;
+	protected double hetLevel = 0.9;
 
 	@Option(names = { "--hits" }, description = "Calculate best n hits", required = false)
-	private int hits = 1;
+	protected int hits = 1;
 
 	@Option(names = {
 			"--extend-report" }, description = "Add flag for a extended final output", required = false, showDefaultValue = Visibility.ALWAYS)
-	private boolean extendedReport = false;
+	protected boolean extendedReport = false;
 
 	@Option(names = {
 			"--write-fasta" }, description = "Write results in fasta format", required = false, showDefaultValue = Visibility.ALWAYS)
-	private boolean writeFasta = false;
+	protected boolean writeFasta = false;
 
 	@Option(names = {
 			"--write-fasta-msa" }, description = "Write multiple sequence alignment (_MSA.fasta) ", required = false, showDefaultValue = Visibility.ALWAYS)
-	private boolean writeFastaMSA = false;
+	protected boolean writeFastaMSA = false;
 
 	@Override
 	public Integer call() {
 
 		PhylotreeRepository treeRepository = App.getDefault().getTreeRepository();
 
-		File fastaFile = new File(fasta);
+		File fastaFile = new File(input);
 		if (!fastaFile.exists()) {
 			System.out.println("Error: File '" + fastaFile.getAbsolutePath() + "' not found.");
 			return 1;
@@ -94,6 +94,7 @@ public class ClassifyCommand extends AbstractCommand {
 
 			ExportReportTask exportTask = new ExportReportTask(classificationTask.getSamples(), output,
 					extendedReport ? ExportDataFormat.EXTENDED : ExportDataFormat.SIMPLE, phylotree.getReference());
+			exportTask.setHits(hits);
 			try {
 				exportTask.run();
 			} catch (IOException e) {
