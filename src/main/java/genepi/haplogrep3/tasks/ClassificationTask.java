@@ -31,8 +31,10 @@ public class ClassificationTask {
 	private boolean chip = false;
 
 	private double hetLevel = 0.9;
-	
+
 	private int hits = 1;
+
+	private boolean skipAlignmentRules = false;
 
 	public ClassificationTask(Phylotree phylotree, List<File> files, Distance distance) {
 		this.phylotree = phylotree;
@@ -51,7 +53,11 @@ public class ClassificationTask {
 	public void setHits(int hits) {
 		this.hits = hits;
 	}
-	
+
+	public void setSkipAlignmentRules(boolean skipAlignmentRules) {
+		this.skipAlignmentRules = skipAlignmentRules;
+	}
+
 	public void run() throws Exception {
 
 		start = System.currentTimeMillis();
@@ -65,10 +71,11 @@ public class ClassificationTask {
 		InputFileReaderFactory reader = new InputFileReaderFactory();
 		reader.setChip(chip);
 		reader.setHetLevel(hetLevel);
+		reader.setSkipAlignmentRules(skipAlignmentRules);
 
 		SampleFile sampleFile = reader.read(files, phylotree);
 
-		phylotree.classify(sampleFile, distance, hits);
+		phylotree.classify(sampleFile, distance, hits, skipAlignmentRules);
 
 		AnnotationTask annotationTask = new AnnotationTask(sampleFile, phylotree);
 		annotationTask.run();

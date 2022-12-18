@@ -11,7 +11,10 @@ import importer.FastaImporter;
 
 public class FastaInputFileReader extends AbstractInputFileReader {
 
-	public FastaInputFileReader() {
+	private boolean skipAlignmentRules = false;
+
+	public FastaInputFileReader(boolean skipAlignmentRules) {
+		this.skipAlignmentRules = skipAlignmentRules;
 	}
 
 	public boolean accepts(List<File> files, Phylotree phylotree) {
@@ -27,6 +30,15 @@ public class FastaInputFileReader extends AbstractInputFileReader {
 		}
 
 		SampleFile sampleFile = new SampleFile(lines, phylotree.getReference());
+
+		if (!skipAlignmentRules && phylotree.getAlignmentRules() != null) {
+
+			phylotree.Phylotree haplogrepPhylotree = phylotree.getPhylotreeInstance();
+
+			sampleFile.applyNomenclatureRules(haplogrepPhylotree, phylotree.getAlignmentRules());
+
+		}
+
 		return sampleFile;
 
 	}

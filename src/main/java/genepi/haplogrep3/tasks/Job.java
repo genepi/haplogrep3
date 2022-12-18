@@ -187,6 +187,7 @@ public class Job implements Runnable {
 			task.setChip(chip);
 			task.setHetLevel(hetLevel);
 			task.setHits(hits);
+			task.setSkipAlignmentRules(false);
 			task.run();
 
 			FileUtil.deleteDirectory(dataDirectory);
