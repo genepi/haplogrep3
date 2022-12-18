@@ -199,7 +199,7 @@ public class Phylotree {
 		return PhylotreeManager.getInstance().getPhylotree(getTree(), getWeights(), getReference(), getHotspots());
 	}
 
-	public void classify(SampleFile sampleFile, Distance distance, int hits, boolean skipAlignmentRules) {
+	public void classify(SampleFile sampleFile, Distance distance, int hits, boolean skipAlignmentRules) throws FileNotFoundException {
 
 		RankingMethod rankingMethod = null;
 
