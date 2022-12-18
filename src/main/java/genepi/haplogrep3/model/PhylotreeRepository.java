@@ -8,10 +8,17 @@ import java.util.List;
 import java.util.Vector;
 
 import genepi.haplogrep3.config.Configuration;
+import genepi.haplogrep3.plugins.InstalledPlugin;
+import genepi.haplogrep3.plugins.PluginRelease;
+import genepi.haplogrep3.plugins.PluginRepository;
 
 public class PhylotreeRepository {
 
 	private List<Phylotree> trees;
+
+	private boolean forceUpdate;
+
+	public static boolean FORCE_UPDATE = false;
 
 	public PhylotreeRepository() {
 		trees = new Vector<Phylotree>();
@@ -22,11 +29,29 @@ public class PhylotreeRepository {
 
 		trees = new Vector<Phylotree>();
 
-		for (String filename : configuration.getPhylotrees()) {
-			System.out.println("Load tree from file " + filename);
-			Phylotree phylotree = Phylotree.load(new File(filename));
-			System.out.println("Tree loaded.");
+		PluginRepository repository = new PluginRepository(configuration.getRepositories(), forceUpdate);
+
+		for (String id : configuration.getPhylotrees()) {
+
+			Phylotree phylotree = null;
+
+			if (new File(id).exists()) {
+
+				phylotree = Phylotree.load(new File(id));
+
+			} else {
+
+				PluginRelease pluginRelease = repository.findById(id);
+				if (pluginRelease == null) {
+					throw new IOException("Plugin " + id + " not found");
+				}
+				InstalledPlugin plugin = repository.resolveRelease(pluginRelease);
+				phylotree = Phylotree.load(plugin.getPath());
+
+			}
+
 			trees.add(phylotree);
+
 		}
 
 	}

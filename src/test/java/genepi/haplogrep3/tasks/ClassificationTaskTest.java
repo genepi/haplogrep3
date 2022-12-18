@@ -104,6 +104,30 @@ public class ClassificationTaskTest {
 		assertEquals(15, firstSample.getAnnotatedPolymorphisms().size());
 	}
 	
+	@Test
+	public void testWithPhylotree15FromOnlineRepository() throws Exception {
+
+		String tree = "phylotree-rcrs-15.0";
+
+		Phylotree phylotree = loadPhylotree(tree);
+
+		List<File> files = new ArrayList<File>();
+		files.add(new File("test-data/hsd/H100.hsd"));
+
+		ClassificationTask task = new ClassificationTask(phylotree, files, Distance.KULCZYNSKI);
+		task.run();
+
+		assertTrue(task.isSuccess());
+		assertEquals(1, task.getSamples().size());
+
+		AnnotatedSample firstSample = task.getSamples().get(0);
+		assertEquals("Sample1", firstSample.getSample());
+		assertEquals("H100", firstSample.getClade());
+		assertEquals(0, firstSample.getNs());
+
+		assertEquals(14, firstSample.getAnnotatedPolymorphisms().size());
+	}	
+	
 	
 	@Test
 	public void testWithPhylotree17_fu() throws Exception {
