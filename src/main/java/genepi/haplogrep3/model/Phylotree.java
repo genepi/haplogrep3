@@ -36,11 +36,11 @@ public class Phylotree {
 
 	private Reference reference;
 
-	private String maplocus;
-
 	private String aacTable;
 
 	private String gff;
+
+	private String alignmentRules;
 
 	private String description = "Please specify a description";
 
@@ -111,14 +111,6 @@ public class Phylotree {
 		this.fasta = fasta;
 	}
 
-	public String getMaplocus() {
-		return maplocus;
-	}
-
-	public void setMaplocus(String maplocus) {
-		this.maplocus = maplocus;
-	}
-
 	public String getAacTable() {
 		return aacTable;
 	}
@@ -133,6 +125,14 @@ public class Phylotree {
 
 	public void setGff(String gff) {
 		this.gff = gff;
+	}
+
+	public String getAlignmentRules() {
+		return alignmentRules;
+	}
+
+	public void setAlignmentRules(String alignmentRules) {
+		this.alignmentRules = alignmentRules;
 	}
 
 	public String getDescription() {
@@ -183,7 +183,7 @@ public class Phylotree {
 		this.genes = genes;
 	}
 
-	public void classify(SampleFile sampleFile, Distance distance, int hits) {
+	public void classify(SampleFile sampleFile, Distance distance, int hits, boolean skipAlignmentRules) {
 
 		RankingMethod rankingMethod = null;
 
@@ -206,6 +206,7 @@ public class Phylotree {
 
 		phylotree.Phylotree haplogrepPhylotree = PhylotreeManager.getInstance().getPhylotree(getTree(), getWeights(),
 				getReference());
+
 		sampleFile.updateClassificationResults(haplogrepPhylotree, rankingMethod);
 
 	}
@@ -253,12 +254,15 @@ public class Phylotree {
 	}
 
 	protected void updateParent(String parent) {
+		// TODO: check required params
 		tree = FileUtil.path(parent, tree);
 		weights = FileUtil.path(parent, weights);
-		maplocus = FileUtil.path(parent, maplocus);
 		aacTable = FileUtil.path(parent, aacTable);
 		gff = FileUtil.path(parent, gff);
 		fasta = FileUtil.path(parent, fasta);
+		if (alignmentRules != null) {
+			alignmentRules = FileUtil.path(parent, alignmentRules);
+		}
 	}
 
 	public static Phylotree load(File file) throws IOException {

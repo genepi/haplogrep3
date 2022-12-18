@@ -8,6 +8,7 @@ weights: weights.txt
 fasta: rcrs.fasta
 gff: mtdna.gff
 aacTable: mtdna.aac.txt
+alignmentRules: rules.txt
 genes:
  - "TRNF"
  - "RNR1"

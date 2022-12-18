@@ -8,6 +8,7 @@ weights: weights.txt
 fasta: rcrs.fasta
 gff: mtdna.gff
 aacTable: mtdna.aac.txt
+alignmentRules: rules.txt
 genes:
  - "TRNF"
  - "RNR1"
@@ -47,4 +48,4 @@ genes:
  - "TRNT"
  - "TRNP"
 source:
-  - "Phylotree.org http://phylotree.org/builds/mtDNA_tree_Build_16.zip" 
+  - "Phylotree.org http://phylotree.org/builds/mtDNA_tree_Build_16.zip"
