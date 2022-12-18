@@ -195,7 +195,7 @@ public class Phylotree {
 			rankingMethod = new JaccardRanking(hits);
 			break;
 		case KIMURA:
-			rankingMethod = new Kimura2PRanking(1);
+			rankingMethod = new Kimura2PRanking(hits);
 			break;
 		case KULCZYNSKI:
 			rankingMethod = new KulczynskiRanking(hits);
