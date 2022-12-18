@@ -1,6 +1,7 @@
 package genepi.haplogrep3.model;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
@@ -183,7 +184,7 @@ public class Phylotree {
 		this.genes = genes;
 	}
 
-	public void classify(SampleFile sampleFile, Distance distance, int hits) {
+	public void classify(SampleFile sampleFile, Distance distance, int hits) throws FileNotFoundException {
 
 		RankingMethod rankingMethod = null;
 
@@ -208,6 +209,8 @@ public class Phylotree {
 				getReference());
 		sampleFile.updateClassificationResults(haplogrepPhylotree, rankingMethod);
 
+		sampleFile.runQualityChecks(haplogrepPhylotree);		
+		
 	}
 
 	public Haplogroup getHaplogroup(String name) {
