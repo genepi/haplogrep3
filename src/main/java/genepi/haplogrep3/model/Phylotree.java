@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Vector;
 
@@ -37,11 +38,11 @@ public class Phylotree {
 
 	private Reference reference;
 
-	private String maplocus;
-
 	private String aacTable;
 
 	private String gff;
+
+	private String alignmentRules;
 
 	private String description = "Please specify a description";
 
@@ -54,6 +55,8 @@ public class Phylotree {
 	private boolean deprecated = false;
 
 	private String[] genes = new String[0];
+
+	private HashSet<String> hotspots = new HashSet<>();
 
 	public Phylotree() {
 
@@ -112,14 +115,6 @@ public class Phylotree {
 		this.fasta = fasta;
 	}
 
-	public String getMaplocus() {
-		return maplocus;
-	}
-
-	public void setMaplocus(String maplocus) {
-		this.maplocus = maplocus;
-	}
-
 	public String getAacTable() {
 		return aacTable;
 	}
@@ -134,6 +129,14 @@ public class Phylotree {
 
 	public void setGff(String gff) {
 		this.gff = gff;
+	}
+
+	public String getAlignmentRules() {
+		return alignmentRules;
+	}
+
+	public void setAlignmentRules(String alignmentRules) {
+		this.alignmentRules = alignmentRules;
 	}
 
 	public String getDescription() {
@@ -184,7 +187,19 @@ public class Phylotree {
 		this.genes = genes;
 	}
 
-	public void classify(SampleFile sampleFile, Distance distance, int hits) throws FileNotFoundException {
+	public HashSet<String> getHotspots() {
+		return hotspots;
+	}
+
+	public void setHotspots(HashSet<String> hotspots) {
+		this.hotspots = hotspots;
+	}
+
+	public phylotree.Phylotree getPhylotreeInstance() {
+		return PhylotreeManager.getInstance().getPhylotree(getTree(), getWeights(), getReference(), getHotspots());
+	}
+
+	public void classify(SampleFile sampleFile, Distance distance, int hits, boolean skipAlignmentRules) {
 
 		RankingMethod rankingMethod = null;
 
@@ -196,7 +211,7 @@ public class Phylotree {
 			rankingMethod = new JaccardRanking(hits);
 			break;
 		case KIMURA:
-			rankingMethod = new Kimura2PRanking(1);
+			rankingMethod = new Kimura2PRanking(hits);
 			break;
 		case KULCZYNSKI:
 			rankingMethod = new KulczynskiRanking(hits);
@@ -205,8 +220,8 @@ public class Phylotree {
 			break;
 		}
 
-		phylotree.Phylotree haplogrepPhylotree = PhylotreeManager.getInstance().getPhylotree(getTree(), getWeights(),
-				getReference());
+		phylotree.Phylotree haplogrepPhylotree = getPhylotreeInstance();
+
 		sampleFile.updateClassificationResults(haplogrepPhylotree, rankingMethod);
 
 		sampleFile.runQualityChecks(haplogrepPhylotree);		
@@ -256,12 +271,15 @@ public class Phylotree {
 	}
 
 	protected void updateParent(String parent) {
+		// TODO: check required params
 		tree = FileUtil.path(parent, tree);
 		weights = FileUtil.path(parent, weights);
-		maplocus = FileUtil.path(parent, maplocus);
 		aacTable = FileUtil.path(parent, aacTable);
 		gff = FileUtil.path(parent, gff);
 		fasta = FileUtil.path(parent, fasta);
+		if (alignmentRules != null) {
+			alignmentRules = FileUtil.path(parent, alignmentRules);
+		}
 	}
 
 	public static Phylotree load(File file) throws IOException {

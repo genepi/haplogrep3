@@ -8,6 +8,21 @@ weights: weights.txt
 fasta: rcrs.fasta
 gff: mtdna.gff
 aacTable: mtdna.aac.txt
+alignmentRules: rules.csv
+hotspots:
+  - "315.1C"
+  - "309.1C"
+  - "309.1CC"
+  - "523d"
+  - "524d"
+  - "524.1AC"
+  - "524.1ACAC"
+  - "3107d"
+  - "16182C"
+  - "16183C"
+  - "16193.1C"
+  - "16193.1CC"
+  - "16519C"
 genes:
  - "TRNF"
  - "RNR1"
