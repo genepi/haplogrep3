@@ -9,6 +9,7 @@ import genepi.haplogrep3.commands.BuildTreeCommand;
 import genepi.haplogrep3.commands.ClassifyCommand;
 import genepi.haplogrep3.commands.DistanceCommand;
 import genepi.haplogrep3.commands.ExportTreeCommand;
+import genepi.haplogrep3.commands.InstallTreeCommand;
 import genepi.haplogrep3.commands.ListTreesCommand;
 import genepi.haplogrep3.commands.ServerCommand;
 import genepi.haplogrep3.config.Configuration;
@@ -121,6 +122,7 @@ public class App implements Runnable {
 		commandLine.addSubcommand("export-tree", new ExportTreeCommand());
 		commandLine.addSubcommand("build-tree", new BuildTreeCommand());
 		commandLine.addSubcommand("trees", new ListTreesCommand());
+		commandLine.addSubcommand("install-tree", new InstallTreeCommand());
 		commandLine.setExecutionStrategy(new CommandLine.RunLast());
 		int result = commandLine.execute(args);
 		System.exit(result);

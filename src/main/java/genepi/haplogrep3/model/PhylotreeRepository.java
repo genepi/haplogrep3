@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 
+import genepi.haplogrep3.App;
 import genepi.haplogrep3.config.Configuration;
 import genepi.haplogrep3.plugins.InstalledPlugin;
 import genepi.haplogrep3.plugins.PluginRelease;
@@ -42,9 +43,6 @@ public class PhylotreeRepository {
 			} else {
 
 				PluginRelease pluginRelease = repository.findById(id);
-				if (pluginRelease == null) {
-					throw new IOException("Plugin " + id + " not found");
-				}
 				InstalledPlugin plugin = repository.resolveRelease(pluginRelease);
 				phylotree = Phylotree.load(plugin.getPath());
 
@@ -54,6 +52,30 @@ public class PhylotreeRepository {
 
 		}
 
+	}
+	
+	public void install(String id, Configuration configuration) throws IOException {
+		
+		PluginRepository repository = new PluginRepository(configuration.getRepositories(), forceUpdate);
+		
+		Phylotree phylotree = null;
+		
+		if (new File(id).exists()) {
+
+			phylotree = Phylotree.load(new File(id));
+
+		} else {
+
+			PluginRelease pluginRelease = repository.findById(id);
+			InstalledPlugin plugin = repository.resolveRelease(pluginRelease);
+			phylotree = Phylotree.load(plugin.getPath());
+
+		}
+		
+		if (phylotree != null) {
+			configuration.getPhylotrees().add(id);
+			configuration.save(new File(App.CONFIG_FILENAME));
+		}
 	}
 
 	public List<Phylotree> getAll() {

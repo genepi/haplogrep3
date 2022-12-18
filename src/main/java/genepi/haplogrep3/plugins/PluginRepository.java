@@ -51,11 +51,11 @@ public class PluginRepository {
 	public PluginRelease findByNameAndVersion(String name, String version) {
 		List<PluginRelease> releases = findReleasesByName(name);
 		if (releases == null) {
-			throw new RuntimeException("Plugin'" + name + "' not found.");
+			throw new RuntimeException("Plugin '" + name + "' not found.");
 		}
 		PluginRelease release = findRelease(releases, version);
 		if (release == null) {
-			throw new RuntimeException("Plugin'" + name + "' found, but version " + version + " not found.");
+			throw new RuntimeException("Plugin '" + name + "' found, but version " + version + " not found.");
 		}
 		return release;
 	}

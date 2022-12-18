@@ -1,13 +1,14 @@
 package genepi.haplogrep3.config;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Vector;
 
-import com.esotericsoftware.yamlbeans.YamlException;
 import com.esotericsoftware.yamlbeans.YamlReader;
+import com.esotericsoftware.yamlbeans.YamlWriter;
 
 import genepi.haplogrep3.App;
 import genepi.haplogrep3.model.Dataset;
@@ -107,18 +108,27 @@ public class Configuration {
 		return repositories;
 	}
 
-	public static Configuration loadFromFile(File file, String parent) throws YamlException, FileNotFoundException {
+	public static Configuration loadFromFile(File file, String parent) throws IOException {
 
 		YamlReader reader = new YamlReader(new FileReader(file));
 		reader.getConfig().setPropertyElementType(Configuration.class, "phylotrees", String.class);
 		reader.getConfig().setPropertyElementType(Configuration.class, "examples", Dataset.class);
 		Configuration configuration = reader.read(Configuration.class);
-
+		reader.close();
 		for (Dataset dataset : configuration.getExamples()) {
 			dataset.updateParent(parent);
 		}
-
+		
 		return configuration;
+
+	}
+	
+	public void save(File file) throws IOException {
+		YamlWriter writer = new YamlWriter(new FileWriter(file));
+		writer.getConfig().setPropertyElementType(Configuration.class, "phylotrees", String.class);
+		writer.getConfig().setPropertyElementType(Configuration.class, "examples", Dataset.class);
+		writer.write(this);
+		writer.close();
 
 	}
 
