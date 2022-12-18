@@ -8,7 +8,6 @@ import core.SampleFile;
 import genepi.haplogrep3.haplogrep.io.readers.AbstractInputFileReader;
 import genepi.haplogrep3.model.Phylotree;
 import importer.FastaImporter;
-import phylotree.PhylotreeManager;
 
 public class FastaInputFileReader extends AbstractInputFileReader {
 
@@ -34,8 +33,7 @@ public class FastaInputFileReader extends AbstractInputFileReader {
 
 		if (!skipAlignmentRules && phylotree.getAlignmentRules() != null) {
 
-			phylotree.Phylotree haplogrepPhylotree = PhylotreeManager.getInstance().getPhylotree(phylotree.getTree(),
-					phylotree.getWeights(), phylotree.getReference());
+			phylotree.Phylotree haplogrepPhylotree = phylotree.getPhylotreeInstance();
 
 			sampleFile.applyNomenclatureRules(haplogrepPhylotree, phylotree.getAlignmentRules());
 

@@ -3,6 +3,7 @@ package genepi.haplogrep3.model;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Vector;
 
@@ -53,6 +54,8 @@ public class Phylotree {
 	private boolean deprecated = false;
 
 	private String[] genes = new String[0];
+
+	private HashSet<String> hotspots = new HashSet<>();
 
 	public Phylotree() {
 
@@ -183,6 +186,18 @@ public class Phylotree {
 		this.genes = genes;
 	}
 
+	public HashSet<String> getHotspots() {
+		return hotspots;
+	}
+
+	public void setHotspots(HashSet<String> hotspots) {
+		this.hotspots = hotspots;
+	}
+
+	public phylotree.Phylotree getPhylotreeInstance() {
+		return PhylotreeManager.getInstance().getPhylotree(getTree(), getWeights(), getReference(), getHotspots());
+	}
+
 	public void classify(SampleFile sampleFile, Distance distance, int hits, boolean skipAlignmentRules) {
 
 		RankingMethod rankingMethod = null;
@@ -204,8 +219,7 @@ public class Phylotree {
 			break;
 		}
 
-		phylotree.Phylotree haplogrepPhylotree = PhylotreeManager.getInstance().getPhylotree(getTree(), getWeights(),
-				getReference());
+		phylotree.Phylotree haplogrepPhylotree = getPhylotreeInstance();
 
 		sampleFile.updateClassificationResults(haplogrepPhylotree, rankingMethod);
 
