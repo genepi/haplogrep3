@@ -56,6 +56,10 @@ public class ClassifyCommand extends AbstractCommand {
 			"--write-fasta-msa" }, description = "Write multiple sequence alignment (_MSA.fasta) ", required = false, showDefaultValue = Visibility.ALWAYS)
 	protected boolean writeFastaMSA = false;
 
+	@Option(names = {
+			"--skip-alignment-rules" }, description = "Skip nomenclature fixes based on rules for FASTA import", required = false, showDefaultValue = Visibility.ALWAYS)
+	boolean skipAlignmentRules = false;
+
 	@Override
 	public Integer call() {
 
@@ -80,6 +84,7 @@ public class ClassifyCommand extends AbstractCommand {
 		classificationTask.setChip(chip);
 		classificationTask.setHetLevel(hetLevel);
 		classificationTask.setHits(hits);
+		classificationTask.setSkipAlignmentRules(skipAlignmentRules);
 
 		try {
 
