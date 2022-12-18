@@ -16,12 +16,14 @@ public class InputFileReaderFactory {
 	private boolean chip = false;
 
 	private double hetLevel = 0.9;
+	
+	private boolean skipAlignmentRules = false;
 
 	protected List<AbstractInputFileReader> getSupportedReaders() {
 		List<AbstractInputFileReader> readers = new Vector<AbstractInputFileReader>();
 		readers.add(new HsdInputFileReader());
 		readers.add(new VcfInputFileReader(chip, hetLevel));
-		readers.add(new FastaInputFileReader());
+		readers.add(new FastaInputFileReader(skipAlignmentRules));
 		return readers;
 	}
 
@@ -42,6 +44,10 @@ public class InputFileReaderFactory {
 
 	public void setHetLevel(double hetLevel) {
 		this.hetLevel = hetLevel;
+	}
+	
+	public void setSkipAlignmentRules(boolean skipAlignmentRules) {
+		this.skipAlignmentRules = skipAlignmentRules;
 	}
 
 }
