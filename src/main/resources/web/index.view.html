@@ -48,6 +48,21 @@
           </select>
         </div>
 
+        <div class="form-group">
+          <label for="distance">
+            Distance function: &nbsp;
+            <a href="" target="_blank" title="Help" class="col-form-label">
+              <i class="fas fa-question-circle"></i>
+            </a>
+          </label>
+          <select id="distance" name="distance" class="form-control">
+            {{for distance in distances}}
+            <option value="{{distance}}">{{distance.getLabel()}}</option>
+            {{end}}
+          </select>
+        </div>
+
+
         <div class="tab-content" id="myTabContent">
           <div class="tab-pane" id="hsd" role="tabpanel" aria-labelledby="hsd-tab">
           </div>
@@ -69,7 +84,7 @@
                   Heteroplasmy level:
                 </label>
                 &nbsp;
-                <input class="form-control" type="text" value="0.9" style="width: 60px; id="hetLevel" name="hetLevel">
+                <input class="form-control" type="text" value="0.9" style="width: 60px; id=" hetLevel" name="hetLevel">
                 &nbsp;
                 <a href="" target="_blank" title="Help" class="col-form-label">
                   <i class="fas fa-question-circle"></i>

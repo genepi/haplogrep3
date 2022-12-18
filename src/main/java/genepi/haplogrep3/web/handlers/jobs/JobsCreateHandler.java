@@ -70,10 +70,16 @@ public class JobsCreateHandler extends AbstractHandler {
 			throw new Exception("Invalid value for hetLevel. (value: " + hetLevel + ")");
 		}
 
+		String distanceParam = context.formParam("distance");
+		Distance distance = Distance.KULCZYNSKI;
+		if (distanceParam != null) {
+			distance = Distance.valueOf(distanceParam);
+		}
+
 		Job job = null;
 		if (dataset == null) {
 			List<UploadedFile> uploadedFiles = context.uploadedFiles("files");
-			job = createJobFromUploadedFiles(phylotree, uploadedFiles, chip, hetLevel);
+			job = createJobFromUploadedFiles(phylotree, uploadedFiles, chip, hetLevel, distance);
 		} else {
 			job = createJobFromDataset(phylotree, dataset);
 		}
@@ -89,7 +95,7 @@ public class JobsCreateHandler extends AbstractHandler {
 	}
 
 	public Job createJobFromUploadedFiles(Phylotree phylotree, List<UploadedFile> uploadedFiles, boolean chip,
-			double hetLevel) throws Exception {
+			double hetLevel, Distance distance) throws Exception {
 
 		// check min 1 file uploaded and no empty files
 		boolean emptyFiles = true;
@@ -120,7 +126,7 @@ public class JobsCreateHandler extends AbstractHandler {
 		FileUtil.createDirectory(dataDirectory);
 		List<File> files = FileStorage.store(uploadedFiles, dataDirectory);
 
-		return Job.create(jobId, workspace, phylotree, files, Distance.KULCZYNSKI, chip, hetLevel);
+		return Job.create(jobId, workspace, phylotree, files, distance, chip, hetLevel);
 
 	}
 

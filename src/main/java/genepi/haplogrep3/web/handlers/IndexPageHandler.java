@@ -2,6 +2,7 @@ package genepi.haplogrep3.web.handlers;
 
 import genepi.haplogrep3.App;
 import genepi.haplogrep3.config.Configuration;
+import genepi.haplogrep3.model.Distance;
 import genepi.haplogrep3.model.PhylotreeRepository;
 import genepi.haplogrep3.web.util.AbstractHandler;
 import genepi.haplogrep3.web.util.Page;
@@ -25,6 +26,7 @@ public class IndexPageHandler extends AbstractHandler {
 		Page page = new Page(context, TEMPLATE);
 		page.put("trees", treeRepository.getAll());
 		page.put("examples", configuration.getExamples());
+		page.put("distances", Distance.values());
 		page.render();
 
 	}

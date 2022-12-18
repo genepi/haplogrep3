@@ -42,7 +42,7 @@ public class Job implements Runnable {
 
 	private transient List<File> _files;
 
-	private Distance _distance;
+	private Distance distance;
 
 	private boolean chip = false;
 
@@ -167,7 +167,7 @@ public class Job implements Runnable {
 		job._workspace = workspace;
 		job._phylotree = phylotree;
 		job._files = files;
-		job._distance = distance;
+		job.distance = distance;
 		job.chip = chip;
 		job.hetLevel = hetLevel;
 		job.save();
@@ -183,10 +183,11 @@ public class Job implements Runnable {
 
 		try {
 
-			ClassificationTask task = new ClassificationTask(_phylotree, _files, _distance);
+			ClassificationTask task = new ClassificationTask(_phylotree, _files, distance);
 			task.setChip(chip);
 			task.setHetLevel(hetLevel);
 			task.setHits(hits);
+			task.setSkipAlignmentRules(false);
 			task.run();
 
 			FileUtil.deleteDirectory(dataDirectory);
