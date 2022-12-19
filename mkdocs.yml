@@ -1,9 +1,15 @@
-site_name: HaploGrep 3.0.0
+site_name: Haplogrep 3
 theme: readthedocs
 
-pages:
-- HaploGrep Webservice: haplogrep-webservice.md
-- HaploGrep CLI: haplogrep-cli.md
+nav:
+- Quickstart: quickstart.md
+- Local Installation:
+  - Installation: installation.md
+  - Parameters: parameters.md
+- Algorithm Details:
+  - Input Formats: input-formats.md
+  - Kulczynski Measure: kulczynski.md
+  - Errors and Warnings: errors-warnings.md
 - FAQ: faq.md
 - Contact: contact.md
 
@@ -20,3 +26,4 @@ markdown_extensions:
     - toc:
         permalink:
     - admonition:
+    - tables

@@ -1,5 +1,5 @@
-# HaploGrep
+# Welcome to Haplogrep!
 
-HaploGrep provides a free mtDNA haplogroup classification webservice and command-line interface. HaploGrep reads sequences in FASTA format and returns haplogroup classification. Our approach uses a phylogenetic tree that uses the same nomenclature as Nextclade. For all processed datasets an extensive QC is performed.
+Haplogrep is a fast and free haplogroup classification tool. Upload your mtDNA profiles in **FASTA**, **VCF** or **txt-based format** and receive mitochondrial haplogroups in return. We provide Haplogrep as a graphical webservice or as a command-line tool for local usage. As of today, Haplogrep has been cited over 1203 times (Google Scholar - August 18, 2021).
 
-TODO: screenshot
+![](images/interface/welcome_screen.png)
