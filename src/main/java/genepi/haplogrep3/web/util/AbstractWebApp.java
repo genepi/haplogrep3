@@ -2,12 +2,12 @@ package genepi.haplogrep3.web.util;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import genepi.haplogrep3.App;
-import genepi.haplogrep3.web.handlers.ErrorHandler;
 import io.javalin.Javalin;
-import io.javalin.http.ExceptionHandler;
 import io.javalin.http.staticfiles.Location;
+import io.javalin.http.staticfiles.StaticFileConfig;
 import io.javalin.plugin.rendering.JavalinRenderer;
 
 public abstract class AbstractWebApp {
@@ -19,7 +19,7 @@ public abstract class AbstractWebApp {
 	private int port;
 
 	private Javalin server;
-	
+
 	public AbstractWebApp(int port) {
 
 		this.port = port;
@@ -36,13 +36,28 @@ public abstract class AbstractWebApp {
 
 			// load templates and static files from external files not from classpath
 			// auto reloading possible, no restart needed, ....
-			server._conf.addStaticFiles("src/main/resources" + ROOT_DIR, Location.EXTERNAL);
+			server._conf.addStaticFiles(new Consumer<StaticFileConfig>() {
+
+				@Override
+				public void accept(StaticFileConfig config) {
+					config.hostedPath = App.getDefault().getConfiguration().getBaseUrl();
+					config.directory = "src/main/resources" + ROOT_DIR;
+					config.location = Location.EXTERNAL;
+				}
+			});
 			JavalinRenderer.register(new BasisTemplateFileRenderer("src/main/resources", Location.EXTERNAL, this),
 					VIEW_EXTENSION);
 
 		} else {
+			server._conf.addStaticFiles(new Consumer<StaticFileConfig>() {
 
-			server._conf.addStaticFiles(ROOT_DIR, Location.CLASSPATH);
+				@Override
+				public void accept(StaticFileConfig config) {
+					config.hostedPath = App.getDefault().getConfiguration().getBaseUrl();
+					config.directory = ROOT_DIR;
+					config.location = Location.CLASSPATH;
+				}
+			});
 			JavalinRenderer.register(new BasisTemplateFileRenderer("", Location.CLASSPATH, this), VIEW_EXTENSION);
 
 		}
@@ -63,11 +78,10 @@ public abstract class AbstractWebApp {
 		server.error(404, errorHandler());
 		server.exception(Exception.class, errorHandler());
 	}
-	
-	abstract protected AbstractErrorHandler errorHandler();
-	
-	abstract protected void routes();
 
+	abstract protected AbstractErrorHandler errorHandler();
+
+	abstract protected void routes();
 
 	Map<String, AbstractHandler> namedRoutes = new HashMap<String, AbstractHandler>();
 	Map<String, String> pathRoutes = new HashMap<String, String>();

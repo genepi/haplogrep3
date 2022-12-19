@@ -10,6 +10,7 @@ import genepi.haplogrep3.model.Distance;
 import genepi.haplogrep3.model.Phylotree;
 import genepi.haplogrep3.model.PhylotreeRepository;
 import genepi.haplogrep3.tasks.ClassificationTask;
+import genepi.haplogrep3.tasks.ExportQcReportTask;
 import genepi.haplogrep3.tasks.ExportReportTask;
 import genepi.haplogrep3.tasks.ExportSequenceTask;
 import genepi.haplogrep3.tasks.ExportReportTask.ExportDataFormat;
@@ -55,6 +56,10 @@ public class ClassifyCommand extends AbstractCommand {
 	@Option(names = {
 			"--write-fasta-msa" }, description = "Write multiple sequence alignment (_MSA.fasta) ", required = false, showDefaultValue = Visibility.ALWAYS)
 	protected boolean writeFastaMSA = false;
+
+	@Option(names = {
+			"--write-qc" }, description = "Write quality control results into csvfile", required = false, showDefaultValue = Visibility.ALWAYS)
+	protected boolean writeQc = false;
 
 	@Option(names = {
 			"--skip-alignment-rules" }, description = "Skip nomenclature fixes based on rules for FASTA import", required = false, showDefaultValue = Visibility.ALWAYS)
@@ -123,6 +128,16 @@ public class ClassifyCommand extends AbstractCommand {
 						ExportSequenceFormat.FASTA_MSA, phylotree.getReference());
 				try {
 					exportSequenceTask.run();
+				} catch (IOException e) {
+					System.out.println("Error: " + e);
+					return 1;
+				}
+			}
+
+			if (writeQc) {
+				ExportQcReportTask exportQcReportTask = new ExportQcReportTask(classificationTask.getSamples(), output);
+				try {
+					exportQcReportTask.run();
 				} catch (IOException e) {
 					System.out.println("Error: " + e);
 					return 1;

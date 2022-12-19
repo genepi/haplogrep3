@@ -7,11 +7,11 @@
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{routeUrl("phylogenies_index",{})}}">Phylogenies</a></li>
-        <li class="breadcrumb-item active" aria-current="page">{{tree.name}}</li>
+        <li class="breadcrumb-item active" aria-current="page">{{tree.name}} {{tree.version}}</li>
       </ol>
     </nav>
 
-    <h1>{{tree.name}}</h1>
+    <h1>{{tree.name}} {{tree.version}}</h1>
     {{if tree.deprecated}}
       <div class="alert alert-warning" role="alert">
         <i class="fas fa-exclamation-triangle"></i> This phylogeny is depracated. Please use it only for reproducibility.
@@ -19,19 +19,21 @@
     {{end}}
     <p>{{tree.description}}</p>
     <p><small class="text-muted"><i class="far fa-clock"></i> Last Update: {{tree.lastUpdate}}&nbsp;&nbsp;<a href="{{tree.url}}"><i class="fab fa-github"></i> View on GitHub</a></small></p>
-    <p>
-      <b>Haplogroups ({{clades.size()}}):</b><br>
-      {{for clade in clades}}
-        <a class="badge badge-primary" href="{{routeUrl("clades_show", {phylotree:tree.id, clade:clade.toString()})}}">{{clade}}</a>
-      {{end}}
-    </p>
-    <br><br>
-    <p><b>Data Source: </b></p>
+    <p><b>Citation: </b></p>
+    <p>Please cite the following papers if you use this phylogeny in your publication:</p>
     <ul>
       {{for source in tree.source}}
         <li>{{source}}</li>
       {{end}}
     </ul>
+
+    <p>
+      <b>Haplogroups ({{clades.size()}}):</b><br>
+      {{for clade in clades}}
+        <a class="badge badge-primary" href="{{routeUrl("clades_show", {phylotree:tree.getIdWithVersion(), clade:clade.toString()})}}">{{clade}}</a>
+      {{end}}
+    </p>
+    <br><br>
   </div>
 </div>
 

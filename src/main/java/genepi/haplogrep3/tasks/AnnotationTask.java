@@ -2,7 +2,6 @@ package genepi.haplogrep3.tasks;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -12,14 +11,13 @@ import core.Polymorphism;
 import core.SampleFile;
 import core.TestSample;
 import genepi.annotate.util.MapLocusGFF3;
-import genepi.annotate.util.MapLocusItem;
 import genepi.annotate.util.SequenceUtil;
 import genepi.haplogrep3.model.AnnotatedPolymorphism;
 import genepi.haplogrep3.model.AnnotatedSample;
 import genepi.haplogrep3.model.Phylotree;
 import genepi.haplogrep3.util.PolymorphismHelper;
 import genepi.haplogrep3.util.TestSampleHelper;
-import htsjdk.samtools.util.IntervalTree.Node;
+import qualityAssurance.issues.QualityIssue;
 import search.SearchResultDetailed;
 
 public class AnnotationTask {
@@ -66,6 +64,9 @@ public class AnnotationTask {
 			annotatedSample.setExpectedMutations(
 					getNotFoundPolymorphisms(sample.getSample().getPolymorphisms(), detailedResults));
 			samples.add(annotatedSample);
+
+			ArrayList<QualityIssue> issues = sampleFile.getQualityAssistent().getIssues(sample);
+			parseIssues(annotatedSample, issues);
 		}
 	}
 
@@ -79,68 +80,58 @@ public class AnnotationTask {
 
 		List<AnnotatedPolymorphism> annotatedPolymorphisms = new Vector<AnnotatedPolymorphism>();
 		PolymorphismHelper.sortByPosition(polymorphisms);
-		
+
 		for (int i = 0; i < polymorphisms.size(); i++) {
 
 			Polymorphism polymorphism = polymorphisms.get(i);
 
-			//Iterator<Node<MapLocusItem>> result = maplocus.findByPosition(polymorphism.getPosition());
-			//if (result.hasNext()) {
-				if (!polymorphism.isBackMutation() && polymorphism.getMutation() != Mutations.N) {
-					//MapLocusItem item = result.next().getValue();
-					/*String aac = "";
-					try {
-						aac = SequenceUtil.getAAC(refSequence, codonTable, item, polymorphism.getPosition(),
-								polymorphism.getMutation().name());
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}*/
+			// Iterator<Node<MapLocusItem>> result =
+			// maplocus.findByPosition(polymorphism.getPosition());
+			// if (result.hasNext()) {
+			if (!polymorphism.isBackMutation() && polymorphism.getMutation() != Mutations.N) {
+				// MapLocusItem item = result.next().getValue();
+				/*
+				 * String aac = ""; try { aac = SequenceUtil.getAAC(refSequence, codonTable,
+				 * item, polymorphism.getPosition(), polymorphism.getMutation().name()); } catch
+				 * (Exception e) { // TODO Auto-generated catch block e.printStackTrace(); }
+				 */
 
-					AnnotatedPolymorphism annotatedPolymorphism = new AnnotatedPolymorphism(polymorphism);
-					annotatedPolymorphism.setNuc(PolymorphismHelper.getLabel(polymorphism));
-					annotatedPolymorphisms.add(annotatedPolymorphism);
-					
-					/*if (polymorphism.getMutation().toString().equals("DEL")) {
-						deletionCount++;
-						if (deletionCount % 3 == 0) {
-							if (polymorphisms.get(i - 2).getPosition() == polymorphisms.get(i).getPosition() - 2) {
-								AnnotatedPolymorphism annotatedPolymorphism = new AnnotatedPolymorphism(polymorphism);
-								annotatedPolymorphism.setAac(item.getShorthand() + ":" + aac);
-								annotatedPolymorphism.setNuc(PolymorphismHelper.getLabel(polymorphism));
-								if (detailedResults != null) {
-									annotatedPolymorphism
-											.setFound(detailedResults.getFoundPolys().contains(polymorphism));
-								}
-								annotatedPolymorphisms.add(annotatedPolymorphism);
-							}
-						} else {
-							AnnotatedPolymorphism annotatedPolymorphism = new AnnotatedPolymorphism(polymorphism);
-							annotatedPolymorphism.setAac(null);
-							if (detailedResults != null) {
-								annotatedPolymorphism.setFound(detailedResults.getFoundPolys().contains(polymorphism));
-							}
-							annotatedPolymorphism.setNuc(PolymorphismHelper.getLabel(polymorphism));
-							annotatedPolymorphisms.add(annotatedPolymorphism);
-						}
-					} else if (aac.length() > 0 && !aac.contains("?")) {
-						AnnotatedPolymorphism annotatedPolymorphism = new AnnotatedPolymorphism(polymorphism);
-						annotatedPolymorphism.setAac(item.getShorthand() + ":" + aac);
-						annotatedPolymorphism.setNuc(PolymorphismHelper.getLabel(polymorphism));
-						if (detailedResults != null) {
-							annotatedPolymorphism.setFound(detailedResults.getFoundPolys().contains(polymorphism));
-						}
-						annotatedPolymorphisms.add(annotatedPolymorphism);
-					} else {
-						AnnotatedPolymorphism annotatedPolymorphism = new AnnotatedPolymorphism(polymorphism);
-						annotatedPolymorphism.setAac(null);
-						annotatedPolymorphism.setNuc(PolymorphismHelper.getLabel(polymorphism));
-						if (detailedResults != null) {
-							annotatedPolymorphism.setFound(detailedResults.getFoundPolys().contains(polymorphism));
-						}
-						annotatedPolymorphisms.add(annotatedPolymorphism);
-					}*/
-				//}
+				AnnotatedPolymorphism annotatedPolymorphism = new AnnotatedPolymorphism(polymorphism);
+				annotatedPolymorphism.setNuc(PolymorphismHelper.getLabel(polymorphism));
+				annotatedPolymorphisms.add(annotatedPolymorphism);
+
+				/*
+				 * if (polymorphism.getMutation().toString().equals("DEL")) { deletionCount++;
+				 * if (deletionCount % 3 == 0) { if (polymorphisms.get(i - 2).getPosition() ==
+				 * polymorphisms.get(i).getPosition() - 2) { AnnotatedPolymorphism
+				 * annotatedPolymorphism = new AnnotatedPolymorphism(polymorphism);
+				 * annotatedPolymorphism.setAac(item.getShorthand() + ":" + aac);
+				 * annotatedPolymorphism.setNuc(PolymorphismHelper.getLabel(polymorphism)); if
+				 * (detailedResults != null) { annotatedPolymorphism
+				 * .setFound(detailedResults.getFoundPolys().contains(polymorphism)); }
+				 * annotatedPolymorphisms.add(annotatedPolymorphism); } } else {
+				 * AnnotatedPolymorphism annotatedPolymorphism = new
+				 * AnnotatedPolymorphism(polymorphism); annotatedPolymorphism.setAac(null); if
+				 * (detailedResults != null) {
+				 * annotatedPolymorphism.setFound(detailedResults.getFoundPolys().contains(
+				 * polymorphism)); }
+				 * annotatedPolymorphism.setNuc(PolymorphismHelper.getLabel(polymorphism));
+				 * annotatedPolymorphisms.add(annotatedPolymorphism); } } else if (aac.length()
+				 * > 0 && !aac.contains("?")) { AnnotatedPolymorphism annotatedPolymorphism =
+				 * new AnnotatedPolymorphism(polymorphism);
+				 * annotatedPolymorphism.setAac(item.getShorthand() + ":" + aac);
+				 * annotatedPolymorphism.setNuc(PolymorphismHelper.getLabel(polymorphism)); if
+				 * (detailedResults != null) {
+				 * annotatedPolymorphism.setFound(detailedResults.getFoundPolys().contains(
+				 * polymorphism)); } annotatedPolymorphisms.add(annotatedPolymorphism); } else {
+				 * AnnotatedPolymorphism annotatedPolymorphism = new
+				 * AnnotatedPolymorphism(polymorphism); annotatedPolymorphism.setAac(null);
+				 * annotatedPolymorphism.setNuc(PolymorphismHelper.getLabel(polymorphism)); if
+				 * (detailedResults != null) {
+				 * annotatedPolymorphism.setFound(detailedResults.getFoundPolys().contains(
+				 * polymorphism)); } annotatedPolymorphisms.add(annotatedPolymorphism); }
+				 */
+				// }
 			}
 		}
 
@@ -154,7 +145,7 @@ public class AnnotationTask {
 
 		List<AnnotatedPolymorphism> expectedMutations = new Vector<AnnotatedPolymorphism>();
 		PolymorphismHelper.sortByPosition(polymorphisms);
-		
+
 		for (int i = 0; i < detailedResults.getExpectedPolys().size(); i++) {
 
 			Polymorphism polymorphism = detailedResults.getExpectedPolys().get(i);
@@ -162,60 +153,79 @@ public class AnnotationTask {
 				continue;
 			}
 
-			//Iterator<Node<MapLocusItem>> result = maplocus.findByPosition(polymorphism.getPosition());
-			//if (result.hasNext()) {
-				if (!polymorphism.isBackMutation() && polymorphism.getMutation() != Mutations.N) {
-					//MapLocusItem item = result.next().getValue();
-					/*String aac = "";
-					try {
-						aac = SequenceUtil.getAAC(refSequence, codonTable, item, polymorphism.getPosition(),
-								polymorphism.getMutation().name());
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}*/
+			// Iterator<Node<MapLocusItem>> result =
+			// maplocus.findByPosition(polymorphism.getPosition());
+			// if (result.hasNext()) {
+			if (!polymorphism.isBackMutation() && polymorphism.getMutation() != Mutations.N) {
+				// MapLocusItem item = result.next().getValue();
+				/*
+				 * String aac = ""; try { aac = SequenceUtil.getAAC(refSequence, codonTable,
+				 * item, polymorphism.getPosition(), polymorphism.getMutation().name()); } catch
+				 * (Exception e) { // TODO Auto-generated catch block e.printStackTrace(); }
+				 */
 
-					AnnotatedPolymorphism annotatedPolymorphism = new AnnotatedPolymorphism(polymorphism);
-					annotatedPolymorphism.setNuc(PolymorphismHelper.getLabel(polymorphism));
-					expectedMutations.add(annotatedPolymorphism);
-					
-					/*if (polymorphism.getMutation().toString().equals("DEL")) {
-						deletionCount++;
-						if (deletionCount % 3 == 0) {
-							if (detailedResults.getExpectedPolys().get(i - 2)
-									.getPosition() == detailedResults.getExpectedPolys().get(i).getPosition() - 2) {
-								AnnotatedPolymorphism annotatedPolymorphism = new AnnotatedPolymorphism(polymorphism);
-								annotatedPolymorphism.setAac(item.getShorthand() + ":" + aac);
-								annotatedPolymorphism.setNuc(PolymorphismHelper.getLabel(polymorphism));
-								annotatedPolymorphism.setFound(true);
-								expectedMutations.add(annotatedPolymorphism);
-							}
-						} else {
-							AnnotatedPolymorphism annotatedPolymorphism = new AnnotatedPolymorphism(polymorphism);
-							annotatedPolymorphism.setAac(null);
-							annotatedPolymorphism.setNuc(PolymorphismHelper.getLabel(polymorphism));
-							annotatedPolymorphism.setFound(true);
-							expectedMutations.add(annotatedPolymorphism);
-						}
-					} else if (aac.length() > 0 && !aac.contains("?")) {
-						AnnotatedPolymorphism annotatedPolymorphism = new AnnotatedPolymorphism(polymorphism);
-						annotatedPolymorphism.setAac(item.getShorthand() + ":" + aac);
-						annotatedPolymorphism.setNuc(PolymorphismHelper.getLabel(polymorphism));
-						annotatedPolymorphism.setFound(true);
-						expectedMutations.add(annotatedPolymorphism);
-					} else {
-						AnnotatedPolymorphism annotatedPolymorphism = new AnnotatedPolymorphism(polymorphism);
-						annotatedPolymorphism.setAac(null);
-						annotatedPolymorphism.setNuc(PolymorphismHelper.getLabel(polymorphism));
-						annotatedPolymorphism.setFound(true);
-						expectedMutations.add(annotatedPolymorphism);
-					}*/
-				//}
+				AnnotatedPolymorphism annotatedPolymorphism = new AnnotatedPolymorphism(polymorphism);
+				annotatedPolymorphism.setNuc(PolymorphismHelper.getLabel(polymorphism));
+				expectedMutations.add(annotatedPolymorphism);
+
+				/*
+				 * if (polymorphism.getMutation().toString().equals("DEL")) { deletionCount++;
+				 * if (deletionCount % 3 == 0) { if (detailedResults.getExpectedPolys().get(i -
+				 * 2) .getPosition() == detailedResults.getExpectedPolys().get(i).getPosition()
+				 * - 2) { AnnotatedPolymorphism annotatedPolymorphism = new
+				 * AnnotatedPolymorphism(polymorphism);
+				 * annotatedPolymorphism.setAac(item.getShorthand() + ":" + aac);
+				 * annotatedPolymorphism.setNuc(PolymorphismHelper.getLabel(polymorphism));
+				 * annotatedPolymorphism.setFound(true);
+				 * expectedMutations.add(annotatedPolymorphism); } } else {
+				 * AnnotatedPolymorphism annotatedPolymorphism = new
+				 * AnnotatedPolymorphism(polymorphism); annotatedPolymorphism.setAac(null);
+				 * annotatedPolymorphism.setNuc(PolymorphismHelper.getLabel(polymorphism));
+				 * annotatedPolymorphism.setFound(true);
+				 * expectedMutations.add(annotatedPolymorphism); } } else if (aac.length() > 0
+				 * && !aac.contains("?")) { AnnotatedPolymorphism annotatedPolymorphism = new
+				 * AnnotatedPolymorphism(polymorphism);
+				 * annotatedPolymorphism.setAac(item.getShorthand() + ":" + aac);
+				 * annotatedPolymorphism.setNuc(PolymorphismHelper.getLabel(polymorphism));
+				 * annotatedPolymorphism.setFound(true);
+				 * expectedMutations.add(annotatedPolymorphism); } else { AnnotatedPolymorphism
+				 * annotatedPolymorphism = new AnnotatedPolymorphism(polymorphism);
+				 * annotatedPolymorphism.setAac(null);
+				 * annotatedPolymorphism.setNuc(PolymorphismHelper.getLabel(polymorphism));
+				 * annotatedPolymorphism.setFound(true);
+				 * expectedMutations.add(annotatedPolymorphism); }
+				 */
+				// }
 			}
 		}
 
 		return expectedMutations;
 
+	}
+
+	public void parseIssues(AnnotatedSample sample, ArrayList<QualityIssue> issues) {
+		if (issues == null) {
+			return;
+		}
+
+		for (QualityIssue issue : issues) {
+			switch (issue.getPriority()) {
+			case 0:
+				sample.addWarning(getIssueMessage(issue));
+				break;
+			case 1:
+				sample.addError(getIssueMessage(issue));
+				break;
+			default:
+				sample.addInfo(getIssueMessage(issue));
+				break;
+			}
+		}
+
+	}
+
+	public String getIssueMessage(QualityIssue issue) {
+		return issue.getDescription() + " (" + issue.getIssueType() + ")";
 	}
 
 }

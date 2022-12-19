@@ -1,6 +1,7 @@
 package genepi.haplogrep3.model;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashSet;
@@ -27,7 +28,11 @@ public class Phylotree {
 
 	private String id;
 
+	private String version = "";
+
 	private String name;
+
+	private String category = "Other";
 
 	private String tree;
 
@@ -74,12 +79,28 @@ public class Phylotree {
 		this.id = id;
 	}
 
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
 	public String getName() {
 		return name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
 	public String getTree() {
@@ -198,7 +219,7 @@ public class Phylotree {
 		return PhylotreeManager.getInstance().getPhylotree(getTree(), getWeights(), getReference(), getHotspots());
 	}
 
-	public void classify(SampleFile sampleFile, Distance distance, int hits, boolean skipAlignmentRules) {
+	public void classify(SampleFile sampleFile, Distance distance, int hits, boolean skipAlignmentRules) throws FileNotFoundException {
 
 		RankingMethod rankingMethod = null;
 
@@ -223,6 +244,8 @@ public class Phylotree {
 
 		sampleFile.updateClassificationResults(haplogrepPhylotree, rankingMethod);
 
+		sampleFile.runQualityChecks(haplogrepPhylotree);		
+		
 	}
 
 	public Haplogroup getHaplogroup(String name) {
@@ -326,6 +349,14 @@ public class Phylotree {
 		}
 		if (node.getParent() != null) {
 			addAllPolymorphisms(polymorphisms, node.getParent());
+		}
+	}
+
+	public String getIdWithVersion() {
+		if (version == null || version.trim().isEmpty()) {
+			return id;
+		} else {
+			return id + "@" + version;
 		}
 	}
 

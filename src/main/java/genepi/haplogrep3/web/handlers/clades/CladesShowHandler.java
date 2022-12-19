@@ -5,6 +5,7 @@ import java.util.List;
 import core.Haplogroup;
 import core.Polymorphism;
 import genepi.haplogrep3.App;
+import genepi.haplogrep3.config.Configuration;
 import genepi.haplogrep3.model.AnnotatedPolymorphism;
 import genepi.haplogrep3.model.Phylotree;
 import genepi.haplogrep3.model.PhylotreeRepository;
@@ -24,6 +25,8 @@ public class CladesShowHandler extends AbstractHandler {
 	public static final String TEMPLATE = "web/clades/show.view.html";
 
 	private PhylotreeRepository treeRepository = App.getDefault().getTreeRepository();
+
+	private Configuration configuration = App.getDefault().getConfiguration();
 
 	public void handle(Context context) throws Exception {
 
@@ -54,7 +57,7 @@ public class CladesShowHandler extends AbstractHandler {
 
 	@Override
 	public String getPath() {
-		return PATH;
+		return configuration.getBaseUrl() + PATH;
 	}
 
 	@Override

@@ -163,7 +163,7 @@ public class Job implements Runnable {
 		job.setStatus(JobStatus.SUBMITTED);
 		job.setSubmittedOn(new Date());
 		job.setExpiresOn(new Date(System.currentTimeMillis() + (EXPIRES_HOURS * 60 * 60 * 1000)));
-		job.setPhylotree(phylotree.getId());
+		job.setPhylotree(phylotree.getIdWithVersion());
 		job._workspace = workspace;
 		job._phylotree = phylotree;
 		job._files = files;
@@ -212,6 +212,10 @@ public class Job implements Runnable {
 				ExportSequenceTask exportSequenceMsaTask = new ExportSequenceTask(task.getSamples(), seqqueneFilename,
 						ExportSequenceFormat.FASTA_MSA, _phylotree.getReference());
 				exportSequenceMsaTask.run();
+
+				String qcReportFilename = FileUtil.path(_workspace, getId(), "samples");
+				ExportQcReportTask exportQcReportTask = new ExportQcReportTask(task.getSamples(), qcReportFilename);
+				exportQcReportTask.run();
 
 				save(task.getSamples());
 

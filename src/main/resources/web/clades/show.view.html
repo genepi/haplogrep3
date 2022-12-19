@@ -7,7 +7,7 @@
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{routeUrl("phylogenies_index",{})}}">Phylogenies</a></li>
-        <li class="breadcrumb-item"><a href="{{routeUrl("phylogenies_show",{phylotree: tree.id})}}">{{tree.name}}</a></li>
+        <li class="breadcrumb-item"><a href="{{routeUrl("phylogenies_show",{phylotree: tree.getIdWithVersion()})}}">{{tree.name}}</a></li>
         <li class="breadcrumb-item active" aria-current="page">{{clade}}</li>
       </ol>
     </nav>
