@@ -10,8 +10,8 @@ repositories:
   - https://raw.githubusercontent.com/genepi/haplogrep-trees/main/trees.json
 
 phylotrees:
-  - data/trees/phylotree-fu-rcrs/17/tree.yaml
-  - data/trees/phylotree-rcrs/17/tree.yaml
-  - data/trees/phylotree-rsrs/17/tree.yaml
-  - data/trees/phylotree-rcrs/16/tree.yaml
-  - "phylotree-rcrs@15.0"
+  - phylotree-fu-rcrs@1.0
+  - phylotree-rcrs@17.0
+  - phylotree-rsrs@17.0
+  - phylotree-rcrs@16.0
+  - phylotree-rcrs@15.0

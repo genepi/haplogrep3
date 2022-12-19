@@ -17,7 +17,7 @@
         <h2>{{category}}</h2>
         <ul>
           {{for tree in trees.getByCategory(category)}}
-            <li><a href="{{routeUrl("phylogenies_show",{phylotree: tree.getIdWithVersion()})}}">{{tree.name}}</a></li>
+            <li><a href="{{routeUrl("phylogenies_show",{phylotree: tree.getIdWithVersion()})}}">{{tree.name}} {{tree.version}}</a></li>
           {{end}}
         </ul>
       {{end}}

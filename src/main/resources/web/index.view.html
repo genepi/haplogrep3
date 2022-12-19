@@ -45,7 +45,7 @@
             {{for category in categories}}
               <option value="" disabled>{{category}}</option>
               {{for tree in trees.getByCategory(category)}}
-                <option value="{{tree.getIdWithVersion()}}">&nbsp;&nbsp;&nbsp;{{tree.name}}</option>
+                <option value="{{tree.getIdWithVersion()}}">&nbsp;&nbsp;&nbsp;{{tree.name}} {{tree.version}}</option>
               {{end}}
             {{end}}
           </select>
