@@ -38,6 +38,12 @@ public class AnnotatedSample {
 
 	private transient TestSample testSample;
 
+	private List<String> errors = new Vector<String>();
+
+	private List<String> warnings = new Vector<String>();
+
+	private List<String> infos = new Vector<String>();
+
 	public AnnotatedSample(TestSample testSample) {
 
 		this.testSample = testSample;
@@ -62,7 +68,7 @@ public class AnnotatedSample {
 		if (hits > 1) {
 			otherClades = new String[hits - 1];
 			otherQualities = new double[hits - 1];
-			for (int i = 0; i < hits-1; i++) {
+			for (int i = 0; i < hits - 1; i++) {
 				RankedResult result = testSample.getResults().get(i + 1);
 				otherClades[i] = result.getHaplogroup().toString();
 				otherQualities[i] = result.getDistance();
@@ -185,6 +191,54 @@ public class AnnotatedSample {
 	@Override
 	public String toString() {
 		return sample;
+	}
+
+	public boolean hasErrors() {
+		return !errors.isEmpty();
+	}
+
+	public boolean hasWarnings() {
+		return !warnings.isEmpty();
+	}
+
+	public boolean hasInfos() {
+		return !infos.isEmpty();
+	}
+
+	public void addError(String error) {
+		errors.add(error);
+	}
+
+	public void addWarning(String warning) {
+		warnings.add(warning);
+	}
+
+	public void addInfo(String info) {
+		infos.add(info);
+	}
+
+	public List<String> getErrors() {
+		return errors;
+	}
+
+	public void setErrors(List<String> errors) {
+		this.errors = errors;
+	}
+
+	public List<String> getWarnings() {
+		return warnings;
+	}
+
+	public void setWarnings(List<String> warnings) {
+		this.warnings = warnings;
+	}
+
+	public List<String> getInfos() {
+		return infos;
+	}
+
+	public void setInfos(List<String> infos) {
+		this.infos = infos;
 	}
 
 }

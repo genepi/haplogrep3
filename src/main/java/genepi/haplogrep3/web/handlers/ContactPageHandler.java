@@ -1,5 +1,7 @@
 package genepi.haplogrep3.web.handlers;
 
+import genepi.haplogrep3.App;
+import genepi.haplogrep3.config.Configuration;
 import genepi.haplogrep3.web.util.AbstractHandler;
 import genepi.haplogrep3.web.util.Page;
 import io.javalin.http.Context;
@@ -13,6 +15,8 @@ public class ContactPageHandler extends AbstractHandler {
 
 	public static final String TEMPLATE = "web/contact.view.html";
 
+	private Configuration configuration = App.getDefault().getConfiguration();
+
 	public void handle(Context context) throws Exception {
 
 		Page page = new Page(context, TEMPLATE);
@@ -22,7 +26,7 @@ public class ContactPageHandler extends AbstractHandler {
 
 	@Override
 	public String getPath() {
-		return PATH;
+		return configuration.getBaseUrl() + PATH;
 	}
 
 	@Override
