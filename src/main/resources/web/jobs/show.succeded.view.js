@@ -13,6 +13,10 @@ window.table = $(".data-table").DataTable({
     dataSrc: ''
   },
   "columns": [{
+    "render": function(data, type, row) {
+      return renderIcon(row);
+    }
+  },{
     "data": "sample"
   }, {
     "data": "clade"
@@ -34,7 +38,8 @@ window.table = $(".data-table").DataTable({
     "render": function(data) {
       return formatMutations(data, window.maxMutations, window.view, window.gene);
     }
-  }]
+  }],
+  order: [[1, 'asc']]
 });
 
 $('.data-table tbody').on('click', 'tr', function() {
@@ -42,7 +47,7 @@ $('.data-table tbody').on('click', 'tr', function() {
   var data = window.table.row(this).data();
 
   var dialog = bootbox.dialog({
-    title: data.sample,
+    title: renderIcon(data) + '&nbsp;' + data.sample,
     onEscape: true,
     buttons: {
       close: {
@@ -53,8 +58,10 @@ $('.data-table tbody').on('click', 'tr', function() {
         }
       }
     },
-    message: '<div style="height: 600px; overflow-y: scroll"><b>Haplogroup</b><br>' + data.clade + '<br><br>' +
-      '<b>Quality</b><br>' + data.quality.toFixed(2) + '<br>'+ data.found + ' of ' + data.expected + ' mutations found<br><br>' +
+    message: '<div style="height: 500px; overflow-y: scroll">' +
+      renderWarningsAndErrors(data) +
+      '<b>Haplogroup</b>: ' + data.clade + '<br>' +
+      '<b>Quality</b>: ' + data.quality.toFixed(2) + '(' + data.found + ' of ' + data.expected + ' mutations found)<br><br>' +
       '<b>Other Hits:</b><br>' + formatHits(data) + ' <br>' +
       '<b>Ranges</b><br>' + formatRange(data.ranges) + '<br><br>' +
       '<b>Amino Acid Changes</b><br>' + formatMutations(data.annotatedPolymorphisms, 500, 'aac', '') + '<br><br>' +
@@ -163,7 +170,6 @@ function formatHits(data){
 
 }
 
-
 function renderProgressBar(value) {
   var percentage = value * 100;
   return '<div class="progress" style="width: 60px;" title="Quality: ' + value.toFixed(2) + '">' +
@@ -171,4 +177,32 @@ function renderProgressBar(value) {
     '<span class="sr-only">Quality: ' + value.toFixed(2) + '</span>' +
     '</div>' +
     '</div>';
+}
+
+function renderWarningsAndErrors(data) {
+  var result = "";
+  result += renderIssues(data.errors, "danger");
+  result += renderIssues(data.warnings, "warning");
+  result += renderIssues(data.infos, "info");
+  return result;
+}
+
+function renderIssues(issues, type) {
+  var result = "";
+  for (var i = 0; i < issues.length; i++) {
+    var label = issues[i].trim();
+    result += '<small><div class="alert alert-' + type +'" role="alert">' + label + '</div></small>';
+
+  }
+  return result;
+}
+
+function renderIcon(data) {
+  if (data.errors.length > 0){
+    return '<i class="fas fa-exclamation-circle text-danger"></i>';
+  }
+  if (data.warnings.length > 0){
+    return '<i class="fas fa-exclamation-triangle text-warning"></i>';
+  }
+  return '<i class="fas fa-check-circle text-success"></i>';
 }
