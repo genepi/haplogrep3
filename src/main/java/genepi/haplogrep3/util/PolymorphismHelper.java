@@ -101,8 +101,11 @@ public class PolymorphismHelper {
 	}
 
 	public static String getLabel(Polymorphism polymorphism) {
-		return polymorphism.getPosition()
-				+ polymorphism.getMutation().toString();
+		if (polymorphism.isBackMutation()) {
+			return polymorphism.getPosition() + "!";
+
+		}
+		return polymorphism.getPosition() + polymorphism.getMutation().toString();
 	}
 
 	public static void sortByPosition(List<Polymorphism> polymorphisms) {

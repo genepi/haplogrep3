@@ -88,7 +88,7 @@ public class AnnotationTask {
 			// Iterator<Node<MapLocusItem>> result =
 			// maplocus.findByPosition(polymorphism.getPosition());
 			// if (result.hasNext()) {
-			if (!polymorphism.isBackMutation() && polymorphism.getMutation() != Mutations.N) {
+			//if (!polymorphism.isBackMutation() && polymorphism.getMutation() != Mutations.N) {
 				// MapLocusItem item = result.next().getValue();
 				/*
 				 * String aac = ""; try { aac = SequenceUtil.getAAC(refSequence, codonTable,
@@ -132,7 +132,7 @@ public class AnnotationTask {
 				 * polymorphism)); } annotatedPolymorphisms.add(annotatedPolymorphism); }
 				 */
 				// }
-			}
+			//}
 		}
 
 		return annotatedPolymorphisms;
@@ -156,7 +156,7 @@ public class AnnotationTask {
 			// Iterator<Node<MapLocusItem>> result =
 			// maplocus.findByPosition(polymorphism.getPosition());
 			// if (result.hasNext()) {
-			if (!polymorphism.isBackMutation() && polymorphism.getMutation() != Mutations.N) {
+			//if (!polymorphism.isBackMutation() && polymorphism.getMutation() != Mutations.N) {
 				// MapLocusItem item = result.next().getValue();
 				/*
 				 * String aac = ""; try { aac = SequenceUtil.getAAC(refSequence, codonTable,
@@ -196,7 +196,7 @@ public class AnnotationTask {
 				 * expectedMutations.add(annotatedPolymorphism); }
 				 */
 				// }
-			}
+			//}
 		}
 
 		return expectedMutations;
