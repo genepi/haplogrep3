@@ -1,0 +1,2 @@
+"SampleID"	"Type"	"Message"
+"Sample1"	"warning"	"The detected haplogroup quality 0,84 is moderate. Sample is marked yellow  (QUAL)"
