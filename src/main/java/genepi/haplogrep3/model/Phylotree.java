@@ -27,6 +27,8 @@ public class Phylotree {
 
 	private String id;
 
+	private String version = "";
+
 	private String name;
 
 	private String tree;
@@ -72,6 +74,14 @@ public class Phylotree {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
 	}
 
 	public String getName() {
@@ -326,6 +336,14 @@ public class Phylotree {
 		}
 		if (node.getParent() != null) {
 			addAllPolymorphisms(polymorphisms, node.getParent());
+		}
+	}
+
+	public String getIdWithVersion() {
+		if (version == null || version.trim().isEmpty()) {
+			return id;
+		} else {
+			return id + "@" + version;
 		}
 	}
 

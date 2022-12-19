@@ -1,4 +1,5 @@
-id: phylotree-17-rsrs
+id: phylotree-rsrs
+version: 17.0
 name: Phylotree 17 (RSRS)
 description: mtDNA tree Build 17 including 5,435 haplogroups (18 Feb 2016)
 url: https://github.com/genepi/haplogrep3/data/trees/phylotree/17-rsrs

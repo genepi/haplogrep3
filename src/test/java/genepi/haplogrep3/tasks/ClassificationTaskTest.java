@@ -13,7 +13,6 @@ import java.util.List;
 import org.junit.Test;
 
 import genepi.haplogrep3.config.Configuration;
-import genepi.haplogrep3.model.AnnotatedPolymorphism;
 import genepi.haplogrep3.model.AnnotatedSample;
 import genepi.haplogrep3.model.Distance;
 import genepi.haplogrep3.model.Phylotree;
@@ -23,7 +22,7 @@ public class ClassificationTaskTest {
 
 	public static String CONFIG_FILE = "haplogrep3.yaml";
 
-	public static String PHYLOTREE = "phylotree-17-rcrs";
+	public static String PHYLOTREE = "phylotree-rcrs@17.0";
 
 	public Phylotree loadPhylotree(String id) throws FileNotFoundException, IOException {
 		PhylotreeRepository repository = new PhylotreeRepository();
@@ -107,7 +106,7 @@ public class ClassificationTaskTest {
 	@Test
 	public void testWithPhylotree15FromOnlineRepository() throws Exception {
 
-		String tree = "phylotree-rcrs-15.0";
+		String tree = "phylotree-rcrs@15.0";
 
 		Phylotree phylotree = loadPhylotree(tree);
 

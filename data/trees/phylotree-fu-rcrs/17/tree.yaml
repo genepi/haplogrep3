@@ -1,4 +1,5 @@
-id: phylotree-17-fu-rcrs
+id: phylotree-fu-rcrs
+version: 17.0
 name: Phylotree 17 - Forensic Update (rCRS)
 description: Refined Phylotree 17 by Duer et al., revised version after minor issues, including 6,380 haplogroups (6,401 in publication)
 url: https://github.com/genepi/haplogrep3/data/trees/phylotree/17-fu

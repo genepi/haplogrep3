@@ -53,13 +53,13 @@ public class PhylotreeRepository {
 		}
 
 	}
-	
+
 	public void install(String id, Configuration configuration) throws IOException {
-		
+
 		PluginRepository repository = new PluginRepository(configuration.getRepositories(), forceUpdate);
-		
+
 		Phylotree phylotree = null;
-		
+
 		if (new File(id).exists()) {
 
 			phylotree = Phylotree.load(new File(id));
@@ -71,7 +71,7 @@ public class PhylotreeRepository {
 			phylotree = Phylotree.load(plugin.getPath());
 
 		}
-		
+
 		if (phylotree != null) {
 			configuration.getPhylotrees().add(id);
 			configuration.save(new File(App.CONFIG_FILENAME));
@@ -89,7 +89,7 @@ public class PhylotreeRepository {
 		// TODO: use data-structure with O(1), hashmap or so.
 
 		for (Phylotree tree : trees) {
-			if (tree.getId().equals(id)) {
+			if (tree.getIdWithVersion().equals(id)) {
 				return tree;
 			}
 		}
