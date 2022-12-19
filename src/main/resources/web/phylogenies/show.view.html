@@ -22,7 +22,7 @@
     <p>
       <b>Haplogroups ({{clades.size()}}):</b><br>
       {{for clade in clades}}
-        <a class="badge badge-primary" href="{{routeUrl("clades_show", {phylotree:tree.id, clade:clade.toString()})}}">{{clade}}</a>
+        <a class="badge badge-primary" href="{{routeUrl("clades_show", {phylotree:tree.getIdWithVersion(), clade:clade.toString()})}}">{{clade}}</a>
       {{end}}
     </p>
     <br><br>

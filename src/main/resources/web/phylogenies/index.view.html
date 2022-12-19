@@ -13,11 +13,14 @@
 
     <h1>Phylogenies</h1>
     <p>This page gives you an overview about all currently supported phylogenies:</p>
-    <ul>
-    {{for tree in trees}}
-    <li><a href="{{routeUrl("phylogenies_show",{phylotree: tree.id})}}">{{tree.name}}</a></li>
-    {{end}}
-    </ul>
+      {{for category in categories}}
+        <h2>{{category}}</h2>
+        <ul>
+          {{for tree in trees.getByCategory(category)}}
+            <li><a href="{{routeUrl("phylogenies_show",{phylotree: tree.getIdWithVersion()})}}">{{tree.name}}</a></li>
+          {{end}}
+        </ul>
+      {{end}}
   </div>
 </div>
 
