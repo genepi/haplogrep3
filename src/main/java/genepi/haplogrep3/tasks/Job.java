@@ -213,6 +213,10 @@ public class Job implements Runnable {
 						ExportSequenceFormat.FASTA_MSA, _phylotree.getReference());
 				exportSequenceMsaTask.run();
 
+				String qcReportFilename = FileUtil.path(_workspace, getId(), "samples");
+				ExportQcReportTask exportQcReportTask = new ExportQcReportTask(task.getSamples(), qcReportFilename);
+				exportQcReportTask.run();
+
 				save(task.getSamples());
 
 				setSamples(task.getSamples().size());

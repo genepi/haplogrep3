@@ -166,5 +166,26 @@ public class ClassifyCommandTest {
 		assertFalse(set.contains("309.2C"));
 		assertFalse(set.contains("315.1C"));
 	}
+	
+	@Test
+	public void testWithHsdAndQualityControlOutput() throws Exception {
+
+		String output = "test-output";
+		FileUtil.deleteDirectory(output);
+		FileUtil.createDirectory(output);
+
+		ClassifyCommand command = new ClassifyCommand();
+		command.input = "test-data/hsd/H100.hsd";
+		command.phylotreeId = PHYLOTREE;
+		command.writeQc = true;
+		command.output = FileUtil.path(output, "H100.txt");
+
+		int exitCode = command.call();
+
+		assertEquals(0, exitCode);
+		assertEquals(FileUtil.readFileAsString("test-data/expected/H100/H100.txt"),
+				FileUtil.readFileAsString(FileUtil.path(output, "H100.txt")));
+
+	}
 
 }
