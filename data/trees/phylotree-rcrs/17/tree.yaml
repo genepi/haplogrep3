@@ -1,6 +1,7 @@
 id: phylotree-rcrs
 version: 17.0
-name: Phylotree 17 (rCRS)
+name: PhyloTree 17
+category: rCRS (Human mtDNA)
 description: mtDNA tree Build 17 (18 Feb 2016)
 url: https://github.com/genepi/haplogrep3/data/trees/phylotree/17
 lastUpdate: 2016/02/18

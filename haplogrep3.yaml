@@ -4,6 +4,7 @@ examples:
   - id: evaluation-data
     name: evaluation-data.hsd
     file: data/examples/evaluation-data.hsd
+    tree: "phylotree-fu-rcrs@17.0"
 
 repositories:
   - https://raw.githubusercontent.com/genepi/haplogrep-trees/main/trees.json

@@ -1,6 +1,7 @@
 id: phylotree-rcrs
 version: 16.0
-name: PhyloTree 16 (rCRS)
+name: PhyloTree 16
+category: rCRS (Human mtDNA)
 description: mtDNA tree Build 16 including 4,806 haplogroups
 url: https://github.com/genepi/haplogrep3/data/trees/phylotree/16
 lastUpdate: 2014/02/19

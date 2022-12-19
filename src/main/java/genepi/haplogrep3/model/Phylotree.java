@@ -31,6 +31,8 @@ public class Phylotree {
 
 	private String name;
 
+	private String category = "Other";
+
 	private String tree;
 
 	private String weights;
@@ -90,6 +92,14 @@ public class Phylotree {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
 	public String getTree() {

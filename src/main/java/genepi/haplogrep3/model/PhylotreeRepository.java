@@ -17,6 +17,8 @@ public class PhylotreeRepository {
 
 	private List<Phylotree> trees;
 
+	private List<String> categories = new Vector<String>();
+	
 	private boolean forceUpdate;
 
 	public static boolean FORCE_UPDATE = false;
@@ -49,6 +51,9 @@ public class PhylotreeRepository {
 			}
 
 			trees.add(phylotree);
+			if (!categories.contains(phylotree.getCategory())) {
+				categories.add(phylotree.getCategory());
+			}
 
 		}
 
@@ -95,6 +100,23 @@ public class PhylotreeRepository {
 		}
 		return null;
 
+	}
+
+	public List<String> getCategories() {
+		return categories;
+	}
+	
+	public List<Phylotree> getByCategory(String category){
+		
+		// TODO: use data-structure with O(1), hashmap or so.
+		
+		List<Phylotree> result = new Vector<Phylotree>();
+		for (Phylotree tree : trees) {
+			if (tree.getCategory().equals(category)) {
+				result.add(tree);
+			}
+		}
+		return result;
 	}
 
 }

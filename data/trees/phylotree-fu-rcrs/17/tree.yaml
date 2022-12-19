@@ -1,6 +1,7 @@
 id: phylotree-fu-rcrs
 version: 17.0
-name: Phylotree 17 - Forensic Update (rCRS)
+name: PhyloTree 17 - Forensic Update
+category: rCRS (Human mtDNA)
 description: Refined Phylotree 17 by Duer et al., revised version after minor issues, including 6,380 haplogroups (6,401 in publication)
 url: https://github.com/genepi/haplogrep3/data/trees/phylotree/17-fu
 lastUpdate: 2021/11/29
