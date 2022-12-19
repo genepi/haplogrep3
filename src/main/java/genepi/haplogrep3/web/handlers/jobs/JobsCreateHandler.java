@@ -88,7 +88,7 @@ public class JobsCreateHandler extends AbstractHandler {
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("job", job.getId());
-		String path = RouteUtil.path(JobsShowHandler.PATH, params);
+		String path = RouteUtil.path(configuration.getBaseUrl() + JobsShowHandler.PATH, params);
 
 		context.redirect(path);
 
@@ -160,7 +160,7 @@ public class JobsCreateHandler extends AbstractHandler {
 
 	@Override
 	public String getPath() {
-		return PATH;
+		return configuration.getBaseUrl() + PATH;
 	}
 
 	@Override

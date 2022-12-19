@@ -1,6 +1,7 @@
 package genepi.haplogrep3.web.handlers.phylogenies;
 
 import genepi.haplogrep3.App;
+import genepi.haplogrep3.config.Configuration;
 import genepi.haplogrep3.model.Phylotree;
 import genepi.haplogrep3.model.PhylotreeRepository;
 import genepi.haplogrep3.web.util.AbstractHandler;
@@ -18,6 +19,8 @@ public class PhylogeniesShowHandler extends AbstractHandler {
 
 	private PhylotreeRepository treeRepository = App.getDefault().getTreeRepository();
 
+	private Configuration configuration = App.getDefault().getConfiguration();
+
 	public void handle(Context context) throws Exception {
 
 		String phylotreeId = context.pathParam("phylotree");
@@ -25,16 +28,16 @@ public class PhylogeniesShowHandler extends AbstractHandler {
 		if (phylotree == null) {
 			throw new Exception("Phylotree " + phylotreeId + " not found.");
 		}
-		
+
 		Page page = new Page(context, TEMPLATE);
 		page.put("tree", phylotree);
-		page.put("clades", 	phylotree.getHaplogroups());
+		page.put("clades", phylotree.getHaplogroups());
 		page.render();
 	}
 
 	@Override
 	public String getPath() {
-		return PATH;
+		return configuration.getBaseUrl() + PATH;
 	}
 
 	@Override
