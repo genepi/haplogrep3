@@ -13,7 +13,7 @@ import genepi.io.table.reader.CsvTableReader;
 
 public class ClassifyCommandTest {
 
-	public static String PHYLOTREE = "phylotree-17-fu-rcrs";
+	public static String PHYLOTREE = "phylotree-fu-rcrs@1.0";
 
 	@Test
 	public void testWithHsd() throws Exception {

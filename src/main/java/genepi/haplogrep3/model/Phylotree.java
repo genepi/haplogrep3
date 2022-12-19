@@ -28,7 +28,11 @@ public class Phylotree {
 
 	private String id;
 
+	private String version = "";
+
 	private String name;
+
+	private String category = "Other";
 
 	private String tree;
 
@@ -75,12 +79,28 @@ public class Phylotree {
 		this.id = id;
 	}
 
+	public String getVersion() {
+		return version;
+	}
+
+	public void setVersion(String version) {
+		this.version = version;
+	}
+
 	public String getName() {
 		return name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
 	public String getTree() {
@@ -329,6 +349,14 @@ public class Phylotree {
 		}
 		if (node.getParent() != null) {
 			addAllPolymorphisms(polymorphisms, node.getParent());
+		}
+	}
+
+	public String getIdWithVersion() {
+		if (version == null || version.trim().isEmpty()) {
+			return id;
+		} else {
+			return id + "@" + version;
 		}
 	}
 

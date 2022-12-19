@@ -24,7 +24,8 @@ public class IndexPageHandler extends AbstractHandler {
 	public void handle(Context context) throws Exception {
 
 		Page page = new Page(context, TEMPLATE);
-		page.put("trees", treeRepository.getAll());
+		page.put("categories", treeRepository.getCategories());
+		page.put("trees", treeRepository);
 		page.put("examples", configuration.getExamples());
 		page.put("distances", Distance.values());
 		page.render();

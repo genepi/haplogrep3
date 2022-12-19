@@ -13,7 +13,6 @@ import java.util.List;
 import org.junit.Test;
 
 import genepi.haplogrep3.config.Configuration;
-import genepi.haplogrep3.model.AnnotatedPolymorphism;
 import genepi.haplogrep3.model.AnnotatedSample;
 import genepi.haplogrep3.model.Distance;
 import genepi.haplogrep3.model.Phylotree;
@@ -23,7 +22,7 @@ public class ClassificationTaskTest {
 
 	public static String CONFIG_FILE = "haplogrep3.yaml";
 
-	public static String PHYLOTREE = "phylotree-17-rcrs";
+	public static String PHYLOTREE = "phylotree-rcrs@17.0";
 
 	public Phylotree loadPhylotree(String id) throws FileNotFoundException, IOException {
 		PhylotreeRepository repository = new PhylotreeRepository();
@@ -56,7 +55,7 @@ public class ClassificationTaskTest {
 	@Test
 	public void testWithPhylotreeRSRS() throws Exception {
 
-		String tree = "phylotree-17-rsrs";
+		String tree = "phylotree-rsrs@17.0";
 
 		Phylotree phylotree = loadPhylotree(tree);
 
@@ -82,7 +81,7 @@ public class ClassificationTaskTest {
 	@Test
 	public void testWithPhylotree16() throws Exception {
 
-		String tree = "phylotree-16-rcrs";
+		String tree = "phylotree-rcrs@16.0";
 
 		Phylotree phylotree = loadPhylotree(tree);
 
@@ -104,11 +103,35 @@ public class ClassificationTaskTest {
 		assertEquals(15, firstSample.getAnnotatedPolymorphisms().size());
 	}
 	
+	@Test
+	public void testWithPhylotree15FromOnlineRepository() throws Exception {
+
+		String tree = "phylotree-rcrs@15.0";
+
+		Phylotree phylotree = loadPhylotree(tree);
+
+		List<File> files = new ArrayList<File>();
+		files.add(new File("test-data/hsd/H100.hsd"));
+
+		ClassificationTask task = new ClassificationTask(phylotree, files, Distance.KULCZYNSKI);
+		task.run();
+
+		assertTrue(task.isSuccess());
+		assertEquals(1, task.getSamples().size());
+
+		AnnotatedSample firstSample = task.getSamples().get(0);
+		assertEquals("Sample1", firstSample.getSample());
+		assertEquals("H100", firstSample.getClade());
+		assertEquals(0, firstSample.getNs());
+
+		assertEquals(14, firstSample.getAnnotatedPolymorphisms().size());
+	}	
+	
 	
 	@Test
 	public void testWithPhylotree17_fu() throws Exception {
 
-		String tree = "phylotree-17-fu-rcrs";
+		String tree = "phylotree-fu-rcrs@1.0";
 
 		Phylotree phylotree = loadPhylotree(tree);
 

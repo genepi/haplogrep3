@@ -42,8 +42,11 @@
         <div class="form-group">
           <label for="phylotree">Choose the phylogenetic tree:</label>
           <select id="phylotree" name="phylotree" class="form-control">
-            {{for tree in trees}}
-            <option value="{{tree.id}}">{{tree.name}}</option>
+            {{for category in categories}}
+              <option value="" disabled>{{category}}</option>
+              {{for tree in trees.getByCategory(category)}}
+                <option value="{{tree.getIdWithVersion()}}">&nbsp;&nbsp;&nbsp;{{tree.name}} {{tree.version}}</option>
+              {{end}}
             {{end}}
           </select>
         </div>
@@ -116,7 +119,7 @@
       {{for example in examples}}
       <form action="{{routeUrl("jobs_create",{})}}" method="post" enctype="multipart/form-data">
         <input type="hidden" name="dataset" value="{{example.id}}">
-        <input type="hidden" name="phylotree" value="{{trees[0].id}}">
+        <input type="hidden" name="phylotree" value="{{example.tree}}">
         <button type="submit" id="submit" class="btn btn-outline-secondary">
           <i class="far fa-file-alt"></i> {{example.name}}
         </button>

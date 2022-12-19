@@ -18,7 +18,7 @@ public class ListTreesCommand extends AbstractCommand {
 		System.out.println();
 		System.out.println("Available trees:");
 		for (Phylotree phylotree : treeRepository.getAll()) {
-			System.out.println("  --tree " + phylotree.getId() + "\t\t\t" + phylotree.getName());
+			System.out.println("  --tree " + phylotree.getIdWithVersion() + "\t\t\t" + phylotree.getName());
 		}
 
 		System.out.println();
