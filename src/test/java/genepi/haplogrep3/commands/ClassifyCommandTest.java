@@ -186,8 +186,8 @@ public class ClassifyCommandTest {
 		assertEquals(FileUtil.readFileAsString("test-data/expected/H100/H100.txt"),
 				FileUtil.readFileAsString(FileUtil.path(output, "H100.txt")));
 
-		assertEquals(FileUtil.readFileAsString("test-data/expected/H100/H100.qc.txt"),
-				FileUtil.readFileAsString(FileUtil.path(output, "H100.qc.txt")));
+		assertEquals(FileUtil.readFileAsString("test-data/expected/H100/H100.qc.txt").replaceAll("\\.", ","),
+				FileUtil.readFileAsString(FileUtil.path(output, "H100.qc.txt")).replaceAll("\\.", ","));
 
 	}
 
@@ -210,8 +210,8 @@ public class ClassifyCommandTest {
 		assertEquals(FileUtil.readFileAsString("test-data/expected/H100/H100.HM625681.1.txt"),
 				FileUtil.readFileAsString(FileUtil.path(output, "H100.txt")));
 
-		assertEquals(FileUtil.readFileAsString("test-data/expected/H100/H100.qc.txt"),
-				FileUtil.readFileAsString(FileUtil.path(output, "H100.HM625681.1.qc.txt")));
+		assertEquals(FileUtil.readFileAsString("test-data/expected/H100/H100.qc.txt").replaceAll("\\.", ","),
+				FileUtil.readFileAsString(FileUtil.path(output, "H100.HM625681.1.qc.txt")).replaceAll("\\.", ","));
 
 	}
 
