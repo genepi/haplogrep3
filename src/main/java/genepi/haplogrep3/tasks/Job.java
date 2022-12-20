@@ -50,7 +50,11 @@ public class Job implements Runnable {
 
 	private int hits = 20;
 
-	public static int EXPIRES_HOURS = 4;
+	public static long EXPIRES_HOURS = 24 * 7;
+
+	private Job() {
+
+	}
 
 	public String getId() {
 		return id;
@@ -162,7 +166,8 @@ public class Job implements Runnable {
 		job.setId(id);
 		job.setStatus(JobStatus.SUBMITTED);
 		job.setSubmittedOn(new Date());
-		job.setExpiresOn(new Date(System.currentTimeMillis() + (EXPIRES_HOURS * 60 * 60 * 1000)));
+		Date date = new Date(new Date().getTime() + (EXPIRES_HOURS * 60L * 60L * 1000L));
+		job.setExpiresOn(date);
 		job.setPhylotree(phylotree.getIdWithVersion());
 		job._workspace = workspace;
 		job._phylotree = phylotree;
@@ -248,7 +253,7 @@ public class Job implements Runnable {
 		}
 	}
 
-	protected synchronized  void save() {
+	protected synchronized void save() {
 		String jobFilename = FileUtil.path(_workspace, getId() + ".json");
 		Gson gson = new Gson();
 		FileUtil.writeStringBufferToFile(jobFilename, new StringBuffer(gson.toJson(this)));
