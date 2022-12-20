@@ -1,0 +1,29 @@
+site_name: Haplogrep 3
+theme: readthedocs
+
+nav:
+- Quickstart: quickstart.md
+- Local Installation:
+  - Installation: installation.md
+  - Parameters: parameters.md
+- Algorithm Details:
+  - Input Formats: input-formats.md
+  - Kulczynski Measure: kulczynski.md
+  - Errors and Warnings: errors-warnings.md
+- FAQ: faq.md
+- Contact: contact.md
+
+repo_name: genepi/haplogrep3
+repo_url: https://github.com/genepi/haplogrep3
+edit_uri: edit/master/docs
+
+extra:
+  social:
+    - type: github-alt
+      link: https://github.com/genepi/haplogrep3
+
+markdown_extensions:
+    - toc:
+        permalink:
+    - admonition:
+    - tables
