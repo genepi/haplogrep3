@@ -72,14 +72,14 @@ $('.data-table tbody').on('click', 'tr', function() {
     },
     message: '<div style="height: 500px; overflow-y: scroll">' +
       renderWarningsAndErrors(data) +
-      '<b>Top Hit:</b><br><ul><li>' + data.clade +
-      ' (' + data.quality.toFixed(2) * 100 + '%)</li></ul>' +
-      '<b>Other Hits:</b><br>' + formatHits(data) + ' <br>' +
+      '<b>Top Hit</b><br>' + data.clade +
+      ' (' + data.quality.toFixed(2) * 100 + '%)<br><br>' +
+      '<b>Expected Mutations</b><br>' + formatMutationsNotFound(data.expectedMutations, 'nuc') + '<br><br>' +
+      '<b>Remaining Mutations</b><br>' + formatRemainingMutations(data.remainingMutations, 'nuc') + '<br><br>' +
+            '<b>Other Hits</b><br>' + formatHits(data) + ' <br>' +
       '<b>Ranges</b><br>' + formatRange(data.ranges) + '<br><br>' +
-      '<b>Amino Acid Changes</b><br>' + formatMutations(data.annotatedPolymorphisms, 500, 'aac', '') + '<br><br>' +
-      '<b>Nucleotide Changes</b><br>' + formatMutations(data.annotatedPolymorphisms, 500, 'nuc', '') + '<br><br>' +
-      (data.expectedMutations.length > 0 ?
-        ('<b>Expected Mutations by ' + data.clade + ' but not found</b><br>' + formatMutationsNotFound(data.expectedMutations, 'nuc') + '<br><br>') : '') +
+      //'<b>Amino Acid Changes</b><br>' + formatMutations(data.annotatedPolymorphisms, 500, 'aac', '') + '<br><br>' +
+      //'<b>Nucleotide Changes</b><br>' + formatMutations(data.annotatedPolymorphisms, 500, 'nuc', '') + '<br><br>' +
       '</div>'
   });
 
@@ -149,12 +149,28 @@ function formatMutationsNotFound(data, view) {
       if (result != '') {
         result += ' ';
       }
-      result += '<span class="badge badge-secondary">' + label + '</span>';
+      result += '<span class="badge badge-' + (data[i].found ? 'success' : 'danger') + '" title="'+ (data[i].found ? 'Found' : 'Not Found') + '">' + label + '</span>';
     }
   };
   return result;
 }
 
+function formatRemainingMutations(data, view) {
+
+  var result = '';
+  for (var i = 0; i < data.length; i++) {
+    var filtered = false;
+    var label = view == 'aac' ? data[i].aac : data[i].nuc;
+
+    if (label != undefined && label != '') {
+      if (result != '') {
+        result += ' ';
+      }
+      result += '<span class="badge badge-' + (data[i].type == 'hotspot' ? 'success' : (data[i].type == 'local private mutation' ? 'info' : 'danger')) + '" title="'+ data[i].type + '">' + label + '</span>';
+    }
+  };
+  return result;
+}
 
 function formatRange(data) {
 

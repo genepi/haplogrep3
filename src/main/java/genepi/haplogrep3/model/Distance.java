@@ -2,7 +2,7 @@ package genepi.haplogrep3.model;
 
 public enum Distance {
 
-	KULCZYNSKI("Kulczynski"), HAMMING("Hamming"), JACCARD("Jaccard"), KIMURA("Kimura");
+	KULCZYNSKI("Kulczynski (Default)"), HAMMING("Hamming"), JACCARD("Jaccard"), KIMURA("Kimura");
 
 	private String label;
 

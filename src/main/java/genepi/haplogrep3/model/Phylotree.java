@@ -219,7 +219,8 @@ public class Phylotree {
 		return PhylotreeManager.getInstance().getPhylotree(getTree(), getWeights(), getReference(), getHotspots());
 	}
 
-	public void classify(SampleFile sampleFile, Distance distance, int hits, boolean skipAlignmentRules) throws FileNotFoundException {
+	public void classify(SampleFile sampleFile, Distance distance, int hits, boolean skipAlignmentRules)
+			throws FileNotFoundException {
 
 		RankingMethod rankingMethod = null;
 
@@ -244,13 +245,12 @@ public class Phylotree {
 
 		sampleFile.updateClassificationResults(haplogrepPhylotree, rankingMethod);
 
-		sampleFile.runQualityChecks(haplogrepPhylotree);		
-		
+		sampleFile.runQualityChecks(haplogrepPhylotree);
+
 	}
 
 	public Haplogroup getHaplogroup(String name) {
-		phylotree.Phylotree haplogrepPhylotree = PhylotreeManager.getInstance().getPhylotree(getTree(), getWeights(),
-				getReference());
+		phylotree.Phylotree haplogrepPhylotree = getPhylotreeInstance();
 		List<PhyloTreeNode> nodeList = haplogrepPhylotree.getPhyloTree().getSubHaplogroups();
 		return findHaplogroup(name, nodeList);
 	}
@@ -270,8 +270,7 @@ public class Phylotree {
 	}
 
 	public PhyloTreeNode getHaplogroupTreeNode(String name) {
-		phylotree.Phylotree haplogrepPhylotree = PhylotreeManager.getInstance().getPhylotree(getTree(), getWeights(),
-				getReference());
+		phylotree.Phylotree haplogrepPhylotree = getPhylotreeInstance();
 		List<PhyloTreeNode> nodeList = haplogrepPhylotree.getPhyloTree().getSubHaplogroups();
 		return findHaplogroupTreeNode(name, nodeList);
 	}
@@ -318,8 +317,7 @@ public class Phylotree {
 	public List<Haplogroup> getHaplogroups() {
 		Vector<Haplogroup> haplogroups = new Vector<Haplogroup>();
 
-		phylotree.Phylotree haplogrepPhylotree = PhylotreeManager.getInstance().getPhylotree(getTree(), getWeights(),
-				getReference());
+		phylotree.Phylotree haplogrepPhylotree = getPhylotreeInstance();
 		List<PhyloTreeNode> nodeList = haplogrepPhylotree.getPhyloTree().getSubHaplogroups();
 		addAllHaplogroups(haplogroups, nodeList);
 		return haplogroups;

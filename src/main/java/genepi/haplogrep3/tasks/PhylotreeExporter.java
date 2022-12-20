@@ -15,7 +15,6 @@ import genepi.haplogrep3.model.Phylotree;
 import genepi.haplogrep3.util.PolymorphismHelper;
 import htsjdk.samtools.util.IntervalTree.Node;
 import phylotree.PhyloTreeNode;
-import phylotree.PhylotreeManager;
 
 public class PhylotreeExporter {
 
@@ -50,8 +49,7 @@ public class PhylotreeExporter {
 		buffer.append("graph [layout = dot, rankdir = TB] ");
 		buffer.append("node [shape = oval,style = filled,color = lightblue] ");
 
-		phylotree.Phylotree haplogrepPhylotree = PhylotreeManager.getInstance().getPhylotree(phylotree.getTree(),
-				phylotree.getWeights(), phylotree.getReference());
+		phylotree.Phylotree haplogrepPhylotree = phylotree.getPhylotreeInstance();
 
 		List<PhyloTreeNode> nodeList = haplogrepPhylotree.getPhyloTree().getSubHaplogroups();
 

@@ -2,6 +2,7 @@ package genepi.haplogrep3.web.handlers.jobs;
 
 import java.io.File;
 import java.io.FileReader;
+import java.util.Date;
 
 import com.google.gson.Gson;
 
@@ -40,7 +41,11 @@ public class JobsShowHandler extends AbstractHandler {
 			Gson gson = new Gson();
 
 			Job job = gson.fromJson(new FileReader(jobFile), Job.class);
-
+			Date now = new Date();
+			if (now.after(job.getExpiresOn())) {
+				throw new Exception("Job expired.");
+			}
+			
 			Phylotree phylotree = treeRepository.getById(job.getPhylotree());
 			
 			String template = "web/jobs/show." + job.getStatus().name().toLowerCase() + ".view.html";

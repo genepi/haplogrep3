@@ -35,7 +35,7 @@ or download the [latest version](https://github.com/genepi/haplogrep3/releases/l
 haplogrep3 version
 ```
 
-The documentation is available at [http://covgrep.readthedocs.io](http://haplogrep3.readthedocs.io).
+The documentation is available at [http://haplogrep.readthedocs.io](http://haplogrep3.readthedocs.io).
 
 All releases are also available on [Github](https://github.com/genepi/haplogrep3/releases).
 
@@ -65,17 +65,17 @@ Built by lukas on 2021-09-01T11:31:10Z
 
 Now you are ready to use Haplogrep 3 and to classify your first mtDNA haplogroups.
 
-## Classify your first Haplogrep3 
+## Classify your first sample
 
-For the classification with Haplogrep 3, you need to provide a valid fasta file, and the output folder for the results, and the tree ID. The command is:
+For the classification with Haplogrep 3, you need to provide a valid input file (fasta, hsd or vcf file), the output folder for the results and the tree ID. The command is:
 
 ```sh
-haplogrep3 classify --hsd <Input File> --output <Output File> --tree <Tree Id>
+haplogrep3 classify --input <Input File> --output <Output File> --tree <Tree Id>
 ```
 
 ### Input File
 
-The input files needs to be a complete or partial fasta sequence of a SARS-CoV-2 genome. You can find data in [GenBank](https://www.ncbi.nlm.nih.gov/sars-cov-2/) for instance.
+Haplogrep supports input data in a text-based (*.hsd), VCF or fasta format.
 
 ### Output File
 
@@ -89,7 +89,7 @@ As the underlying tree is not static, there will become more trees or updates av
 haplogrep3 trees
 ```
 
-Moreover, you find the latest version of the tree in [GitHub](https://github.com/genepi/covgrep/blob/main/covgrep.yaml)
+Moreover, you find the latest version of the tree in the [online repository](https://genepi.github.io/haplogrep-trees/)
 
 ## Starting the Haplogrep 3 web-application locally
 

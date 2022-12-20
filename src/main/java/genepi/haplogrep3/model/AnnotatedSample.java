@@ -32,6 +32,8 @@ public class AnnotatedSample {
 
 	private double[] otherQualities = new double[0];
 
+	private List<AnnotatedPolymorphism> remainingMutations = new Vector<AnnotatedPolymorphism>();
+	
 	private List<AnnotatedPolymorphism> expectedMutations = new Vector<AnnotatedPolymorphism>();
 
 	private List<AnnotatedPolymorphism> annotatedPolymorphisms = new Vector<AnnotatedPolymorphism>();
@@ -239,6 +241,14 @@ public class AnnotatedSample {
 
 	public void setInfos(List<String> infos) {
 		this.infos = infos;
+	}
+	
+	public void setRemainingMutations(List<AnnotatedPolymorphism> remainingMutations) {
+		this.remainingMutations = remainingMutations;
+	}
+	
+	public List<AnnotatedPolymorphism> getRemainingMutations() {
+		return remainingMutations;
 	}
 
 }

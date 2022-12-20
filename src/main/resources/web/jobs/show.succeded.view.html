@@ -19,17 +19,9 @@
 
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mutations:
   &nbsp;&nbsp;
-  <input type="checkbox" id="amino_acid_changes">
-  <label for="amino_acid_changes">Amino Acid Changes</label>
-  &nbsp;&nbsp;
-  Show:&nbsp;
   <select  id="show_all_mutations">
     <option value="">first 8 mutations</option>
     <option value="all">All</option>
-    <option disabled>----- Genes -----</option>
-    {{for gene in genes}}
-    <option value="{{gene}}">{{gene}}</option>
-    {{end}}
   </select>
   &nbsp;&nbsp;
   Phylotree:&nbsp;{{job.phylotree}}
