@@ -3,6 +3,7 @@ theme: readthedocs
 
 nav:
 - Quickstart: quickstart.md
+- Getting Stared: getting-started.md
 - Local Installation:
   - Installation: installation.md
   - Parameters: parameters.md

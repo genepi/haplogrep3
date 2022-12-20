@@ -11,7 +11,9 @@ public class Dataset {
 	private String file;
 
 	private String tree;
-	
+
+	private boolean chip = false;
+
 	public String getId() {
 		return id;
 	}
@@ -35,13 +37,21 @@ public class Dataset {
 	public void setFile(String file) {
 		this.file = file;
 	}
-	
+
 	public String getTree() {
 		return tree;
 	}
-	
+
 	public void setTree(String tree) {
 		this.tree = tree;
+	}
+
+	public boolean isChip() {
+		return chip;
+	}
+
+	public void setChip(boolean chip) {
+		this.chip = chip;
 	}
 
 	public void updateParent(String parent) {
