@@ -8,9 +8,9 @@
 	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
-	<name>CovGrep</name>
-	<description>Free mtDNA Haplogroup Classification Service</description>
-	<url>https://github.com/genepi/covidgrep</url>
+	<name>Haplogrep 3</name>
+	<description>Free Haplogroup Classification Service</description>
+	<url>https://github.com/genepi/haplogrep3</url>
 
 	<licenses>
 		<license>
