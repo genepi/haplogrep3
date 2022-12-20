@@ -8,7 +8,6 @@ import genepi.haplogrep3.model.Phylotree;
 import genepi.haplogrep3.model.PhylotreeRepository;
 import genepi.io.table.reader.CsvTableReader;
 import genepi.io.table.writer.CsvTableWriter;
-import phylotree.PhylotreeManager;
 import picocli.CommandLine.Option;
 
 public class DistanceCommand extends AbstractCommand {
@@ -89,8 +88,7 @@ public class DistanceCommand extends AbstractCommand {
 
 			Haplogroup groupClade1 = new Haplogroup(clade1);
 			Haplogroup groupClade2 = new Haplogroup(clade2);
-			phylotree.Phylotree haplogrepPhylotree = PhylotreeManager.getInstance().getPhylotree(phylotree.getTree(),
-					phylotree.getWeights(), phylotree.getReference());
+			phylotree.Phylotree haplogrepPhylotree = phylotree.getPhylotreeInstance();
 
 			int distance = 0;
 			try {
