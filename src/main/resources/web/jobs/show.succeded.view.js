@@ -13,8 +13,13 @@ window.table = $(".data-table").DataTable({
     dataSrc: ''
   },
   "columns": [{
+    data: "hasError",
     "render": function(data, type, row) {
-      return renderIcon(row);
+      if (type == 'display'){
+        return renderIcon(row);
+      } else {
+        return renderText(row);
+      }
     }
   }, {
     "data": "sample"
@@ -54,6 +59,20 @@ window.table = $(".data-table").DataTable({
   }
 });
 
+$.fn.dataTable.ext.search.push(
+  function(settings, data, dataIndex) {
+    var samples = $('#show_samples').val();
+    if (samples === "all" || data[0] == samples) {
+      return true;
+    }
+    return false;
+  }
+);
+
+$("#show_samples").change(function(e) {
+  window.table.draw();
+});
+
 $('.data-table tbody').on('click', 'tr', function() {
 
   var data = window.table.row(this).data();
@@ -76,7 +95,7 @@ $('.data-table tbody').on('click', 'tr', function() {
       ' (' + data.quality.toFixed(2) * 100 + '%)<br><br>' +
       '<b>Expected Mutations</b><br>' + formatMutationsNotFound(data.expectedMutations, 'nuc') + '<br><br>' +
       '<b>Remaining Mutations</b><br>' + formatRemainingMutations(data.remainingMutations, 'nuc') + '<br><br>' +
-            '<b>Other Hits</b><br>' + formatHits(data) + ' <br>' +
+      '<b>Other Hits</b><br>' + formatHits(data) + ' <br>' +
       '<b>Ranges</b><br>' + formatRange(data.ranges) + '<br><br>' +
       //'<b>Amino Acid Changes</b><br>' + formatMutations(data.annotatedPolymorphisms, 500, 'aac', '') + '<br><br>' +
       //'<b>Nucleotide Changes</b><br>' + formatMutations(data.annotatedPolymorphisms, 500, 'nuc', '') + '<br><br>' +
@@ -149,7 +168,7 @@ function formatMutationsNotFound(data, view) {
       if (result != '') {
         result += ' ';
       }
-      result += '<span class="badge badge-' + (data[i].found ? 'success' : 'danger') + '" title="'+ (data[i].found ? 'Found' : 'Not Found') + '">' + label + '</span>';
+      result += '<span class="badge badge-' + (data[i].found ? 'success' : 'danger') + '" title="' + (data[i].found ? 'Found' : 'Not Found') + '">' + label + '</span>';
     }
   };
   return result;
@@ -166,7 +185,7 @@ function formatRemainingMutations(data, view) {
       if (result != '') {
         result += ' ';
       }
-      result += '<span class="badge badge-' + (data[i].type == 'hotspot' ? 'success' : (data[i].type == 'local private mutation' ? 'info' : 'danger')) + '" title="'+ data[i].type + '">' + label + '</span>';
+      result += '<span class="badge badge-' + (data[i].type == 'hotspot' ? 'success' : (data[i].type == 'local private mutation' ? 'info' : 'danger')) + '" title="' + data[i].type + '">' + label + '</span>';
     }
   };
   return result;
@@ -233,4 +252,15 @@ function renderIcon(data) {
     return '<i class="fas fa-exclamation-triangle text-warning"></i>';
   }
   return '<i class="fas fa-check-circle text-success"></i>';
+}
+
+
+function renderText(data) {
+  if (data.errors.length > 0) {
+    return 'error';
+  }
+  if (data.warnings.length > 0) {
+    return 'warning';
+  }
+  return 'ok';
 }

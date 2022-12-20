@@ -17,7 +17,17 @@
     </div>
   </div>
 
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mutations:
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Samples:
+  &nbsp;&nbsp;
+  <select  id="show_samples">
+    <option value="all">All ({{job.samples}})</option>
+    <option disabled>-------------</option>
+    <option value="ok">QC Passed ({{job.samplesOk}})</option>
+    <option value="warning">QC Warnings ({{job.samplesWarning}})</option>
+    <option value="error">QC Errors ({{job.samplesError}})</option>
+  </select>
+  &nbsp;&nbsp;
+  Mutations:
   &nbsp;&nbsp;
   <select  id="show_all_mutations">
     <option value="">first 8 mutations</option>
