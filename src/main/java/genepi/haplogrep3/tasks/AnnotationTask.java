@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-import core.Mutations;
 import core.Polymorphism;
 import core.SampleFile;
 import core.TestSample;
@@ -61,8 +60,11 @@ public class AnnotationTask {
 			AnnotatedSample annotatedSample = new AnnotatedSample(sample);
 			annotatedSample.setAnnotatedPolymorphisms(
 					getAminoAcidsFromPolys(sample.getSample().getPolymorphisms(), detailedResults));
-			annotatedSample.setExpectedMutations(
-					getNotFoundPolymorphisms(sample.getSample().getPolymorphisms(), detailedResults));
+			annotatedSample
+					.setExpectedMutations(getExpectedMutations(sample.getSample().getPolymorphisms(), detailedResults));
+
+			annotatedSample.setRemainingMutations(getRemainingPolymorphisms(detailedResults));
+
 			samples.add(annotatedSample);
 
 			ArrayList<QualityIssue> issues = sampleFile.getQualityAssistent().getIssues(sample);
@@ -76,7 +78,6 @@ public class AnnotationTask {
 
 	public List<AnnotatedPolymorphism> getAminoAcidsFromPolys(List<Polymorphism> polymorphisms,
 			SearchResultDetailed detailedResults) {
-		int deletionCount = 0;
 
 		List<AnnotatedPolymorphism> annotatedPolymorphisms = new Vector<AnnotatedPolymorphism>();
 		PolymorphismHelper.sortByPosition(polymorphisms);
@@ -85,63 +86,18 @@ public class AnnotationTask {
 
 			Polymorphism polymorphism = polymorphisms.get(i);
 
-			// Iterator<Node<MapLocusItem>> result =
-			// maplocus.findByPosition(polymorphism.getPosition());
-			// if (result.hasNext()) {
-			//if (!polymorphism.isBackMutation() && polymorphism.getMutation() != Mutations.N) {
-				// MapLocusItem item = result.next().getValue();
-				/*
-				 * String aac = ""; try { aac = SequenceUtil.getAAC(refSequence, codonTable,
-				 * item, polymorphism.getPosition(), polymorphism.getMutation().name()); } catch
-				 * (Exception e) { // TODO Auto-generated catch block e.printStackTrace(); }
-				 */
+			AnnotatedPolymorphism annotatedPolymorphism = new AnnotatedPolymorphism(polymorphism);
+			annotatedPolymorphism.setNuc(PolymorphismHelper.getLabel(polymorphism));
+			annotatedPolymorphisms.add(annotatedPolymorphism);
 
-				AnnotatedPolymorphism annotatedPolymorphism = new AnnotatedPolymorphism(polymorphism);
-				annotatedPolymorphism.setNuc(PolymorphismHelper.getLabel(polymorphism));
-				annotatedPolymorphisms.add(annotatedPolymorphism);
-
-				/*
-				 * if (polymorphism.getMutation().toString().equals("DEL")) { deletionCount++;
-				 * if (deletionCount % 3 == 0) { if (polymorphisms.get(i - 2).getPosition() ==
-				 * polymorphisms.get(i).getPosition() - 2) { AnnotatedPolymorphism
-				 * annotatedPolymorphism = new AnnotatedPolymorphism(polymorphism);
-				 * annotatedPolymorphism.setAac(item.getShorthand() + ":" + aac);
-				 * annotatedPolymorphism.setNuc(PolymorphismHelper.getLabel(polymorphism)); if
-				 * (detailedResults != null) { annotatedPolymorphism
-				 * .setFound(detailedResults.getFoundPolys().contains(polymorphism)); }
-				 * annotatedPolymorphisms.add(annotatedPolymorphism); } } else {
-				 * AnnotatedPolymorphism annotatedPolymorphism = new
-				 * AnnotatedPolymorphism(polymorphism); annotatedPolymorphism.setAac(null); if
-				 * (detailedResults != null) {
-				 * annotatedPolymorphism.setFound(detailedResults.getFoundPolys().contains(
-				 * polymorphism)); }
-				 * annotatedPolymorphism.setNuc(PolymorphismHelper.getLabel(polymorphism));
-				 * annotatedPolymorphisms.add(annotatedPolymorphism); } } else if (aac.length()
-				 * > 0 && !aac.contains("?")) { AnnotatedPolymorphism annotatedPolymorphism =
-				 * new AnnotatedPolymorphism(polymorphism);
-				 * annotatedPolymorphism.setAac(item.getShorthand() + ":" + aac);
-				 * annotatedPolymorphism.setNuc(PolymorphismHelper.getLabel(polymorphism)); if
-				 * (detailedResults != null) {
-				 * annotatedPolymorphism.setFound(detailedResults.getFoundPolys().contains(
-				 * polymorphism)); } annotatedPolymorphisms.add(annotatedPolymorphism); } else {
-				 * AnnotatedPolymorphism annotatedPolymorphism = new
-				 * AnnotatedPolymorphism(polymorphism); annotatedPolymorphism.setAac(null);
-				 * annotatedPolymorphism.setNuc(PolymorphismHelper.getLabel(polymorphism)); if
-				 * (detailedResults != null) {
-				 * annotatedPolymorphism.setFound(detailedResults.getFoundPolys().contains(
-				 * polymorphism)); } annotatedPolymorphisms.add(annotatedPolymorphism); }
-				 */
-				// }
-			//}
 		}
 
 		return annotatedPolymorphisms;
 
 	}
 
-	protected List<AnnotatedPolymorphism> getNotFoundPolymorphisms(List<Polymorphism> polymorphisms,
+	protected List<AnnotatedPolymorphism> getExpectedMutations(List<Polymorphism> polymorphisms,
 			SearchResultDetailed detailedResults) {
-		int deletionCount = 0;
 
 		List<AnnotatedPolymorphism> expectedMutations = new Vector<AnnotatedPolymorphism>();
 		PolymorphismHelper.sortByPosition(polymorphisms);
@@ -149,54 +105,31 @@ public class AnnotationTask {
 		for (int i = 0; i < detailedResults.getExpectedPolys().size(); i++) {
 
 			Polymorphism polymorphism = detailedResults.getExpectedPolys().get(i);
-			if (polymorphisms.contains(polymorphism)) {
-				continue;
-			}
 
-			// Iterator<Node<MapLocusItem>> result =
-			// maplocus.findByPosition(polymorphism.getPosition());
-			// if (result.hasNext()) {
-			//if (!polymorphism.isBackMutation() && polymorphism.getMutation() != Mutations.N) {
-				// MapLocusItem item = result.next().getValue();
-				/*
-				 * String aac = ""; try { aac = SequenceUtil.getAAC(refSequence, codonTable,
-				 * item, polymorphism.getPosition(), polymorphism.getMutation().name()); } catch
-				 * (Exception e) { // TODO Auto-generated catch block e.printStackTrace(); }
-				 */
+			AnnotatedPolymorphism annotatedPolymorphism = new AnnotatedPolymorphism(polymorphism);
+			annotatedPolymorphism.setNuc(PolymorphismHelper.getLabel(polymorphism));
+			annotatedPolymorphism.setFound(detailedResults.getFoundPolys().contains(polymorphism));
+			expectedMutations.add(annotatedPolymorphism);
+		}
 
-				AnnotatedPolymorphism annotatedPolymorphism = new AnnotatedPolymorphism(polymorphism);
-				annotatedPolymorphism.setNuc(PolymorphismHelper.getLabel(polymorphism));
-				expectedMutations.add(annotatedPolymorphism);
+		return expectedMutations;
 
-				/*
-				 * if (polymorphism.getMutation().toString().equals("DEL")) { deletionCount++;
-				 * if (deletionCount % 3 == 0) { if (detailedResults.getExpectedPolys().get(i -
-				 * 2) .getPosition() == detailedResults.getExpectedPolys().get(i).getPosition()
-				 * - 2) { AnnotatedPolymorphism annotatedPolymorphism = new
-				 * AnnotatedPolymorphism(polymorphism);
-				 * annotatedPolymorphism.setAac(item.getShorthand() + ":" + aac);
-				 * annotatedPolymorphism.setNuc(PolymorphismHelper.getLabel(polymorphism));
-				 * annotatedPolymorphism.setFound(true);
-				 * expectedMutations.add(annotatedPolymorphism); } } else {
-				 * AnnotatedPolymorphism annotatedPolymorphism = new
-				 * AnnotatedPolymorphism(polymorphism); annotatedPolymorphism.setAac(null);
-				 * annotatedPolymorphism.setNuc(PolymorphismHelper.getLabel(polymorphism));
-				 * annotatedPolymorphism.setFound(true);
-				 * expectedMutations.add(annotatedPolymorphism); } } else if (aac.length() > 0
-				 * && !aac.contains("?")) { AnnotatedPolymorphism annotatedPolymorphism = new
-				 * AnnotatedPolymorphism(polymorphism);
-				 * annotatedPolymorphism.setAac(item.getShorthand() + ":" + aac);
-				 * annotatedPolymorphism.setNuc(PolymorphismHelper.getLabel(polymorphism));
-				 * annotatedPolymorphism.setFound(true);
-				 * expectedMutations.add(annotatedPolymorphism); } else { AnnotatedPolymorphism
-				 * annotatedPolymorphism = new AnnotatedPolymorphism(polymorphism);
-				 * annotatedPolymorphism.setAac(null);
-				 * annotatedPolymorphism.setNuc(PolymorphismHelper.getLabel(polymorphism));
-				 * annotatedPolymorphism.setFound(true);
-				 * expectedMutations.add(annotatedPolymorphism); }
-				 */
-				// }
-			//}
+	}
+
+	protected List<AnnotatedPolymorphism> getRemainingPolymorphisms(SearchResultDetailed detailedResults) {
+
+		List<AnnotatedPolymorphism> expectedMutations = new Vector<AnnotatedPolymorphism>();
+		PolymorphismHelper.sortByPosition(detailedResults.getRemainingPolysInSample());
+
+		for (int i = 0; i < detailedResults.getRemainingPolysInSample().size(); i++) {
+
+			Polymorphism polymorphism = detailedResults.getRemainingPolysInSample().get(i);
+
+			AnnotatedPolymorphism annotatedPolymorphism = new AnnotatedPolymorphism(polymorphism);
+			annotatedPolymorphism.setNuc(PolymorphismHelper.getLabel(polymorphism));
+			annotatedPolymorphism.setType(PolymorphismHelper.getType(polymorphism, phylotree));
+			expectedMutations.add(annotatedPolymorphism);
+
 		}
 
 		return expectedMutations;

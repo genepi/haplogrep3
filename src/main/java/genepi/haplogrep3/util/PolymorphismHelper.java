@@ -10,6 +10,7 @@ import java.util.StringTokenizer;
 import core.Mutations;
 import core.Polymorphism;
 import core.TestSample;
+import genepi.haplogrep3.model.Phylotree;
 
 public class PolymorphismHelper {
 
@@ -106,6 +107,18 @@ public class PolymorphismHelper {
 
 		}
 		return polymorphism.getPosition() + polymorphism.getMutation().toString();
+	}
+
+	public static String getType(Polymorphism polymorphism, Phylotree phylotree) {
+		if (phylotree.getPhylotreeInstance().getMutationRate(polymorphism) == 0) {
+			if (phylotree.getPhylotreeInstance().isHotspot(polymorphism)) {
+				return "hotspot";
+			} else {
+				return "global private mutation";
+			}
+		} else {
+			return "local private mutation";
+		}
 	}
 
 	public static void sortByPosition(List<Polymorphism> polymorphisms) {

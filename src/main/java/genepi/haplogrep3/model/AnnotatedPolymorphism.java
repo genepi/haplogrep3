@@ -10,6 +10,8 @@ public class AnnotatedPolymorphism {
 
 	private boolean found = false;
 
+	private String type = "";
+
 	public AnnotatedPolymorphism(Polymorphism polymorphism) {
 
 	}
@@ -36,6 +38,14 @@ public class AnnotatedPolymorphism {
 
 	public void setFound(boolean found) {
 		this.found = found;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 }
