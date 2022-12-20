@@ -22,7 +22,7 @@ import picocli.CommandLine.Command;
 @Command(name = "haplogrep")
 public class App implements Runnable {
 
-	public static final String NAME = "HaploGrep 3";
+	public static final String NAME = "Haplogrep 3";
 
 	public static final String VERSION = "3.0.0";
 
