@@ -154,7 +154,7 @@ public class JobsCreateHandler extends AbstractHandler {
 		List<File> files = new Vector<File>();
 		files.add(file);
 
-		return Job.create(jobId, workspace, phylotree, files, Distance.KULCZYNSKI, false, 0.9);
+		return Job.create(jobId, workspace, phylotree, files, Distance.KULCZYNSKI, dataset.isChip(), 0.9);
 
 	}
 
