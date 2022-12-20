@@ -1,8 +1,11 @@
 package genepi.haplogrep3.haplogrep.io.readers.impl;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.lang.SystemUtils;
 
 import core.SampleFile;
 import genepi.haplogrep3.haplogrep.io.readers.AbstractInputFileReader;
@@ -23,6 +26,10 @@ public class FastaInputFileReader extends AbstractInputFileReader {
 
 	public SampleFile read(List<File> files, Phylotree phylotree) throws Exception {
 
+		if (SystemUtils.IS_OS_WINDOWS) {
+			throw new IOException("Fasta is no supported on Windows");
+		}
+		
 		ArrayList<String> lines = new ArrayList<String>();
 		FastaImporter importer = new FastaImporter();
 		for (File file : files) {

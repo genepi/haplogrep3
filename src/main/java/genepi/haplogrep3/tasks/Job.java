@@ -240,7 +240,6 @@ public class Job implements Runnable {
 			setExecutionTime(0);
 			setFinisehdOn(new Date());
 			setStatus(JobStatus.FAILED);
-			setError(e.getMessage());
 			e.printStackTrace();
 			save();
 
@@ -249,7 +248,7 @@ public class Job implements Runnable {
 		}
 	}
 
-	protected void save() {
+	protected synchronized  void save() {
 		String jobFilename = FileUtil.path(_workspace, getId() + ".json");
 		Gson gson = new Gson();
 		FileUtil.writeStringBufferToFile(jobFilename, new StringBuffer(gson.toJson(this)));
