@@ -5,6 +5,14 @@ examples:
     name: evaluation-data.hsd
     file: data/examples/evaluation-data.hsd
     tree: "phylotree-fu-rcrs@1.0"
+  - id: evaluation-kg50-microarray-vcf
+    name: example-microarray.vcf
+    file: data/examples/example-microarray.vcf
+    tree: "phylotree-fu-rcrs@1.0"
+  - id: evaluation-kg50-wgs-vcf
+    name: example-WGS.vcf
+    file: data/examples/example-wgs.vcf
+    tree: "phylotree-fu-rcrs@1.0"      
 
 repositories:
   - https://raw.githubusercontent.com/genepi/haplogrep-trees/main/trees.json
