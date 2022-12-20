@@ -38,13 +38,6 @@ repositories:
   - https://raw.githubusercontent.com/genepi/haplogrep-trees/main/trees.json
   - https://raw.githubusercontent.com/<name>/<reponame>/main/trees.json
 
-phylotrees:
-  - my-new-tree@1.0
-  - phylotree-fu-rcrs@1.0
-  - phylotree-rcrs@17.0
-  - phylotree-rsrs@17.0
-  - phylotree-rcrs@16.0
-  - phylotree-rcrs@15.0
 ```
 
 This setup would then allow you to install trees like this:
