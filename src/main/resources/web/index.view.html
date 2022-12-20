@@ -111,10 +111,10 @@
       <p><b>No dataset at hand?</b> No problem, take one of our examples:</p>
 
       {{for example in examples}}
-      <form action="{{routeUrl("jobs_create",{})}}" method="post" enctype="multipart/form-data">
+      <form action="{{routeUrl("jobs_create",{})}}" method="post" enctype="multipart/form-data" style="display: inline;">
         <input type="hidden" name="dataset" value="{{example.id}}">
         <input type="hidden" name="phylotree" value="{{example.tree}}">
-        <button type="submit" id="submit" class="btn btn-outline-secondary">
+        <button type="submit" id="submit" class="btn btn-outline-secondary" style="margin-top: 10px">
           <i class="far fa-file-alt"></i> {{example.name}}
         </button>
       </form>
