@@ -35,7 +35,7 @@ or download the [latest version](https://github.com/genepi/haplogrep3/releases/l
 haplogrep3 version
 ```
 
-The documentation is available at [http://covgrep.readthedocs.io](http://haplogrep3.readthedocs.io).
+The documentation is available at [http://haplogrep.readthedocs.io](http://haplogrep.readthedocs.io).
 
 All releases are also available on [Github](https://github.com/genepi/haplogrep3/releases).
 
