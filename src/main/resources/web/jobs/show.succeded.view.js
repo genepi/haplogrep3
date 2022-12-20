@@ -16,7 +16,7 @@ window.table = $(".data-table").DataTable({
     "render": function(data, type, row) {
       return renderIcon(row);
     }
-  },{
+  }, {
     "data": "sample"
   }, {
     "data": "clade"
@@ -39,7 +39,19 @@ window.table = $(".data-table").DataTable({
       return formatMutations(data, window.maxMutations, window.view, window.gene);
     }
   }],
-  order: [[1, 'asc']]
+  order: [
+    [1, 'asc']
+  ],
+  "createdRow": function(row, data, dataIndex) {
+    if (data.errors.length > 0) {
+      $(row).addClass('table-danger');
+      return;
+    }
+    if (data.warnings.length > 0) {
+      $(row).addClass('table-warning');
+      return;
+    }
+  }
 });
 
 $('.data-table tbody').on('click', 'tr', function() {
@@ -60,8 +72,8 @@ $('.data-table tbody').on('click', 'tr', function() {
     },
     message: '<div style="height: 500px; overflow-y: scroll">' +
       renderWarningsAndErrors(data) +
-      '<b>Haplogroup</b>: ' + data.clade + '<br>' +
-      '<b>Quality</b>: ' + data.quality.toFixed(2) + '(' + data.found + ' of ' + data.expected + ' mutations found)<br><br>' +
+      '<b>Top Hit:</b><br><ul><li>' + data.clade +
+      ' (' + data.quality.toFixed(2) * 100 + '%)</li></ul>' +
       '<b>Other Hits:</b><br>' + formatHits(data) + ' <br>' +
       '<b>Ranges</b><br>' + formatRange(data.ranges) + '<br><br>' +
       '<b>Amino Acid Changes</b><br>' + formatMutations(data.annotatedPolymorphisms, 500, 'aac', '') + '<br><br>' +
@@ -159,11 +171,11 @@ function formatRange(data) {
   return result;
 }
 
-function formatHits(data){
+function formatHits(data) {
 
   var result = '<small><ol start="2" style="overflow-y: auto; height: 100px;">';
   for (var i = 0; i < data.otherClades.length; i++) {
-      result += '<li>' + data.otherClades[i] +' (' + data.otherQualities[i].toFixed(2) + ')</li>';
+    result += '<li>' + data.otherClades[i] + ' (' + data.otherQualities[i].toFixed(2) * 100 + '%)</li>';
   };
   result += "</ol></small>"
   return result;
@@ -191,17 +203,17 @@ function renderIssues(issues, type) {
   var result = "";
   for (var i = 0; i < issues.length; i++) {
     var label = issues[i].trim();
-    result += '<small><div class="alert alert-' + type +'" role="alert">' + label + '</div></small>';
+    result += '<small><div class="alert alert-' + type + '" role="alert">' + label + '</div></small>';
 
   }
   return result;
 }
 
 function renderIcon(data) {
-  if (data.errors.length > 0){
+  if (data.errors.length > 0) {
     return '<i class="fas fa-exclamation-circle text-danger"></i>';
   }
-  if (data.warnings.length > 0){
+  if (data.warnings.length > 0) {
     return '<i class="fas fa-exclamation-triangle text-warning"></i>';
   }
   return '<i class="fas fa-check-circle text-success"></i>';
