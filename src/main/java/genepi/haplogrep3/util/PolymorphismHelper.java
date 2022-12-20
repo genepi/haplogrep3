@@ -102,11 +102,7 @@ public class PolymorphismHelper {
 	}
 
 	public static String getLabel(Polymorphism polymorphism) {
-		if (polymorphism.isBackMutation()) {
-			return polymorphism.getPosition() + "!";
-
-		}
-		return polymorphism.getPosition() + polymorphism.getMutation().toString();
+		return polymorphism.toString();
 	}
 
 	public static String getType(Polymorphism polymorphism, Phylotree phylotree) {
