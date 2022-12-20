@@ -35,7 +35,7 @@ or download the [latest version](https://github.com/genepi/haplogrep3/releases/l
 haplogrep3 version
 ```
 
-The documentation is available at [http://haplogrep.readthedocs.io](http://haplogrep.readthedocs.io).
+The documentation is available at [http://haplogrep.readthedocs.io](http://haplogrep3.readthedocs.io).
 
 All releases are also available on [Github](https://github.com/genepi/haplogrep3/releases).
 
@@ -89,7 +89,7 @@ As the underlying tree is not static, there will become more trees or updates av
 haplogrep3 trees
 ```
 
-Moreover, you find the latest version of the tree in [GitHub](https://github.com/genepi/covgrep/blob/main/covgrep.yaml)
+Moreover, you find the latest version of the tree in [GitHub](https://github.com/genepi/haplogrep3/blob/main/covgrep.yaml)
 
 ## Starting the Haplogrep 3 web-application locally
 
