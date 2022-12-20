@@ -20,6 +20,12 @@ public class Job implements Runnable {
 
 	private int samples = 0;
 
+	private int samplesOk = 0;
+
+	private int samplesWarning = 0;
+
+	private int samplesError = 0;
+
 	private String hash;
 
 	private String phylotree;
@@ -70,6 +76,30 @@ public class Job implements Runnable {
 
 	public void setSamples(int samples) {
 		this.samples = samples;
+	}
+
+	public int getSamplesError() {
+		return samplesError;
+	}
+
+	public void setSamplesError(int samplesError) {
+		this.samplesError = samplesError;
+	}
+
+	public int getSamplesWarning() {
+		return samplesWarning;
+	}
+
+	public void setSamplesWarning(int samplesWarning) {
+		this.samplesWarning = samplesWarning;
+	}
+
+	public int getSamplesOk() {
+		return samplesOk;
+	}
+
+	public void setSamplesOk(int samplesOk) {
+		this.samplesOk = samplesOk;
 	}
 
 	public String getHash() {
@@ -225,6 +255,11 @@ public class Job implements Runnable {
 				save(task.getSamples());
 
 				setSamples(task.getSamples().size());
+				setSamplesOk(task.getSamplesOk());
+				setSamplesWarning(task.getSamplesWarning());
+				setSamplesError(task.getSamplesError());
+
+				
 				setExecutionTime(task.getExecutionTime());
 				setFinisehdOn(new Date());
 				setStatus(JobStatus.SUCCEDED);
