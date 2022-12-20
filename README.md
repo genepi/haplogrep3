@@ -70,7 +70,7 @@ Now you are ready to use Haplogrep 3 and to classify your first mtDNA haplogroup
 For the classification with Haplogrep 3, you need to provide a valid fasta file, and the output folder for the results, and the tree ID. The command is:
 
 ```sh
-haplogrep3 classify --hsd <Input File> --output <Output File> --tree <Tree Id>
+haplogrep3 classify --input <Input File> --output <Output File> --tree <Tree Id>
 ```
 
 ### Input File
