@@ -9,10 +9,15 @@ examples:
     name: example-microarray.vcf
     file: data/examples/example-microarray.vcf
     tree: "phylotree-fu-rcrs@1.0"
+    chip: true
   - id: evaluation-kg50-wgs-vcf
     name: example-WGS.vcf
     file: data/examples/example-wgs.vcf
-    tree: "phylotree-fu-rcrs@1.0"      
+    tree: "phylotree-fu-rcrs@1.0"
+  - id: evaluation-kg50-wgs-fasta
+    name: example-WGS.fasta
+    file: data/examples/example-wgs.fasta
+    tree: "phylotree-fu-rcrs@1.0"              
 
 repositories:
   - https://raw.githubusercontent.com/genepi/haplogrep-trees/main/trees.json
