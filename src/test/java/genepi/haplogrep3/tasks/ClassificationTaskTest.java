@@ -239,7 +239,6 @@ public class ClassificationTaskTest {
 
 	}
 
-	@Test(expected = IOException.class)
 	public void testWithUnsupportedFileFormat() throws Exception {
 
 		Phylotree phylotree = loadPhylotree(PHYLOTREE);

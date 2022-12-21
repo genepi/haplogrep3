@@ -56,6 +56,8 @@ public class Job implements Runnable {
 
 	private int hits = 20;
 
+	private boolean additionalOutput = false;
+
 	public static long EXPIRES_HOURS = 24 * 7;
 
 	private Job() {
@@ -190,8 +192,16 @@ public class Job implements Runnable {
 		return status;
 	}
 
+	public boolean isAdditionalOutput() {
+		return additionalOutput;
+	}
+
+	public void setAdditionalOutput(boolean additionalOutput) {
+		this.additionalOutput = additionalOutput;
+	}
+
 	public static Job create(String id, String workspace, Phylotree phylotree, List<File> files, Distance distance,
-			boolean chip, double hetLevel) {
+			boolean chip, double hetLevel, boolean additionalOutput) {
 		Job job = new Job();
 		job.setId(id);
 		job.setStatus(JobStatus.SUBMITTED);
@@ -205,6 +215,7 @@ public class Job implements Runnable {
 		job.distance = distance;
 		job.chip = chip;
 		job.hetLevel = hetLevel;
+		job.additionalOutput = additionalOutput;
 		job.save();
 		return job;
 	}
@@ -239,14 +250,18 @@ public class Job implements Runnable {
 						extendedReportFilename, ExportDataFormat.SIMPLE, _phylotree.getReference());
 				exportExtendedReportTask.run();
 
-				String seqqueneFilename = FileUtil.path(_workspace, getId(), "sequence");
-				ExportSequenceTask exportSequenceTask = new ExportSequenceTask(task.getSamples(), seqqueneFilename,
-						ExportSequenceFormat.FASTA, _phylotree.getReference());
-				exportSequenceTask.run();
+				if (additionalOutput) {
 
-				ExportSequenceTask exportSequenceMsaTask = new ExportSequenceTask(task.getSamples(), seqqueneFilename,
-						ExportSequenceFormat.FASTA_MSA, _phylotree.getReference());
-				exportSequenceMsaTask.run();
+					String seqqueneFilename = FileUtil.path(_workspace, getId(), "sequence");
+					ExportSequenceTask exportSequenceTask = new ExportSequenceTask(task.getSamples(), seqqueneFilename,
+							ExportSequenceFormat.FASTA, _phylotree.getReference());
+					exportSequenceTask.run();
+
+					ExportSequenceTask exportSequenceMsaTask = new ExportSequenceTask(task.getSamples(),
+							seqqueneFilename, ExportSequenceFormat.FASTA_MSA, _phylotree.getReference());
+					exportSequenceMsaTask.run();
+
+				}
 
 				String qcReportFilename = FileUtil.path(_workspace, getId(), "samples");
 				ExportQcReportTask exportQcReportTask = new ExportQcReportTask(task.getSamples(), qcReportFilename);
@@ -259,7 +274,6 @@ public class Job implements Runnable {
 				setSamplesWarning(task.getSamplesWarning());
 				setSamplesError(task.getSamplesError());
 
-				
 				setExecutionTime(task.getExecutionTime());
 				setFinisehdOn(new Date());
 				setStatus(JobStatus.SUCCEDED);

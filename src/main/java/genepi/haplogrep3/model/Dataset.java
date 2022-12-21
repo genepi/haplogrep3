@@ -14,6 +14,8 @@ public class Dataset {
 
 	private boolean chip = false;
 
+	private boolean additionalOutput = false;
+
 	public String getId() {
 		return id;
 	}
@@ -52,6 +54,14 @@ public class Dataset {
 
 	public void setChip(boolean chip) {
 		this.chip = chip;
+	}
+
+	public boolean isAdditionalOutput() {
+		return additionalOutput;
+	}
+
+	public void setAdditionalOutput(boolean additionalOutput) {
+		this.additionalOutput = additionalOutput;
 	}
 
 	public void updateParent(String parent) {
