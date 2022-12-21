@@ -6,7 +6,7 @@ nav:
 - Getting Stared: getting-started.md
 - Local Installation:
   - Installation: installation.md
-  - Parameters: parameters.md
+  - Command-line Parameters: parameters.md
 - Phylogenetic Trees:
   - Installation and Usage: trees.md
 - Algorithm Details:

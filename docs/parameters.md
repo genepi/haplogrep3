@@ -1,4 +1,4 @@
-# Command-line Version
+# Parameters
 
 After you have successfully installed Haplogrep on your local system, you can now run it with the following command.
 
