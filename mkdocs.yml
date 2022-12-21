@@ -11,6 +11,7 @@ nav:
   - Installation and Usage: trees.md
 - Details:
   - Input Formats: input-formats.md
+  - Mutation Colouring: mutations.md
   - Kulczynski Measure: kulczynski.md
   - Errors and Warnings: errors-warnings.md
 - FAQ: faq.md
