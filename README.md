@@ -8,6 +8,7 @@ Free mtDNA Haplogroup Classification Service
 
 We provide Haplogrep 3 as a [web-service](https://haplogrep.i-med.ac.at/haplogrep3) at the Medical University of Innsbruck. The service allows you upload the data to our service and run Haplogrep without any registration. Your input data is deleted right after classification. The results are available via a unique and shareable link for 7 days.
 
+## Documenation
 The documentation can be found [here](https://haplogrep.readthedocs.io/).
 
 ## Standalone Version
@@ -20,7 +21,7 @@ You will need the following things properly installed on your computer.
 
 Haplogrep works on Linux, macOS and Windows.
 
-A step by step installtion guide can be found [here](https://haplogrep.readthedocs.io/en/latest/installation/).
+A step by step installation guide can be found [here](https://haplogrep.readthedocs.io/en/latest/installation/).
 
 
 ## Contact
