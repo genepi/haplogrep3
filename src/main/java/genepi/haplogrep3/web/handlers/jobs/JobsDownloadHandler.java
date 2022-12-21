@@ -23,16 +23,18 @@ public class JobsDownloadHandler extends AbstractHandler {
 	public void handle(Context context) throws Exception {
 
 		String job = context.pathParam("job");
+		String cleanJob = new File(job).getName();
 
 		String fileId = context.pathParam("file");
+		String cleanFileId = new File(fileId).getName();
 
-		String filename = FileUtil.path(workspace, job, fileId);
+		String filename = FileUtil.path(workspace, cleanJob, cleanFileId);
 		File file = new File(filename);
 
 		if (file.exists()) {
 			context.result(new FileInputStream(file));
 		} else {
-			throw new Exception("Job " + job + " not found.");
+			throw new Exception("Job or file not found.");
 		}
 
 	}
