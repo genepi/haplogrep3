@@ -1,6 +1,6 @@
 # Parameters
 
-After you have successfully installed Haplogrep on your local system, you can now run it with the following command.
+After you have successfully [installed](../installation/) Haplogrep on your local system, you can now run it with the following command.
 
 ```
 ./haplogrep3 classify
