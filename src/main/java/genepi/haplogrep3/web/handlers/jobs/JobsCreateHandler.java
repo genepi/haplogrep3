@@ -76,10 +76,16 @@ public class JobsCreateHandler extends AbstractHandler {
 			distance = Distance.valueOf(distanceParam);
 		}
 
+		String additionalOutputParam = context.formParam("additional-output");
+		boolean additionalOutput = false;
+		if (additionalOutputParam != null) {
+			additionalOutput = additionalOutputParam.equalsIgnoreCase("true");
+		}
+		
 		Job job = null;
 		if (dataset == null) {
 			List<UploadedFile> uploadedFiles = context.uploadedFiles("files");
-			job = createJobFromUploadedFiles(phylotree, uploadedFiles, chip, hetLevel, distance);
+			job = createJobFromUploadedFiles(phylotree, uploadedFiles, chip, hetLevel, distance, additionalOutput);
 		} else {
 			job = createJobFromDataset(phylotree, dataset);
 		}
@@ -95,7 +101,7 @@ public class JobsCreateHandler extends AbstractHandler {
 	}
 
 	public Job createJobFromUploadedFiles(Phylotree phylotree, List<UploadedFile> uploadedFiles, boolean chip,
-			double hetLevel, Distance distance) throws Exception {
+			double hetLevel, Distance distance, boolean additionalOutput) throws Exception {
 
 		// check min 1 file uploaded and no empty files
 		boolean emptyFiles = true;
@@ -126,7 +132,7 @@ public class JobsCreateHandler extends AbstractHandler {
 		FileUtil.createDirectory(dataDirectory);
 		List<File> files = FileStorage.store(uploadedFiles, dataDirectory);
 
-		return Job.create(jobId, workspace, phylotree, files, distance, chip, hetLevel);
+		return Job.create(jobId, workspace, phylotree, files, distance, chip, hetLevel, additionalOutput);
 
 	}
 
@@ -154,7 +160,8 @@ public class JobsCreateHandler extends AbstractHandler {
 		List<File> files = new Vector<File>();
 		files.add(file);
 
-		return Job.create(jobId, workspace, phylotree, files, Distance.KULCZYNSKI, dataset.isChip(), 0.9);
+		return Job.create(jobId, workspace, phylotree, files, Distance.KULCZYNSKI, dataset.isChip(), 0.9,
+				dataset.isAdditionalOutput());
 
 	}
 
