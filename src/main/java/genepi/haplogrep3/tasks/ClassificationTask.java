@@ -41,7 +41,7 @@ public class ClassificationTask {
 	private int samplesWarning = 0;
 
 	private int samplesError = 0;
-	
+
 	public ClassificationTask(Phylotree phylotree, List<File> files, Distance distance) {
 		this.phylotree = phylotree;
 		this.files = files;
@@ -74,30 +74,36 @@ public class ClassificationTask {
 			return;
 		}
 
-		InputFileReaderFactory reader = new InputFileReaderFactory();
-		reader.setChip(chip);
-		reader.setHetLevel(hetLevel);
-		reader.setSkipAlignmentRules(skipAlignmentRules);
+		try {
 
-		SampleFile sampleFile = reader.read(files, phylotree);
+			InputFileReaderFactory reader = new InputFileReaderFactory();
+			reader.setChip(chip);
+			reader.setHetLevel(hetLevel);
+			reader.setSkipAlignmentRules(skipAlignmentRules);
 
-		phylotree.classify(sampleFile, distance, hits, skipAlignmentRules);
+			SampleFile sampleFile = reader.read(files, phylotree);
 
-		AnnotationTask annotationTask = new AnnotationTask(sampleFile, phylotree);
-		annotationTask.run();
-		samples = annotationTask.getAnnotatedSamples();
-		for (AnnotatedSample sample: samples) {
-			if (sample.hasErrors()) {
-				samplesError++;
-			} else if (sample.hasWarnings()) {
-				samplesWarning++;
-			} else {
-				samplesOk++;
+			phylotree.classify(sampleFile, distance, hits, skipAlignmentRules);
+
+			AnnotationTask annotationTask = new AnnotationTask(sampleFile, phylotree);
+			annotationTask.run();
+			samples = annotationTask.getAnnotatedSamples();
+			for (AnnotatedSample sample : samples) {
+				if (sample.hasErrors()) {
+					samplesError++;
+				} else if (sample.hasWarnings()) {
+					samplesWarning++;
+				} else {
+					samplesOk++;
+				}
 			}
+
+			end = System.currentTimeMillis();
+
+		} catch (Exception e) {
+			setError(e.getMessage());
+			return;
 		}
-		
-		
-		end = System.currentTimeMillis();
 
 	}
 
@@ -121,15 +127,15 @@ public class ClassificationTask {
 	public long getExecutionTime() {
 		return end - start;
 	}
-	
+
 	public int getSamplesOk() {
 		return samplesOk;
 	}
-	
+
 	public int getSamplesError() {
 		return samplesError;
 	}
-	
+
 	public int getSamplesWarning() {
 		return samplesWarning;
 	}

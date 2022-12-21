@@ -123,6 +123,9 @@ public class JobsCreateHandler extends AbstractHandler {
 		}
 
 		String jobId = RandomStringUtils.randomAlphanumeric(configuration.getJobIdLength());
+		while (new File(FileUtil.path(workspace, jobId + ".json")).exists()) {
+			jobId = RandomStringUtils.randomAlphanumeric(configuration.getJobIdLength());
+		}
 
 		String jobDirectory = FileUtil.path(workspace, jobId);
 		FileUtil.createDirectory(jobDirectory);
@@ -150,6 +153,9 @@ public class JobsCreateHandler extends AbstractHandler {
 		}
 
 		String jobId = RandomStringUtils.randomAlphanumeric(configuration.getJobIdLength());
+		while (new File(FileUtil.path(workspace, jobId + ".json")).exists()) {
+			jobId = RandomStringUtils.randomAlphanumeric(configuration.getJobIdLength());
+		}
 
 		String jobDirectory = FileUtil.path(workspace, jobId);
 		FileUtil.createDirectory(jobDirectory);

@@ -14,7 +14,8 @@ public class FileStorage {
 		List<File> files = new Vector<File>();
 		for (UploadedFile uploadedFile : uploadedFiles) {
 			if (uploadedFile.getSize() > 0) {
-				String filename = location + "/" + uploadedFile.getFilename();
+				String cleanFilename = new File(uploadedFile.getFilename()).getName();
+				String filename = location + "/" + cleanFilename;
 				FileUtil.streamToFile(uploadedFile.getContent(), filename);
 				File file = new File(filename);
 				files.add(file);
