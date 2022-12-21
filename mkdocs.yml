@@ -8,7 +8,7 @@ nav:
   - Installation: installation.md
   - Parameters: parameters.md
 - Phylogenetic Trees:
-  - Tree Installation: trees.md
+  - Installation and Usage: trees.md
 - Algorithm Details:
   - Input Formats: input-formats.md
   - Kulczynski Measure: kulczynski.md
