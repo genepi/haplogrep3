@@ -32,8 +32,9 @@ public class JobsShowHandler extends AbstractHandler {
 	public void handle(Context context) throws Exception {
 
 		String jobId = context.pathParam("job");
+		String cleanName = new File(jobId).getName();
 
-		String filename = FileUtil.path(workspace, jobId + ".json");
+		String filename = FileUtil.path(workspace, cleanName + ".json");
 		File jobFile = new File(filename);
 
 		if (jobFile.exists()) {
