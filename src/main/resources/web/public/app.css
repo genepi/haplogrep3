@@ -54,8 +54,16 @@
   color: #fff;
 }
 
-.badge-sgene {
-  border: 3px solid rgba(0, 0, 0, 0.35);
+.badge-hotspot {
+  background: #6f42c1;
+}
+
+.badge-local-private-mutation {
+  background: #fd7e14;
+}
+
+.badge-global-private-mutation {
+  background: #17a2b8;
 }
 
 .data-table {

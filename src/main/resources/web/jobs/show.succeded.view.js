@@ -91,10 +91,22 @@ $('.data-table tbody').on('click', 'tr', function() {
     },
     message: '<div style="height: 500px; overflow-y: scroll">' +
       renderWarningsAndErrors(data) +
-      '<b>Top Hit</b><br>' + data.clade +
+      '<b>Top Hit</b>' +
+      '<br>'+
+      data.clade +
       ' (' + data.quality.toFixed(2) * 100 + '%)<br><br>' +
-      '<b>Expected Mutations</b><br>' + formatMutationsNotFound(data.expectedMutations, 'nuc') + '<br><br>' +
-      '<b>Remaining Mutations</b><br>' + formatRemainingMutations(data.remainingMutations, 'nuc') + '<br><br>' +
+      '<b>Expected Mutations</b>' +
+      '&nbsp; '+
+      '<a href="https://haplogrep.readthedocs.io/en/latest/mutations/#expected-mutations" target="_blank" title="Help" class="col-form-label"> '+
+      '  <i class="fas fa-question-circle"></i> '+
+      '</a><br>'+
+      formatMutationsNotFound(data.expectedMutations, 'nuc') + '<br><br>' +
+      '<b>Remaining Mutations</b>' +
+      '&nbsp; '+
+      '<a href="https://haplogrep.readthedocs.io/en/latest/mutations/#remaining-mutations" target="_blank" title="Help" class="col-form-label"> '+
+      '  <i class="fas fa-question-circle"></i> '+
+      '</a><br>'+
+      formatRemainingMutations(data.remainingMutations, 'nuc') + '<br><br>' +
       '<b>Other Hits</b><br>' + formatHits(data) + ' <br>' +
       '<b>Ranges</b><br>' + formatRange(data.ranges) + '<br><br>' +
       //'<b>Amino Acid Changes</b><br>' + formatMutations(data.annotatedPolymorphisms, 500, 'aac', '') + '<br><br>' +
@@ -185,7 +197,7 @@ function formatRemainingMutations(data, view) {
       if (result != '') {
         result += ' ';
       }
-      result += '<span class="badge badge-' + (data[i].type == 'hotspot' ? 'success' : (data[i].type == 'local private mutation' ? 'info' : 'danger')) + '" title="' + data[i].type + '">' + label + '</span>';
+      result += '<span class="badge ' + (data[i].type == 'hotspot' ? 'badge-hotspot' : (data[i].type == 'local private mutation' ? 'badge-local-private-mutation' : 'badge-global-private-mutation')) + '" title="' + data[i].type + '">' + label + '</span>';
     }
   };
   return result;
