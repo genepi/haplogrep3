@@ -9,7 +9,7 @@ nav:
   - Command-line Parameters: parameters.md
 - Phylogenetic Trees:
   - Installation and Usage: trees.md
-- Algorithm Details:
+- Details:
   - Input Formats: input-formats.md
   - Kulczynski Measure: kulczynski.md
   - Errors and Warnings: errors-warnings.md
