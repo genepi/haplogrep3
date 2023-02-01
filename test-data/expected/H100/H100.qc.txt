@@ -1,2 +1,2 @@
-"SampleID"	"Type"	"Message"
-"Sample1"	"warning"	"The detected haplogroup quality 0,84 is moderate. Sample is marked yellow  (QUAL)"
+"SampleID"	"Haplogroup"	"Type"	"Message"	"Missing Mutations"	"Global Private Mutations"
+"Sample1"	"H100"	"warning"	"The detected haplogroup quality 0.84 is moderate. Sample is marked yellow  (QUAL)"	""	"1041G 9410G 13656C 16189C 16192T "
