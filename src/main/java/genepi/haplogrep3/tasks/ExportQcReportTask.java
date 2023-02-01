@@ -50,7 +50,7 @@ public class ExportQcReportTask {
 				writer.setString(TYPE, ERROR_TYPE);
 				writer.setString(MESSAGE, error);
 				writer.setString(MISSING_POLY, getMissingPolymorphisms(sample));
-				writer.setString(ADDITIONAL_POLY, getAddionalPolymorphisms(sample));
+				writer.setString(ADDITIONAL_POLY, getAdditionalPolymorphisms(sample));
 				writer.next();
 			}
 
@@ -60,7 +60,7 @@ public class ExportQcReportTask {
 				writer.setString(TYPE, WARNING_TYPE);
 				writer.setString(MESSAGE, warning);
 				writer.setString(MISSING_POLY, getMissingPolymorphisms(sample));
-				writer.setString(ADDITIONAL_POLY, getAddionalPolymorphisms(sample));
+				writer.setString(ADDITIONAL_POLY, getAdditionalPolymorphisms(sample));
 				writer.next();
 			}
 
@@ -70,7 +70,7 @@ public class ExportQcReportTask {
 				writer.setString(TYPE, INFO_TYPE);
 				writer.setString(MESSAGE, info);
 				writer.setString(MISSING_POLY, getMissingPolymorphisms(sample));
-				writer.setString(ADDITIONAL_POLY, getAddionalPolymorphisms(sample));
+				writer.setString(ADDITIONAL_POLY, getAdditionalPolymorphisms(sample));
 				writer.next();
 			}
 		}
@@ -90,7 +90,7 @@ public class ExportQcReportTask {
 		return missingPolys.trim();
 	}
 
-	private String getAddionalPolymorphisms(AnnotatedSample sample) {
+	private String getAdditionalPolymorphisms(AnnotatedSample sample) {
 		String remainingPolys = "";
 		for (AnnotatedPolymorphism poly : sample.getRemainingMutations()) {
 			if (poly.getType().contains("private")) {
