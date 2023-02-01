@@ -49,21 +49,8 @@ public class ExportQcReportTask {
 				writer.setString(HAPLOGROUP, sample.getClade());
 				writer.setString(TYPE, ERROR_TYPE);
 				writer.setString(MESSAGE, error);
-
-				String missingPolys = "";
-				for (AnnotatedPolymorphism poly : sample.getExpectedMutations()) {
-					if (!poly.isFound()) {
-						missingPolys += poly.getNuc() + " ";
-					}
-				}
-				writer.setString(MISSING_POLY, missingPolys);
-
-				String remainingPolys = "";
-				for (AnnotatedPolymorphism poly : sample.getRemainingMutations()) {
-					if (poly.getType().contains("private"))
-						remainingPolys += poly.getNuc() + " ";
-				}
-				writer.setString(ADDITIONAL_POLY, remainingPolys);
+				writer.setString(MISSING_POLY, getMissingPolymorphisms(sample));
+				writer.setString(ADDITIONAL_POLY, getAddionalPolymorphisms(sample));
 				writer.next();
 			}
 
@@ -72,27 +59,18 @@ public class ExportQcReportTask {
 				writer.setString(HAPLOGROUP, sample.getClade());
 				writer.setString(TYPE, WARNING_TYPE);
 				writer.setString(MESSAGE, warning);
-				String missingPolys = "";
-				for (AnnotatedPolymorphism poly : sample.getExpectedMutations()) {
-					if (!poly.isFound()) {
-						missingPolys += poly.getNuc() + " ";
-					}
-				}
-				writer.setString(MISSING_POLY, missingPolys);
-
-				String remainingPolys = "";
-				for (AnnotatedPolymorphism poly : sample.getRemainingMutations()) {
-					if (poly.getType().contains("private"))
-						remainingPolys += poly.getNuc() + " ";
-				}
-				writer.setString(ADDITIONAL_POLY, remainingPolys);
+				writer.setString(MISSING_POLY, getMissingPolymorphisms(sample));
+				writer.setString(ADDITIONAL_POLY, getAddionalPolymorphisms(sample));
 				writer.next();
 			}
+
 			for (String info : sample.getInfos()) {
 				writer.setString(SAMPLE_ID, sample.getSample());
 				writer.setString(HAPLOGROUP, sample.getClade());
 				writer.setString(TYPE, INFO_TYPE);
 				writer.setString(MESSAGE, info);
+				writer.setString(MISSING_POLY, getMissingPolymorphisms(sample));
+				writer.setString(ADDITIONAL_POLY, getAddionalPolymorphisms(sample));
 				writer.next();
 			}
 		}
@@ -100,6 +78,26 @@ public class ExportQcReportTask {
 
 		System.out.println("Written qc report to file " + filename);
 
+	}
+
+	private String getMissingPolymorphisms(AnnotatedSample sample) {
+		String missingPolys = "";
+		for (AnnotatedPolymorphism poly : sample.getExpectedMutations()) {
+			if (!poly.isFound()) {
+				missingPolys += poly.getNuc() + " ";
+			}
+		}
+		return missingPolys.trim();
+	}
+
+	private String getAddionalPolymorphisms(AnnotatedSample sample) {
+		String remainingPolys = "";
+		for (AnnotatedPolymorphism poly : sample.getRemainingMutations()) {
+			if (poly.getType().contains("private")) {
+				remainingPolys += poly.getNuc() + " ";
+			}
+		}
+		return remainingPolys.trim();
 	}
 
 }
