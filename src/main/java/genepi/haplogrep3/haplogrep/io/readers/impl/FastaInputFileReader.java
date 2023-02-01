@@ -21,7 +21,7 @@ public class FastaInputFileReader extends AbstractInputFileReader {
 	}
 
 	public boolean accepts(List<File> files, Phylotree phylotree) {
-		return hasFileExtensions(files, ".fasta", ".fasta.gz");
+		return hasFileExtensions(files, ".fasta", ".fasta.gz", ".fa", ".fa.gz");
 	}
 
 	public SampleFile read(List<File> files, Phylotree phylotree) throws Exception {
