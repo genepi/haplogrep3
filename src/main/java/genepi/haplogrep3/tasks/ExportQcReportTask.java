@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
 
+import genepi.haplogrep3.model.AnnotatedPolymorphism;
 import genepi.haplogrep3.model.AnnotatedSample;
 import genepi.io.table.writer.CsvTableWriter;
 
@@ -17,6 +18,12 @@ public class ExportQcReportTask {
 	private static final String ERROR_TYPE = "error";
 
 	private static final String MESSAGE = "Message";
+
+	private static final String HAPLOGROUP = "Haplogroup";
+
+	private static final String MISSING_POLY = "Missing Mutations";
+
+	private static final String ADDITIONAL_POLY = "Global Private Mutations";
 
 	private static final String TYPE = "Type";
 
@@ -35,22 +42,55 @@ public class ExportQcReportTask {
 	public void run() throws IOException {
 
 		CsvTableWriter writer = new CsvTableWriter(filename, '\t', true);
-		writer.setColumns(new String[] { SAMPLE_ID, TYPE, MESSAGE });
+		writer.setColumns(new String[] { SAMPLE_ID, HAPLOGROUP, TYPE, MESSAGE, MISSING_POLY, ADDITIONAL_POLY });
 		for (AnnotatedSample sample : samples) {
 			for (String error : sample.getErrors()) {
 				writer.setString(SAMPLE_ID, sample.getSample());
+				writer.setString(HAPLOGROUP, sample.getClade());
 				writer.setString(TYPE, ERROR_TYPE);
 				writer.setString(MESSAGE, error);
+
+				String missingPolys = "";
+				for (AnnotatedPolymorphism poly : sample.getExpectedMutations()) {
+					if (!poly.isFound()) {
+						missingPolys += poly.getNuc() + " ";
+					}
+				}
+				writer.setString(MISSING_POLY, missingPolys);
+
+				String remainingPolys = "";
+				for (AnnotatedPolymorphism poly : sample.getRemainingMutations()) {
+					if (poly.getType().contains("private"))
+						remainingPolys += poly.getNuc() + " ";
+				}
+				writer.setString(ADDITIONAL_POLY, remainingPolys);
 				writer.next();
 			}
+
 			for (String warning : sample.getWarnings()) {
 				writer.setString(SAMPLE_ID, sample.getSample());
+				writer.setString(HAPLOGROUP, sample.getClade());
 				writer.setString(TYPE, WARNING_TYPE);
 				writer.setString(MESSAGE, warning);
+				String missingPolys = "";
+				for (AnnotatedPolymorphism poly : sample.getExpectedMutations()) {
+					if (!poly.isFound()) {
+						missingPolys += poly.getNuc() + " ";
+					}
+				}
+				writer.setString(MISSING_POLY, missingPolys);
+
+				String remainingPolys = "";
+				for (AnnotatedPolymorphism poly : sample.getRemainingMutations()) {
+					if (poly.getType().contains("private"))
+						remainingPolys += poly.getNuc() + " ";
+				}
+				writer.setString(ADDITIONAL_POLY, remainingPolys);
 				writer.next();
 			}
 			for (String info : sample.getInfos()) {
 				writer.setString(SAMPLE_ID, sample.getSample());
+				writer.setString(HAPLOGROUP, sample.getClade());
 				writer.setString(TYPE, INFO_TYPE);
 				writer.setString(MESSAGE, info);
 				writer.next();
