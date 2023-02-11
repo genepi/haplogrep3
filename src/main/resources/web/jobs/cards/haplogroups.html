@@ -1,0 +1,14 @@
+<div class="card">
+  <div class="card-header">
+    Haplogroups
+  </div>
+  <div class="card-body">
+    <select  id="update-plot-haplogroups" class="form-control" style="width: 180px; display: inline;">
+    {{for index,group in job.statistics.groups}}
+      <option value="{{index}}">{{group.name}}</option>
+    {{end}}
+    </select>
+
+    <div id="plot-haplogroups"></div>
+  </div>
+</div>

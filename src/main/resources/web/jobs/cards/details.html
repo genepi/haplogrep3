@@ -1,0 +1,12 @@
+<div class="card">
+  <div class="card-header">
+    Details
+  </div>
+  <div class="card-body">
+    <small>
+    <i class="fas fa-sitemap text-primary"></i> <a href="{{routeUrl("phylogenies_show",{phylotree: job.phylotree})}}" target="_blank">{{job.phylotree}}</a><br>
+    <i class="fas fa-ruler text-primary"></i> {{job.distance.getLabel()}}<br>
+    <i class="fas fa-file-alt text-primary"></i> Uploaded file hash: <a href="javascript:bootbox.alert('comming soon');">SHA256</a><br>
+    <i class="fas fa-clock text-primary"></i> Submitted on {{job.submittedOn}}</small>
+  </div>
+</div>

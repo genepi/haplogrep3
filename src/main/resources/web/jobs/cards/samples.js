@@ -20,7 +20,8 @@ window.table = $(".data-table").DataTable({
       } else {
         return renderText(row);
       }
-    }
+    },
+    width: "20px"
   }, {
     "data": "sample"
   }, {
@@ -30,7 +31,8 @@ window.table = $(".data-table").DataTable({
       return renderProgressBar(row.quality);
     }
   }, {
-    "data": "ns"
+    "data": "ns",
+        width: "20px"
   }, {
     "data": "coverage"
   }, {
@@ -40,10 +42,15 @@ window.table = $(".data-table").DataTable({
     }
   }, {
     "data": "annotatedPolymorphisms",
-    "render": function(data) {
-      return formatMutations(data, window.maxMutations, window.view, window.gene);
+    "render": function(data, type) {
+        if (type == 'display'){
+          return formatMutations(data, window.maxMutations, window.view, window.gene);
+        } else {
+          return renderMutations(data, window.view, window.gene);
+        }
+      }
     }
-  }],
+  ],
   order: [
     [1, 'asc']
   ],
@@ -169,6 +176,23 @@ function formatMutations(data, maxMutations, view, gene) {
   return result;
 }
 
+function renderMutations(data, view) {
+
+  var result = '';
+  for (var i = 0; i < data.length; i++) {
+    var filtered = false;
+    var label = view == 'aac' ? data[i].aac : data[i].nuc;
+    if (label != undefined && label != '') {
+      if (result != '') {
+        result += ' ';
+      }
+      result += label;
+    }
+  };
+  return result;
+}
+
+
 function formatMutationsNotFound(data, view) {
 
   var result = '';
@@ -276,3 +300,8 @@ function renderText(data) {
   }
   return 'ok';
 }
+
+//adjust column size on tab switch
+$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+  window.table.columns.adjust();
+})

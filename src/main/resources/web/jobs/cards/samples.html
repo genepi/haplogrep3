@@ -1,0 +1,39 @@
+<div class="card">
+  <div class="card-header">
+Samples:&nbsp;&nbsp;
+<select  id="show_samples" class="form-control" style="width: 150px; display: inline;">
+  <option value="all">All ({{job.samples}})</option>
+  <option disabled>-------------</option>
+  <option value="ok">Passed ({{job.samplesOk}})</option>
+  <option value="warning">Warnings ({{job.samplesWarning}})</option>
+  <option value="error">Errors ({{job.samplesError}})</option>
+</select>
+&nbsp;&nbsp;
+
+Mutations:&nbsp;&nbsp;
+<select  id="show_all_mutations" class="form-control" style="width: 180px; display: inline;">
+  <option value="">first 8 mutations</option>
+  <option value="all">All</option>
+</select>
+</div>
+<div class="card-body">
+<table class="table table-hover data-table" style="width: 100%;">
+  <thead>
+    <th width = "20px"></th>
+    <th>Sample</th>
+    <th>Haplogroup</th>
+    <th>Quality</th>
+    <th>Ns</th>
+    <th>Coverage</th>
+    <th>Range</th>
+    <th>Mutations</th>
+  </thead>
+</table>
+
+<br><br>
+
+<small class="text-muted">
+  Classification Time: {{ job.executionTime / 1000 }} sec
+</small>
+</div>
+</div>

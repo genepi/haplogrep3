@@ -14,6 +14,8 @@ import core.Haplogroup;
 import core.Polymorphism;
 import core.Reference;
 import core.SampleFile;
+import genepi.haplogrep3.haplogrep.io.LabelsDto;
+import genepi.haplogrep3.haplogrep.io.LabelsReader;
 import genepi.haplogrep3.util.PolymorphismHelper;
 import genepi.io.FileUtil;
 import phylotree.PhyloTreeNode;
@@ -61,6 +63,10 @@ public class Phylotree {
 	private String[] genes = new String[0];
 
 	private HashSet<String> hotspots = new HashSet<>();
+
+	private LabelsDto labels;
+
+	private LabelsReader groups;
 
 	public Phylotree() {
 
@@ -214,6 +220,18 @@ public class Phylotree {
 	public void setHotspots(HashSet<String> hotspots) {
 		this.hotspots = hotspots;
 	}
+	
+	public void setLabels(LabelsDto labels) {
+		this.labels = labels;
+	}
+	
+	public LabelsDto getLabels() {
+		return labels;
+	}
+	
+	public LabelsReader getGroups() {
+		return groups;
+	}
 
 	public phylotree.Phylotree getPhylotreeInstance() {
 		return PhylotreeManager.getInstance().getPhylotree(getTree(), getWeights(), getReference(), getHotspots());
@@ -299,6 +317,9 @@ public class Phylotree {
 		if (alignmentRules != null) {
 			alignmentRules = FileUtil.path(parent, alignmentRules);
 		}
+		if (labels != null) {
+			labels.setFilename(FileUtil.path(parent, labels.getFilename()));
+		}
 	}
 
 	public static Phylotree load(File file) throws IOException {
@@ -310,8 +331,16 @@ public class Phylotree {
 		Reference reference = new Reference(phylotree.getFasta());
 		phylotree.setReference(reference);
 
+		phylotree.loadLabels();
+
 		return phylotree;
 
+	}
+
+	public void loadLabels() {
+		if (labels != null) {
+			groups = new LabelsReader(labels.getFilename(), labels.getGroups());
+		}
 	}
 
 	public List<Haplogroup> getHaplogroups() {

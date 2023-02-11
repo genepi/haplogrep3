@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 
 import genepi.haplogrep3.model.AnnotatedSample;
 import genepi.haplogrep3.model.Distance;
+import genepi.haplogrep3.model.HaplogroupStatistics;
 import genepi.haplogrep3.model.JobStatus;
 import genepi.haplogrep3.model.Phylotree;
 import genepi.haplogrep3.tasks.ExportReportTask.ExportDataFormat;
@@ -55,6 +56,8 @@ public class Job implements Runnable {
 	private double hetLevel = 0.9;
 
 	private int hits = 20;
+
+	private HaplogroupStatistics statistics;
 
 	private boolean additionalOutput = false;
 
@@ -274,6 +277,8 @@ public class Job implements Runnable {
 				setSamplesWarning(task.getSamplesWarning());
 				setSamplesError(task.getSamplesError());
 
+				statistics = new HaplogroupStatistics(task.getSamples(), _phylotree);
+
 				setExecutionTime(task.getExecutionTime());
 				setFinisehdOn(new Date());
 				setStatus(JobStatus.SUCCEDED);
@@ -300,6 +305,14 @@ public class Job implements Runnable {
 			FileUtil.deleteDirectory(dataDirectory);
 
 		}
+	}
+
+	public void setStatistics(HaplogroupStatistics statistics) {
+		this.statistics = statistics;
+	}
+
+	public HaplogroupStatistics getHaplogroupStatistics() {
+		return statistics;
 	}
 
 	protected synchronized void save() {

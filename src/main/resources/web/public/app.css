@@ -7,6 +7,10 @@
   user-select: none;
 }
 
+body {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
 @media (min-width: 768px) {
   .bd-placeholder-img-lg {
     font-size: 3.5rem;
@@ -23,7 +27,7 @@
   overflow-x: hidden;
   width: 100%;
   background-color: #ffffff;
-  padding-bottom: 120px;
+  padding-bottom: 15px;
 }
 
 #page-content {
