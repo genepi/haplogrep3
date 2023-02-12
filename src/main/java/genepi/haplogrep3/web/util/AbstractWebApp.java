@@ -14,7 +14,7 @@ public abstract class AbstractWebApp {
 
 	private static final String VIEW_EXTENSION = ".html";
 
-	public final String ROOT_DIR = "/web/public";
+	public static final String ROOT_DIR = "/web/public";
 
 	private int port;
 

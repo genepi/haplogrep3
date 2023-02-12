@@ -9,7 +9,7 @@ import core.TestSample;
 import genepi.haplogrep3.model.AnnotatedSample;
 import util.ExportUtils;
 
-public class ExportReportTask {
+public class ExportHaplogroupsTask {
 
 	private String filename;
 
@@ -25,7 +25,7 @@ public class ExportReportTask {
 
 	private ExportDataFormat format = ExportDataFormat.SIMPLE;
 
-	public ExportReportTask(List<AnnotatedSample> samples, String filename, ExportDataFormat format,
+	public ExportHaplogroupsTask(List<AnnotatedSample> samples, String filename, ExportDataFormat format,
 			Reference reference) {
 		this.samples = samples;
 		this.filename = filename;

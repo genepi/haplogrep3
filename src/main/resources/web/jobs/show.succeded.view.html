@@ -1,7 +1,6 @@
 {{ title = "Results" }}
 {{include "../layouts/header.view.html"}}
 
-
 <div style="padding-top: 70px; width: 100%; background-color: rgb(239,239,239);">
   <ul class="nav nav-tabs" id="myTab" role="tablist" style="width: 100%; padding-left: 30px; padding-right: 30px;">
     <li class="nav-item" role="presentation">
@@ -14,6 +13,8 @@
         Samples ({{job.samples}})
       </a>
     </li>
+
+    {{if !selfContained}}
     <li class="nav-item dropdown ml-auto">
       <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fas fa-download"></i> Export</a>
 
@@ -27,9 +28,12 @@
         <a class="dropdown-item" href="{{routeUrl("jobs_download", {job: job.id, file: "sequence.fasta"})}}" target="_blank"><i class="fas fa-file"></i> Fasta</a>
         <a class="dropdown-item" href="{{routeUrl("jobs_download", {job: job.id, file: "sequence_MSA.fasta"})}}" target="_blank"><i class="fas fa-file"></i> MSA Fasta</a>
         {{ end }}
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="{{routeUrl("jobs_download", {job: job.id, file: "haplogroups.zip"})}}" target="_blank"><i class="fas fa-file-archive"></i> Report and Data (Zip)</a>
+
       </div>
     </li>
-
+    {{end}}
 
   </ul>
 </div>
@@ -47,7 +51,9 @@
           <div>
             {{include "cards/quality-control.html"}}<br>
             {{include "cards/details.html"}}<br>
-            {{include "cards/share-url.html"}}
+            {{if !selfContained}}
+              {{include "cards/share-url.html"}}
+            {{end}}
           </div>
         </div>
     </div>
@@ -61,9 +67,13 @@
 </div>
 
 <script>
+{{include "cards/samples.data.js"}}
+{{include "cards/haplogroups.data.js"}}
+
 {{include "cards/samples.js"}}
 {{include "cards/haplogroups.js"}}
 {{include "cards/share-url.js"}}
 </script>
+
 
 {{include "../layouts/footer.view.html"}}

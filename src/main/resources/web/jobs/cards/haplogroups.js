@@ -1,5 +1,3 @@
-var statistics = {{json(job.statistics)}}
-
 var data = [{
   values: statistics.groups[0].values,
   labels: statistics.groups[0].clades,

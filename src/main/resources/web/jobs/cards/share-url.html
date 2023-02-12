@@ -1,6 +1,6 @@
 <div class="card">
   <div class="card-header">
-    Share
+     Share and Download
   </div>
   <div class="card-body">
     <p>
@@ -15,7 +15,11 @@
     <p style="margin-top:10px; margin-bottom: 0px;">
     <small>
     This link will expire on <b>{{job.expiresOn}}</b>.<br>Once it expires, the link is no longer valid.
-    </small>
-    </p>
+      </small>
+      </p>
+      <p style="margin-top:10px; margin-bottom: 0px;">
+    <a href="{{routeUrl("jobs_download", {job: job.id, file: "haplogroups.zip"})}}" class="btn btn-primary btn-sm"><i class="fas fa-file-archive"></i> Download Archive</a>
+  </p>
+
   </div>
 </div>

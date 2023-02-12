@@ -8,10 +8,11 @@ window.table = $(".data-table").DataTable({
   fixedHeader: {
     headerOffset: $('#navigation').outerHeight()
   },
-  ajax: {
+  /*ajax: {
     url: '{{routeUrl("jobs_download", {job: job.id, file: "clades.json"})}}',
     dataSrc: ''
-  },
+  },*/
+  data: samples,
   "columns": [{
     data: "hasError",
     "render": function(data, type, row) {

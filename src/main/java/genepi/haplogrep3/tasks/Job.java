@@ -11,7 +11,7 @@ import genepi.haplogrep3.model.Distance;
 import genepi.haplogrep3.model.HaplogroupStatistics;
 import genepi.haplogrep3.model.JobStatus;
 import genepi.haplogrep3.model.Phylotree;
-import genepi.haplogrep3.tasks.ExportReportTask.ExportDataFormat;
+import genepi.haplogrep3.tasks.ExportHaplogroupsTask.ExportDataFormat;
 import genepi.haplogrep3.tasks.ExportSequenceTask.ExportSequenceFormat;
 import genepi.io.FileUtil;
 
@@ -243,15 +243,15 @@ public class Job implements Runnable {
 
 			if (task.isSuccess()) {
 
-				String reportFilename = FileUtil.path(_workspace, getId(), "haplogroups.extended.csv");
-				ExportReportTask exportReportTask = new ExportReportTask(task.getSamples(), reportFilename,
-						ExportDataFormat.EXTENDED, _phylotree.getReference());
-				exportReportTask.run();
-
-				String extendedReportFilename = FileUtil.path(_workspace, getId(), "haplogroups.csv");
-				ExportReportTask exportExtendedReportTask = new ExportReportTask(task.getSamples(),
-						extendedReportFilename, ExportDataFormat.SIMPLE, _phylotree.getReference());
+				String extendedReportFilename = FileUtil.path(_workspace, getId(), "haplogroups.extended.csv");
+				ExportHaplogroupsTask exportExtendedReportTask = new ExportHaplogroupsTask(task.getSamples(),
+						extendedReportFilename, ExportDataFormat.EXTENDED, _phylotree.getReference());
 				exportExtendedReportTask.run();
+
+				String reportFilename = FileUtil.path(_workspace, getId(), "haplogroups.csv");
+				ExportHaplogroupsTask exportReportTask = new ExportHaplogroupsTask(task.getSamples(), reportFilename,
+						ExportDataFormat.SIMPLE, _phylotree.getReference());
+				exportReportTask.run();
 
 				if (additionalOutput) {
 
@@ -282,6 +282,20 @@ public class Job implements Runnable {
 				setExecutionTime(task.getExecutionTime());
 				setFinisehdOn(new Date());
 				setStatus(JobStatus.SUCCEDED);
+
+				// create html report and zip file with all needed files
+
+				String htmlReportFilename = FileUtil.path(_workspace, getId(), "haplogroups.html");
+				ExportHtmlReportTask htmlReportTask = new ExportHtmlReportTask(this, htmlReportFilename);
+				htmlReportTask.run();
+
+				String[] files = new String[] { extendedReportFilename, qcReportFilename + ".qc.txt",
+						htmlReportFilename };
+
+				String zipFilename = FileUtil.path(_workspace, getId(), "haplogroups.zip");
+				CreateZipFileTask createZipFileTask = new CreateZipFileTask(files, zipFilename);
+				createZipFileTask.run();
+
 				save();
 
 			} else {

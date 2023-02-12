@@ -18,6 +18,10 @@ public class RouteFunction implements BiFunction<String, Map<String, Object>, St
 	@Override
 	public String apply(String route, Map<String, Object> params) {
 
+		if (server == null) {
+			return "Routing not available";
+		}
+
 		AbstractHandler handler = server.getHandlerByName(route);
 		if (handler == null) {
 			// TODO: throw TemplateEngine Exception
