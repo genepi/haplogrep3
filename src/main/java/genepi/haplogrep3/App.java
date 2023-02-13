@@ -8,7 +8,6 @@ import genepi.haplogrep3.commands.AlignCommand;
 import genepi.haplogrep3.commands.BuildTreeCommand;
 import genepi.haplogrep3.commands.ClassifyCommand;
 import genepi.haplogrep3.commands.DistanceCommand;
-import genepi.haplogrep3.commands.ExportTreeCommand;
 import genepi.haplogrep3.commands.InstallTreeCommand;
 import genepi.haplogrep3.commands.ListTreesCommand;
 import genepi.haplogrep3.commands.ServerCommand;
@@ -119,7 +118,6 @@ public class App implements Runnable {
 		commandLine.addSubcommand("classify", new ClassifyCommand());
 		commandLine.addSubcommand("align", new AlignCommand());
 		commandLine.addSubcommand("distance", new DistanceCommand());
-		commandLine.addSubcommand("export-tree", new ExportTreeCommand());
 		commandLine.addSubcommand("build-tree", new BuildTreeCommand());
 		commandLine.addSubcommand("trees", new ListTreesCommand());
 		commandLine.addSubcommand("install-tree", new InstallTreeCommand());

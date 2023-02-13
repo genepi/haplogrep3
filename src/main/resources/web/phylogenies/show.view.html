@@ -27,12 +27,25 @@
       {{end}}
     </ul>
 
-    <p>
-      <b>Haplogroups ({{clades.size()}}):</b><br>
+
+{{if tree.getGroups() != null}}
+      {{for group in tree.getGroups().getGroups() }}
+      <h3>{{group.name}} ({{group.getLabels().size()}})</h3>
+
+            <p style="line-height: 250%">
+      {{for label in group.getLabels()}}
+      <a href="{{routeUrl("groups_show",{phylotree: tree.getIdWithVersion(), group: group.name, label: label})}}" class="btn btn-outline-primary btn-sm"><i class="fas fa-folder"></i> {{label}} ({{group.getHaplogroupsByLabel(label).size()}})</a>&nbsp;
+      {{end}}
+      </p>
+      {{end}}
+      {{else}}
+      <h3>Haplogroups ({{clades.size()}})</h3>
+      <p>
       {{for clade in clades}}
         <a class="badge badge-primary" href="{{routeUrl("clades_show", {phylotree:tree.getIdWithVersion(), clade:clade.toString()})}}">{{clade}}</a>
       {{end}}
-    </p>
+      </p>
+  {{end}}
     <br><br>
   </div>
 </div>

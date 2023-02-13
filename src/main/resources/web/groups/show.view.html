@@ -1,0 +1,38 @@
+{{ title = tree.name + " " + tree.version }}
+{{include "../layouts/header.view.html"}}
+
+<div id="page-content">
+  <div class="container">
+
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{routeUrl("phylogenies_index",{})}}">Phylogenies</a></li>
+        <li class="breadcrumb-item" aria-current="page"><a href="{{routeUrl("phylogenies_show",{phylotree: tree.getIdWithVersion()})}}">{{tree.name}} {{tree.version}}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{group.name}} - {{label}}</li>
+      </ol>
+    </nav>
+
+    <h1>{{group.name}}: {{label}}</h1>
+
+      <h4>Phylogenetic Tree</h4>
+      <div id="graph" style="width: 100%; height: 552px; border: 1px; border-style: solid;">
+      </div>
+      <br><br>
+      <h4>Included Haplogroups</h4>
+
+      {{for clade in clades}}
+      <a class="badge badge-primary" href="{{routeUrl("clades_show", {phylotree:tree.getIdWithVersion(), clade:clade.toString()})}}">{{clade}}</a>
+      {{end}}
+    <br><br>
+  </div>
+</div>
+
+{{includeScript("//d3js.org/d3.v5.min.js")}}
+{{includeScript("https://unpkg.com/@hpcc-js/wasm@0.3.11/dist/index.min.js")}}
+{{includeScript("https://unpkg.com/d3-graphviz@3.0.5/build/d3-graphviz.js")}}
+
+<script>
+{{include "show.view.js"}}
+</script>
+
+{{include "../layouts/footer.view.html"}}

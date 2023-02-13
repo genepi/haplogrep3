@@ -38,8 +38,21 @@ public class Group {
 		return "unkown";
 	}
 
+	public List<String> getLabels() {
+		return labels;
+	}
+
 	public String getName() {
 		return name;
+	}
+
+	public Set<String> getHaplogroupsByLabel(String label) {
+		for (int i = 0; i < labels.size(); i++) {
+			if (labels.get(i).equals(label)) {
+				return haplogroups.get(i);
+			}
+		}
+		return new HashSet<String>();
 	}
 
 }

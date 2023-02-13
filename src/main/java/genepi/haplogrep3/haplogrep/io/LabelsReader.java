@@ -31,5 +31,15 @@ public class LabelsReader {
 	public List<Group> getGroups() {
 		return groups;
 	}
+	
+	
+	public Group getGroupByName(String name) {
+		for (Group group: groups) {
+			if (group.getName().equals(name)) {
+				return group;
+			}
+		}
+		return null;
+	}
 
 }

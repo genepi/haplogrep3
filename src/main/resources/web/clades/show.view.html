@@ -7,13 +7,20 @@
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{routeUrl("phylogenies_index",{})}}">Phylogenies</a></li>
-        <li class="breadcrumb-item"><a href="{{routeUrl("phylogenies_show",{phylotree: tree.getIdWithVersion()})}}">{{tree.name}}</a></li>
+        <li class="breadcrumb-item"><a href="{{routeUrl("phylogenies_show",{phylotree: tree.getIdWithVersion()})}}">{{tree.name}} {{tree.version}}</a></li>
         <li class="breadcrumb-item active" aria-current="page">{{clade}}</li>
       </ol>
     </nav>
 
     <h1>{{clade}}</h1>
 
+    <h4>Phylogenetic Tree</h4>
+
+    <div id="graph" style="width: 100%; height: 252px; border: 1px; border-style: solid;">
+
+</div>
+<br>
+  <h4>Muttations</h4>
     <p>This haplogroup is defined by the following mutations:</p>
     <table>
       <tr>
@@ -21,7 +28,7 @@
           <p>
             <b>Nucleotide Changes</b><br>
             {{for polymorphism in polymorphisms}}
-              <span class="badge badge-info">{{polymorphism.nuc}}</span><br>
+              <a href="{{routeUrl("mutations_show", {phylotree:tree.getIdWithVersion(), mutation:polymorphism.nuc})}}"><span class="badge badge-info">{{polymorphism.nuc}}</span></a><br>
             {{end}}
           </p>
         </td>
@@ -42,5 +49,13 @@
 
   </div>
 </div>
+
+{{includeScript("//d3js.org/d3.v5.min.js")}}
+{{includeScript("https://unpkg.com/@hpcc-js/wasm@0.3.11/dist/index.min.js")}}
+{{includeScript("https://unpkg.com/d3-graphviz@3.0.5/build/d3-graphviz.js")}}
+
+<script>
+  {{include "show.view.js"}}
+</script>
 
 {{include "../layouts/footer.view.html"}}
