@@ -36,7 +36,7 @@ function drawChart(index){
   }
 
   chart = new Chart(
-      document.getElementById('acquisitions'), config);
+      document.getElementById('plot-haplogroups'), config);
 }
 
 $('#update-plot-haplogroups').on('change', function() {
