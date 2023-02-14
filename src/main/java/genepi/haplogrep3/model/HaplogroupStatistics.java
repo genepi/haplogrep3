@@ -20,29 +20,31 @@ public class HaplogroupStatistics {
 		List<String> clades = new Vector<String>();
 		List<Integer> values = new Vector<Integer>();
 
-		for (Group group : phylotree.getGroups().getGroups()) {
+		if (phylotree.getGroups() != null) {
+			for (Group group : phylotree.getGroups().getGroups()) {
 
-			clades = new Vector<String>();
-			values = new Vector<Integer>();
+				clades = new Vector<String>();
+				values = new Vector<Integer>();
 
-			for (AnnotatedSample sample : samples) {
-				String clade = sample.getClade();
-				String label = group.getLabel(clade);
-				int index = clades.indexOf(label);
-				if (index == -1) {
-					clades.add(label);
-					values.add(1);
-				} else {
-					int count = values.get(index);
-					values.set(index, count + 1);
+				for (AnnotatedSample sample : samples) {
+					String clade = sample.getClade();
+					String label = group.getLabel(clade);
+					int index = clades.indexOf(label);
+					if (index == -1) {
+						clades.add(label);
+						values.add(1);
+					} else {
+						int count = values.get(index);
+						values.set(index, count + 1);
+					}
 				}
-			}
 
-			HashMap<String, Object> object = new HashMap<String, Object>();
-			object.put("name", group.getName());
-			object.put("clades", clades);
-			object.put("values", values);
-			groups.add(object);
+				HashMap<String, Object> object = new HashMap<String, Object>();
+				object.put("name", group.getName());
+				object.put("clades", clades);
+				object.put("values", values);
+				groups.add(object);
+			}
 		}
 
 		clades = new Vector<String>();
