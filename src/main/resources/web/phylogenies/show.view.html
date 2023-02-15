@@ -30,8 +30,9 @@
 
 {{if tree.getGroups() != null}}
       {{for group in tree.getGroups().getGroups() }}
+      <hr>
       <h3>{{group.name}} ({{group.getLabels().size()}})</h3>
-
+      <p>This classification includes the following <b> {{group.getLabels().size()}} clusters</b>:</p>
             <p style="line-height: 250%">
       {{for label in group.getLabels()}}
       <a href="{{routeUrl("groups_show",{phylotree: tree.getIdWithVersion(), group: group.name, label: label})}}" class="btn btn-outline-primary btn-sm"><i class="fas fa-folder"></i> {{label}} ({{group.getHaplogroupsByLabel(label).size()}})</a>&nbsp;
