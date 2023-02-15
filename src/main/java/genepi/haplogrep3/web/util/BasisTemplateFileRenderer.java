@@ -16,6 +16,7 @@ import genepi.haplogrep3.web.util.functions.DoubleFormatFunction;
 import genepi.haplogrep3.web.util.functions.IncludeScriptFunction;
 import genepi.haplogrep3.web.util.functions.IncludeStyleFunction;
 import genepi.haplogrep3.web.util.functions.IsRouteActiveFunction;
+import genepi.haplogrep3.web.util.functions.NumberFormatFunction;
 import genepi.haplogrep3.web.util.functions.PercentageFunction;
 import genepi.haplogrep3.web.util.functions.RouteFunction;
 import genepi.haplogrep3.web.util.functions.ToJsonFunction;
@@ -90,6 +91,7 @@ public class BasisTemplateFileRenderer implements FileRenderer {
 		templateContext.set("toNumber", new ToNumberFunction());
 		templateContext.set("decimal", new DecimalFunction());
 		templateContext.set("formatDouble", new DoubleFormatFunction());
+		templateContext.set("formatNumber", new NumberFormatFunction());
 		templateContext.set("includeScript", new IncludeScriptFunction(this));
 		templateContext.set("includeStyle", new IncludeStyleFunction(this));
 		templateContext.set("json", new ToJsonFunction());
