@@ -29,6 +29,10 @@ public class LabelsWriter {
 		int countRows=0;
 		
 		for (Haplogroup haplogroup : haploList) {
+			
+			if (haplogroup.toString().equals("mt-MRCA"))
+				continue;
+			
 			String clade = getClade(haplogroup.toString());
 			String macroclade = getMacroClade(clade);
 
