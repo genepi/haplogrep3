@@ -60,7 +60,7 @@ public class AnnotationFileReader {
 
 		while (line != null) {
 
-			buffer = line.split("\t");
+			buffer = line.split("\t", -1);
 
 			String annoRef = buffer[indexRef];
 			String annoAlt = buffer[indexAlt];
