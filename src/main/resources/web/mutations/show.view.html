@@ -1,6 +1,7 @@
 {{ title = "Clade" }}
 {{include "../layouts/header.view.html"}}
 
+{{if minimal == false }}
 <div id="page-content">
   <div class="container">
 
@@ -11,12 +12,16 @@
         <li class="breadcrumb-item active" aria-current="page">{{mutation}}</li>
       </ol>
     </nav>
+{{end}}
 
     <h1>{{mutation}}</h1>
 
-    <p>Todo annotations and allele frequencey?:</p>
-    <p>Link to gonmead, mitoimpact, ...</p>
+    {{details}}
+
+
+{{if minimal == false }}
   </div>
 </div>
+{{end}}
 
 {{include "../layouts/footer.view.html"}}

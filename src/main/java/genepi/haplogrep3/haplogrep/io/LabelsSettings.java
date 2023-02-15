@@ -1,6 +1,6 @@
 package genepi.haplogrep3.haplogrep.io;
 
-public class LabelsDto {
+public class LabelsSettings {
 
 	private String filename;
 

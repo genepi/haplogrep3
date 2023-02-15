@@ -1,18 +1,27 @@
 package genepi.haplogrep3.web.handlers.mutations;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 import genepi.haplogrep3.App;
 import genepi.haplogrep3.config.Configuration;
+import genepi.haplogrep3.haplogrep.io.annotation.AnnotationFileReader;
+import genepi.haplogrep3.haplogrep.io.annotation.AnnotationSettings;
 import genepi.haplogrep3.model.Phylotree;
 import genepi.haplogrep3.model.PhylotreeRepository;
 import genepi.haplogrep3.web.handlers.phylogenies.PhylogeniesIndexHandler;
 import genepi.haplogrep3.web.util.AbstractHandler;
+import genepi.haplogrep3.web.util.BasisTemplateFileRenderer;
 import genepi.haplogrep3.web.util.Page;
 import io.javalin.http.Context;
 import io.javalin.http.HandlerType;
+import io.javalin.http.staticfiles.Location;
 
 public class MutationsShowHandler extends AbstractHandler {
 
-	public static final String PATH = PhylogeniesIndexHandler.PATH + "/{phylotree}/mutations/{mutation}";
+	public static final String PATH = PhylogeniesIndexHandler.PATH + "/{phylotree}/mutations/{pos}_{ref}_{alt}";
 
 	public static final HandlerType TYPE = HandlerType.GET;
 
@@ -30,11 +39,49 @@ public class MutationsShowHandler extends AbstractHandler {
 			throw new Exception("Phylotree " + phylotreeId + " not found.");
 		}
 
-		String mutation = context.pathParam("mutation");
+		String posString = context.pathParam("pos");
+		String ref = context.pathParam("ref");
+		String alt = context.pathParam("alt");
+		
+		String minimalQueryParam = context.queryParam("minimal");
+		boolean minimal = (minimalQueryParam != null) &&(minimalQueryParam.equalsIgnoreCase("true"));
+
+		int pos = Integer.parseInt(posString);
+
+		Map<String, Object> values = new HashMap<String, Object>();
+		for (AnnotationSettings annotation : phylotree.getAnnotations()) {
+			if (phylotree.getAnnotations() != null) {
+				AnnotationFileReader reader = new AnnotationFileReader(annotation.getFilename(),
+						annotation.getProperties(), true, annotation.getRefAllele(), annotation.getAltAllele());
+				Map<String, String> result = reader.query(annotation.getChr(), pos, ref, alt);
+				if (result != null) {
+					values.putAll(result);
+				}
+				reader.close();
+			}
+		}
+
+		String details = "";
+		if (phylotree.getTemplate() != null) {
+			File template = new File(phylotree.getTemplate());
+
+			if (!template.exists()) {
+				throw new IOException("Template file '" + template.getAbsolutePath() + "' not found.");
+			}
+
+			BasisTemplateFileRenderer render = new BasisTemplateFileRenderer(template.getParentFile().getAbsolutePath(),
+					Location.EXTERNAL, null);
+			Map<String, Object> model = new HashMap<String, Object>();
+			model.put("annotations", values);
+			details = render.render(template.getName(), model);
+		}
 
 		Page page = new Page(context, TEMPLATE);
 		page.put("tree", phylotree);
-		page.put("mutation", mutation);
+		page.put("mutation", pos + " (" + ref + ">" + alt + ")");
+		page.put("details", details);
+		page.put("values", values);
+		page.put("minimal", minimal);
 		page.render();
 
 	}

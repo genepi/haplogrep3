@@ -19,6 +19,7 @@ import genepi.haplogrep3.web.util.functions.IsRouteActiveFunction;
 import genepi.haplogrep3.web.util.functions.PercentageFunction;
 import genepi.haplogrep3.web.util.functions.RouteFunction;
 import genepi.haplogrep3.web.util.functions.ToJsonFunction;
+import genepi.haplogrep3.web.util.functions.ToNumberFunction;
 import genepi.io.FileUtil;
 import io.javalin.http.Context;
 import io.javalin.http.HandlerType;
@@ -86,6 +87,7 @@ public class BasisTemplateFileRenderer implements FileRenderer {
 
 		// Add default functions
 		templateContext.set("percentage", new PercentageFunction());
+		templateContext.set("toNumber", new ToNumberFunction());
 		templateContext.set("decimal", new DecimalFunction());
 		templateContext.set("formatDouble", new DoubleFormatFunction());
 		templateContext.set("includeScript", new IncludeScriptFunction(this));

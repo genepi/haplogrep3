@@ -25,7 +25,7 @@ public class Page extends HashMap<String, Object> {
 		put("baseUrl", App.getDefault().getConfiguration().getBaseUrl());
 		put("debug", App.isDevelopmentSystem());
 		put("selfContained", false);
-
+		put("minimal", false);
 	}
 
 	public void render() {

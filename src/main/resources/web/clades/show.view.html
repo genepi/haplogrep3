@@ -21,30 +21,42 @@
 </div>
 <br>
   <h4>Mutations</h4>
-    <p>This haplogroup is defined by the following mutations:</p>
-    <table>
-      <tr>
-        <td style="width: 200px;">
-          <p>
-            <b>Nucleotide Changes</b><br>
-            {{for polymorphism in polymorphisms}}
-              <a href="{{routeUrl("mutations_show", {phylotree:tree.getIdWithVersion(), mutation:polymorphism.nuc})}}"><span class="badge badge-info">{{polymorphism.nuc}}</span></a><br>
+    <p>This haplogroup is defined by the following <b> {{polymorphisms.size()}} mutations</b>:</p>
+    <table class="table table-sm table-hover">
+      <thead>
+        <th>Mutation</th>
+        <th>Ref</th>
+        <th>Alt</th>
+        {{for annotation in annotations}}
+          {{for property in annotation.getProperties()}}
+            {{if (property.isShow())}}
+              <th>{{property.getName()}}</th>
             {{end}}
-          </p>
-        </td>
-        <td>
-          <p>
-            <b>Amino Acid Changes</b><br>
-            {{for polymorphism in polymorphisms}}
-              {{if polymorphism.aac != null}}
-                <span class="badge badge-info">{{polymorphism.aac}}</span> <br>
-              {{else}}
-              <br>
+          {{end}}
+        {{end}}
+      </thead>
+      <tbody>
+        {{for polymorphism in polymorphisms}}
+        <tr>
+          <td style="width: 200px;">
+            <a href="{{routeUrl("mutations_show", {phylotree:tree.getIdWithVersion(), pos:polymorphism.position, ref:polymorphism.ref, alt:polymorphism.alt})}}"><span class="badge badge-info">{{polymorphism.nuc}}</span></a><br>
+          </td>
+          <td>
+            {{polymorphism.ref}}
+          </td>
+          <td>
+            {{polymorphism.alt}}
+          </td>
+          {{for annotation in annotations}}
+            {{for property in annotation.getProperties()}}
+              {{if (property.isShow())}}
+                <td>{{polymorphism.getAnnotations().get(property.getColumn())}}</td>
               {{end}}
             {{end}}
-          </p>
-        </td>
-      </tr>
+          {{end}}
+        </tr>
+        {{end}}
+      </tbody>
     </table>
 
   </div>

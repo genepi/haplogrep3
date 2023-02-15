@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import com.esotericsoftware.yamlbeans.YamlReader;
@@ -14,8 +15,11 @@ import core.Haplogroup;
 import core.Polymorphism;
 import core.Reference;
 import core.SampleFile;
-import genepi.haplogrep3.haplogrep.io.LabelsDto;
 import genepi.haplogrep3.haplogrep.io.LabelsReader;
+import genepi.haplogrep3.haplogrep.io.LabelsSettings;
+import genepi.haplogrep3.haplogrep.io.annotation.AnnotationColumn;
+import genepi.haplogrep3.haplogrep.io.annotation.AnnotationFileReader;
+import genepi.haplogrep3.haplogrep.io.annotation.AnnotationSettings;
 import genepi.haplogrep3.util.PolymorphismHelper;
 import genepi.io.FileUtil;
 import phylotree.PhyloTreeNode;
@@ -64,9 +68,13 @@ public class Phylotree {
 
 	private HashSet<String> hotspots = new HashSet<>();
 
-	private LabelsDto labels;
+	private LabelsSettings labels;
 
 	private LabelsReader groups;
+
+	private String template;
+
+	private List<AnnotationSettings> annotations = new Vector<AnnotationSettings>();
 
 	public Phylotree() {
 
@@ -220,21 +228,37 @@ public class Phylotree {
 	public void setHotspots(HashSet<String> hotspots) {
 		this.hotspots = hotspots;
 	}
-	
-	public void setLabels(LabelsDto labels) {
+
+	public void setLabels(LabelsSettings labels) {
 		this.labels = labels;
 	}
-	
-	public LabelsDto getLabels() {
+
+	public LabelsSettings getLabels() {
 		return labels;
 	}
-	
+
+	public List<AnnotationSettings> getAnnotations() {
+		return annotations;
+	}
+
+	public void setAnnotations(List<AnnotationSettings> annotations) {
+		this.annotations = annotations;
+	}
+
 	public LabelsReader getGroups() {
 		return groups;
 	}
 
 	public phylotree.Phylotree getPhylotreeInstance() {
 		return PhylotreeManager.getInstance().getPhylotree(getTree(), getWeights(), getReference(), getHotspots());
+	}
+
+	public String getTemplate() {
+		return template;
+	}
+
+	public void setTemplate(String template) {
+		this.template = template;
 	}
 
 	public void classify(SampleFile sampleFile, Distance distance, int hits, boolean skipAlignmentRules)
@@ -320,11 +344,20 @@ public class Phylotree {
 		if (labels != null) {
 			labels.setFilename(FileUtil.path(parent, labels.getFilename()));
 		}
+		if (template != null) {
+			template = FileUtil.path(parent, template);
+		}
+		for (AnnotationSettings annotation : annotations) {
+			annotation.setFilename(FileUtil.path(parent, annotation.getFilename()));
+		}
 	}
 
 	public static Phylotree load(File file) throws IOException {
 
 		YamlReader reader = new YamlReader(new FileReader(file));
+		reader.getConfig().setPropertyElementType(Phylotree.class, "annotations", AnnotationSettings.class);
+		reader.getConfig().setPropertyElementType(AnnotationSettings.class, "properties", AnnotationColumn.class);
+
 		Phylotree phylotree = reader.read(Phylotree.class);
 		phylotree.updateParent(file.getAbsoluteFile().getParent());
 
@@ -385,6 +418,28 @@ public class Phylotree {
 		} else {
 			return id + "@" + version;
 		}
+	}
+
+	public void annotate(List<AnnotatedPolymorphism> polymorphisms) throws IOException {
+
+		for (AnnotationSettings annotation : annotations) {
+
+			AnnotationFileReader reader = new AnnotationFileReader(annotation.getFilename(), annotation.getProperties(),
+					true, annotation.getRefAllele(), annotation.getAltAllele());
+
+			for (AnnotatedPolymorphism polymorphism : polymorphisms) {
+
+				Map<String, String> result = reader.query(annotation.getChr(), polymorphism.getPosition(),
+						polymorphism.getRef(), polymorphism.getAlt());
+				if (result != null) {
+					polymorphism.getAnnotations().putAll(result);
+				}
+
+			}
+
+			reader.close();
+		}
+
 	}
 
 }

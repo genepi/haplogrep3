@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 
 import genepi.haplogrep3.commands.AlignCommand;
+import genepi.haplogrep3.commands.AnnotationIndexCommand;
 import genepi.haplogrep3.commands.BuildTreeCommand;
 import genepi.haplogrep3.commands.ClassifyCommand;
 import genepi.haplogrep3.commands.DistanceCommand;
@@ -121,6 +122,7 @@ public class App implements Runnable {
 		commandLine.addSubcommand("build-tree", new BuildTreeCommand());
 		commandLine.addSubcommand("trees", new ListTreesCommand());
 		commandLine.addSubcommand("install-tree", new InstallTreeCommand());
+		commandLine.addSubcommand("annotation-index", new AnnotationIndexCommand());
 		commandLine.setExecutionStrategy(new CommandLine.RunLast());
 		int result = commandLine.execute(args);
 		System.exit(result);
