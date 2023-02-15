@@ -14,16 +14,27 @@
 
     <h1>{{group.name}}: {{label}}</h1>
 
-      <h4>Phylogenetic Tree</h4>
-      <div id="graph" style="width: 100%; height: 552px; border: 1px; border-style: solid;">
-      </div>
-      <br><br>
-      <h4>Included Haplogroups</h4>
-
-      {{for clade in clades}}
-      <a class="badge badge-primary" href="{{routeUrl("clades_show", {phylotree:tree.getIdWithVersion(), clade:clade.toString()})}}">{{clade}}</a>
-      {{end}}
+    <h4>Phylogenetic Tree</h4>
+    <div id="graph" style="width: 100%; height: 552px; border: 1px; border-style: solid;">
+    </div>
     <br><br>
+
+    <h4>Included Haplogroups</h4>
+    <p>This cluster includes the following <b> {{clades.size()}} haplogroups</b>:</p>
+    <table class="table table-sm table-hover">
+      <thead>
+        <th>Haplogroup</th>
+      </thead>
+      <tbody>
+      {{for clade in clades}}
+      <tr class="clickable-tr" data-href="{{routeUrl("clades_show", {phylotree:tree.getIdWithVersion(), clade:clade.toString()})}}">
+        <td class="">
+          <span class="badge badge-primary">{{clade}}</span>
+        </td>
+      </tr>
+      {{end}}
+      </tbody>
+    </table>
   </div>
 </div>
 

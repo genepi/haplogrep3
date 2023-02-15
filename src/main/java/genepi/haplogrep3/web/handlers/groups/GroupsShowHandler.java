@@ -1,6 +1,9 @@
 package genepi.haplogrep3.web.handlers.groups;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
+import java.util.Vector;
 
 import genepi.haplogrep3.App;
 import genepi.haplogrep3.config.Configuration;
@@ -42,14 +45,17 @@ public class GroupsShowHandler extends AbstractHandler {
 		String label = context.pathParam("label");
 
 		Set<String> haplogroups = group.getHaplogroupsByLabel(label);
-
 		Graph graph = PhylotreeGraphBuilder.build(phylotree, haplogroups);
-
+		
+		List<String> sortedHaplogroups = new Vector<String>(haplogroups);
+		Collections.sort(sortedHaplogroups);
+		
+		
 		Page page = new Page(context, TEMPLATE);
 		page.put("tree", phylotree);
 		page.put("group", group);
 		page.put("label", label);
-		page.put("clades", haplogroups);
+		page.put("clades", sortedHaplogroups);
 		page.put("graph", graph);
 		page.render();
 

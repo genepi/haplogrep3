@@ -12,3 +12,8 @@ function interactive() {
   });
   nodes.style("cursor", "pointer");
 }
+
+$(".clickable-tr").on('click', function () {
+    var row = $(this).closest("tr")
+    window.location = row.data('href');
+});
