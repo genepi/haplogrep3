@@ -23,6 +23,9 @@ public class MutationsShowHandler extends AbstractHandler {
 
 	public static final String PATH = PhylogeniesIndexHandler.PATH + "/{phylotree}/mutations/{pos}_{ref}_{alt}";
 
+	public static final String PATH_WITH_HAPLOGROUP = PhylogeniesIndexHandler.PATH
+			+ "/{phylotree}/haplogroups/{clade}/mutations/{pos}_{ref}_{alt}";
+
 	public static final HandlerType TYPE = HandlerType.GET;
 
 	public static final String TEMPLATE = "web/mutations/show.view.html";
@@ -30,6 +33,12 @@ public class MutationsShowHandler extends AbstractHandler {
 	private PhylotreeRepository treeRepository = App.getDefault().getTreeRepository();
 
 	private Configuration configuration = App.getDefault().getConfiguration();
+
+	private boolean withClade = false;
+
+	public MutationsShowHandler(boolean withClade) {
+		this.withClade = withClade;
+	}
 
 	public void handle(Context context) throws Exception {
 
@@ -42,9 +51,9 @@ public class MutationsShowHandler extends AbstractHandler {
 		String posString = context.pathParam("pos");
 		String ref = context.pathParam("ref");
 		String alt = context.pathParam("alt");
-		
 		String minimalQueryParam = context.queryParam("minimal");
-		boolean minimal = (minimalQueryParam != null) &&(minimalQueryParam.equalsIgnoreCase("true"));
+
+		boolean minimal = (minimalQueryParam != null) && (minimalQueryParam.equalsIgnoreCase("true"));
 
 		int pos = Integer.parseInt(posString);
 
@@ -73,6 +82,11 @@ public class MutationsShowHandler extends AbstractHandler {
 					Location.EXTERNAL, null);
 			Map<String, Object> model = new HashMap<String, Object>();
 			model.put("annotations", values);
+			model.put("position", pos);
+			model.put("ref", ref);
+			model.put("alt", alt);
+			model.put("reference", phylotree.getCategory());
+			model.put("phylotree", phylotree.getName() + " (" + phylotree.getVersion() + ")");
 			details = render.render(template.getName(), model);
 		}
 
@@ -81,6 +95,13 @@ public class MutationsShowHandler extends AbstractHandler {
 		page.put("mutation", pos + " (" + ref + ">" + alt + ")");
 		page.put("details", details);
 		page.put("values", values);
+
+		if (withClade) {
+			String haplogroup = context.pathParam("clade");
+			page.put("clade", haplogroup);
+		} else {
+			page.put("clade", "");
+		}
 		page.put("minimal", minimal);
 		page.render();
 
@@ -88,7 +109,11 @@ public class MutationsShowHandler extends AbstractHandler {
 
 	@Override
 	public String getPath() {
-		return configuration.getBaseUrl() + PATH;
+		if (withClade) {
+			return configuration.getBaseUrl() + PATH_WITH_HAPLOGROUP;
+		} else {
+			return configuration.getBaseUrl() + PATH;
+		}
 	}
 
 	@Override

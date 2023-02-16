@@ -91,5 +91,10 @@ public class Graph {
 		return buffer.toString();
 
 	}
+	
+	public List<String> toList( String padding, Set<String> nodes) {
+		List<String> result = new Vector<String>();
+		return result;
+	 }
 
 }

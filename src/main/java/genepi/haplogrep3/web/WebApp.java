@@ -30,7 +30,8 @@ public class WebApp extends AbstractWebApp {
 		route("phylogenies_show", new PhylogeniesShowHandler());
 		route("clades_show", new CladesShowHandler());
 		route("groups_show", new GroupsShowHandler());
-		route("mutations_show", new MutationsShowHandler());
+		route("mutations_show", new MutationsShowHandler(false));
+		route("mutations_with_clade_show", new MutationsShowHandler(true));
 	}
 
 	@Override

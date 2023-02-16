@@ -8,7 +8,7 @@ public class AnnotationIndexFileCommandTest {
 	@Test
 	public void testWithHsd() throws Exception {
 		AnnotationIndexCommand command = new AnnotationIndexCommand();
-		command.setFile("trees/phylotree-fu-rcrs/1.0/annotations/rCRS_annotation_2023-02-15_2.txt.gz");
+		command.setFile("/Users/lukfor/Development/git/phylotree-fu-rcrs/src/annotations/gnomad.genomes.v3.1.sites.chrM.reduced_annotations.tsv.gz");
 		command.setSkip(1);
 		command.setStart(2);
 		command.call();

@@ -9,12 +9,17 @@
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{routeUrl("phylogenies_index",{})}}">Phylogenies</a></li>
         <li class="breadcrumb-item"><a href="{{routeUrl("phylogenies_show",{phylotree: tree.getIdWithVersion()})}}">{{tree.name}} {{tree.version}}</a></li>
+        {{if (clade != "")}}
+          <li class="breadcrumb-item"><a href="{{routeUrl("clades_show", {phylotree:tree.getIdWithVersion(), clade:clade})}}">{{clade}}</a></li>
+        {{end}}
         <li class="breadcrumb-item active" aria-current="page">{{mutation}}</li>
       </ol>
     </nav>
-{{end}}
 
     <h1>{{mutation}}</h1>
+
+{{end}}
+
 
     {{details}}
 

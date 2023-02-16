@@ -73,3 +73,17 @@ body {
 .data-table {
   cursor: pointer;
 }
+
+.mutation {
+  cursor: pointer;
+}
+
+.clickable-tr {
+  cursor: pointer;
+}
+
+.clickable-td a { 
+   display: block;
+   border: 1px solid black;
+   padding: 16px;
+}
