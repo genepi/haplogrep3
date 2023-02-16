@@ -87,6 +87,7 @@ public class MutationsShowHandler extends AbstractHandler {
 			model.put("alt", alt);
 			model.put("reference", phylotree.getCategory());
 			model.put("phylotree", phylotree.getName() + " (" + phylotree.getVersion() + ")");
+			model.put("minimal", minimal);
 			details = render.render(template.getName(), model);
 		}
 
@@ -95,7 +96,10 @@ public class MutationsShowHandler extends AbstractHandler {
 		page.put("mutation", pos + " (" + ref + ">" + alt + ")");
 		page.put("details", details);
 		page.put("values", values);
-
+		page.put("position", pos);
+		page.put("ref", ref);
+		page.put("alt", alt);
+		
 		if (withClade) {
 			String haplogroup = context.pathParam("clade");
 			page.put("clade", haplogroup);

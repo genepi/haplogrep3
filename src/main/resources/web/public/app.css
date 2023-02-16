@@ -82,8 +82,16 @@ body {
   cursor: pointer;
 }
 
-.clickable-td a { 
+.clickable-td a {
    display: block;
    border: 1px solid black;
    padding: 16px;
+}
+
+.scroll-modal-body-horizontal{
+    max-width: 80%;
+}
+
+.selected-mutation {
+border: 2px solid #000000;
 }

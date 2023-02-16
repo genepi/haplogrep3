@@ -15,15 +15,26 @@
         <li class="breadcrumb-item active" aria-current="page">{{mutation}}</li>
       </ol>
     </nav>
-
-    <h1>{{mutation}}</h1>
-
 {{end}}
 
+<div class="container" style="padding: 15px;">
+  <div class="row">
+    <div class="col-12"</div>
+      {{if minimal == false }}
+        <h1>{{mutation}}</h1>
+      {{else}}
+        <b>{{mutation}}</b> &nbsp; &nbsp; &nbsp;
+        <a href="{{routeUrl("mutations_with_clade_show", {phylotree:tree.getIdWithVersion(), pos:position, ref:ref, alt:alt, clade: clade})}}" target="_blank">
+          More Details
+        </a>
+        <br>
+      {{end}}
+    </div>
+  </div>
 
     {{details}}
 
-
+</div>
 {{if minimal == false }}
   </div>
 </div>

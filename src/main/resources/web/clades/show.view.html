@@ -37,7 +37,7 @@
       </thead>
       <tbody>
         {{for polymorphism in polymorphisms}}
-        <tr class="clickable-tr" data-href="{{routeUrl("mutations_show", {phylotree:tree.getIdWithVersion(), pos:polymorphism.position, ref:polymorphism.ref, alt:polymorphism.alt})}}">
+        <tr class="clickable-tr" data-href="{{routeUrl("mutations_with_clade_show", {phylotree:tree.getIdWithVersion(), pos:polymorphism.position, ref:polymorphism.ref, alt:polymorphism.alt, clade: clade})}}">
           <td style="width: 200px;">
             <span class="badge badge-info">{{polymorphism.nuc}}</span><br>
           </td>

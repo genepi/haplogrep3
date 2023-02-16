@@ -97,32 +97,46 @@ $('.data-table tbody').on('click', 'tr', function() {
         }
       }
     },
-    message: '<div style="height: 500px; overflow-y: scroll">' +
+    message: '' +
+      '<div class="container-fill">' +
+      '<div class="row">' +
+      '<div class="col-md-8">' +
+      '<div class="card" style="padding-right: 0px;">' +
+      '<div style="height: 500px; overflow-y: scroll; padding: 10px;">' +
       renderWarningsAndErrors(data) +
       '<b>Top Hit</b>' +
       '<br>'+
-      data.clade +
+      '<b><a href="/phylogenies/{{job.phylotree}}/haplogroups/' + data.clade + '" target="_blank">' + data.clade + '</a></b>' +
       ' (' + data.quality.toFixed(2) * 100 + '%)<br><br>' +
       '<b>Expected Mutations</b>' +
       '&nbsp; '+
       '<a href="https://haplogrep.readthedocs.io/en/latest/mutations/#expected-mutations" target="_blank" title="Help" class="col-form-label"> '+
       '  <i class="fas fa-question-circle"></i> '+
       '</a><br>'+
-      formatMutationsNotFound(data.expectedMutations, 'nuc') + '<br><br>' +
+      formatMutationsNotFound(data.expectedMutations, 'nuc', data.clade) + '<br><br>' +
       '<b>Remaining Mutations</b>' +
       '&nbsp; '+
       '<a href="https://haplogrep.readthedocs.io/en/latest/mutations/#remaining-mutations" target="_blank" title="Help" class="col-form-label"> '+
       '  <i class="fas fa-question-circle"></i> '+
       '</a><br>'+
-      formatRemainingMutations(data.remainingMutations, 'nuc') + '<br><br>' +
-      '<b>Other Hits</b><br>' + formatHits(data) + ' <br>' +
+      formatRemainingMutations(data.remainingMutations, 'nuc', data.clade) + '<br><br>' +
+      '<b><a class="" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">Additional Hits</a></b><br>' + formatHits(data) + ' <br>' +
       '<b>Ranges</b><br>' + formatRange(data.ranges) + '<br><br>' +
       //'<b>Amino Acid Changes</b><br>' + formatMutations(data.annotatedPolymorphisms, 500, 'aac', '') + '<br><br>' +
       //'<b>Nucleotide Changes</b><br>' + formatMutations(data.annotatedPolymorphisms, 500, 'nuc', '') + '<br><br>' +
+      '</div>' +
+      '</div>' +
+      '</div>' +
+      '<div class="col-md-4">' +
+      '<div class="card" style="padding-left:0px;padding-right: 0px;">' +
+      '<iframe id="details" style="" width="100%" height="500px" src="" frameborder="0"></iframe>' +
+      '</div>' +
+      '</div>' +
+      '</div>' +
       '</div>'
   });
 
-  dialog.find("div.modal-dialog").addClass("modal-lg");
+  dialog.find("div.modal-dialog").addClass("scroll-modal-body-horizontal");
 
 });
 
@@ -193,36 +207,50 @@ function renderMutations(data, view) {
   return result;
 }
 
+var selectedMutation = undefined;
+function openMutation(source){
+  var mutation = $(source).data("mutation");
+  var clade = $(source).data("clade");
+  if (selectedMutation){
+    $(selectedMutation).removeClass("selected-mutation");
+  }
+  $(source).addClass("selected-mutation");
+  var url = '/phylogenies/{{job.phylotree}}/haplogroups/' + clade + '/mutations/' + mutation + '?minimal=true';
+  console.log($("#details"));
+  $("#details").attr('src', url);
+  selectedMutation = source;
+}
 
-function formatMutationsNotFound(data, view) {
+function formatMutationsNotFound(data, view, clade) {
 
   var result = '';
   for (var i = 0; i < data.length; i++) {
     var filtered = false;
     var label = view == 'aac' ? data[i].aac : data[i].nuc;
-
+    var id = data[i].position + '_' + data[i].ref + '_' + data[i].alt;
     if (label != undefined && label != '') {
       if (result != '') {
         result += ' ';
       }
-      result += '<span class="badge badge-' + (data[i].found ? 'success' : 'danger') + '" title="' + (data[i].found ? 'Found' : 'Not Found') + '">' + label + '</span>';
+      result += '<span onclick="openMutation(this)" data-mutation="' + id + '" data-clade="' + clade + '" class="mutation badge badge-' + (data[i].found ? 'success' : 'danger') + '" title="' + (data[i].found ? 'Found' : 'Not Found') + '">' + label + '</span>';
     }
   };
   return result;
 }
 
-function formatRemainingMutations(data, view) {
+function formatRemainingMutations(data, view, clade) {
 
   var result = '';
   for (var i = 0; i < data.length; i++) {
     var filtered = false;
     var label = view == 'aac' ? data[i].aac : data[i].nuc;
+    var id = data[i].position + '_' + data[i].ref + '_' + data[i].alt;
 
     if (label != undefined && label != '') {
       if (result != '') {
         result += ' ';
       }
-      result += '<span class="badge ' + (data[i].type == 'hotspot' ? 'badge-hotspot' : (data[i].type == 'local private mutation' ? 'badge-local-private-mutation' : 'badge-global-private-mutation')) + '" title="' + data[i].type + '">' + label + '</span>';
+      result += '<span onclick="openMutation(this)" data-mutation="' + id + '" data-clade="' + clade + '" class="mutation badge ' + (data[i].type == 'hotspot' ? 'badge-hotspot' : (data[i].type == 'local private mutation' ? 'badge-local-private-mutation' : 'badge-global-private-mutation')) + '" title="' + data[i].type + '">' + label + '</span>';
     }
   };
   return result;
@@ -245,11 +273,12 @@ function formatRange(data) {
 
 function formatHits(data) {
 
-  var result = '<small><ol start="2" style="overflow-y: auto; height: 100px;">';
+  var result = '<div class="collapse" id="collapseExample"><small><ol start="2">';
   for (var i = 0; i < data.otherClades.length; i++) {
-    result += '<li>' + data.otherClades[i] + ' (' + data.otherQualities[i].toFixed(2) * 100 + '%)</li>';
+    var label = '<a href="/phylogenies/{{job.phylotree}}/haplogroups/' + data.otherClades[i] + '" target="_blank">' + data.otherClades[i] + '</a>';
+    result += '<li>' + label  + ' (' + data.otherQualities[i].toFixed(2) * 100 + '%)</li>';
   };
-  result += "</ol></small>"
+  result += '</ol></small></div>';
   return result;
 
 }
