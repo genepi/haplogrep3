@@ -20,7 +20,10 @@ function drawChart(index){
     options: {
       plugins: {
         legend: {
-          position: 'right'
+          position: 'right',
+          labels: {
+            boxWidth: 20
+          }
         }
       },
       animation: {
