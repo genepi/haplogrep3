@@ -3,8 +3,18 @@
     Quality Control
   </div>
   <div class="card-body">
-    <i class="fas fa-check-circle text-success"></i> Passed: {{job.samplesOk}}<br>
-    <i class="fas fa-exclamation-triangle text-warning"></i> Warnings: {{job.samplesWarning}}</br>
-    <i class="fas fa-exclamation-circle text-danger"></i> Failed: {{job.samplesError}}
+    <div class="progress">
+      <div class="progress-bar bg-success" style="width:{{job.samplesOk * 100.0 / job.samples}}%">
+      </div>
+      <div class="progress-bar bg-warning" style="width:{{job.samplesWarning * 100.0 / job.samples}}%">
+      </div>
+      <div class="progress-bar bg-danger" style="width:{{job.samplesError * 100.0 / job.samples}}%">
+      </div>
+    </div>
+    <div style="margin-top: 15px;">
+      <i class="fas fa-check-circle text-success"></i> Passed: {{job.samplesOk}}&nbsp;&nbsp;
+      <i class="fas fa-exclamation-triangle text-warning"></i> Warnings: {{job.samplesWarning}}&nbsp;&nbsp;
+      <i class="fas fa-exclamation-circle text-danger"></i> Failed: {{job.samplesError}}
+    </div>
   </div>
 </div>
