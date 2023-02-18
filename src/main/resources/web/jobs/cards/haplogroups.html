@@ -13,3 +13,32 @@
 
   </div>
 </div>
+
+<script>
+
+  var statistics = {{json(job.statistics)}};
+
+  // create and instanced class only once.
+  if (window.haplogroups == undefined){
+
+    //TODO: move "haplogroups.js" to app.js
+    {{ include "haplogroups.js" }}
+
+    window.haplogroups = new Haplogroups('plot-haplogroups');
+    document.addEventListener("turbolinks:visit", function() {
+      window.haplogroups.destroy();
+    });
+  }
+  window.haplogroups.setDataset(statistics);
+  window.haplogroups.setIndex(0);
+  window.haplogroups.draw();
+
+  function onChangeClassification(){
+    var index = $(this).val();
+    window.haplogroups.setIndex(index);
+    window.haplogroups.draw();
+  }
+
+  $('#update-plot-haplogroups').on('change', onChangeClassification);
+
+</script>
