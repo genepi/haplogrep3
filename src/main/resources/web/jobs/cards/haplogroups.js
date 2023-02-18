@@ -1,14 +1,12 @@
-var chart = undefined;
-
 var Tableau20 = ['#4E79A7', '#A0CBE8', '#F28E2B', '#FFBE7D', '#59A14F', '#8CD17D', '#B6992D', '#F1CE63', '#499894', '#86BCB6', '#E15759', '#FF9D9A', '#79706E', '#BAB0AC', '#D37295', '#FABFD2', '#B07AA1', '#D4A6C8', '#9D7660', '#D7B5A6'];
 
+function initChart(id, dataset, index){
 
-function drawChart(index){
   var data = {
-    labels: statistics.groups[index].clades,
+    labels: dataset.groups[index].clades,
     datasets: [{
       label: 'Samples',
-      data: statistics.groups[index].values,
+      data: dataset.groups[index].values,
       hoverOffset: 4,
       backgroundColor: Tableau20
     }]
@@ -34,17 +32,32 @@ function drawChart(index){
     maintainAspectRatio: false
   };
 
-  if (chart != undefined){
-    chart.destroy();
-  }
+  return new Chart(document.getElementById(id), config);
 
-  chart = new Chart(
-      document.getElementById('plot-haplogroups'), config);
 }
 
-$('#update-plot-haplogroups').on('change', function() {
-  var index = $(this).val();
-  drawChart(index);
-})
+function destroyChart(chart){
+  if (chart != undefined){
+    chart.destroy();
+    window.chart = undefined;
+  }
+}
 
-drawChart(0);
+function onChangeClassification(){
+  var index = $(this).val();
+  destroyChart(window.chart);
+  window.chart = initChart('plot-haplogroups', statistics, index);
+}
+
+//init chart
+destroyChart(window.chart);
+window.chart = initChart('plot-haplogroups', statistics, 0);
+$('#update-plot-haplogroups').on('change', onChangeClassification);
+
+//register visit handler only once.
+if (!window.haplogroupsLoaded){
+  document.addEventListener("turbolinks:visit", function() {
+    destroyChart(window.chart);
+  });
+  window.haplogroupsLoaded = true;
+}

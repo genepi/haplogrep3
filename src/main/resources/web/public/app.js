@@ -5,9 +5,4 @@ function waitDialog() {
   });
 }
 
-
-document.addEventListener("turbolinks:visit", function() {
-  if(window.table){
-    window.table.destroy();
-  }
-});
+console.log("Loaded app.js");

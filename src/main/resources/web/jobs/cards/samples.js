@@ -8,10 +8,6 @@ window.table = $(".data-table").DataTable({
   fixedHeader: {
     headerOffset: $('#navigation').outerHeight()
   },
-  /*ajax: {
-    url: '{{routeUrl("jobs_download", {job: job.id, file: "clades.json"})}}',
-    dataSrc: ''
-  },*/
   data: samples,
   "columns": [{
     data: "hasError",
@@ -66,6 +62,7 @@ window.table = $(".data-table").DataTable({
     }
   }
 });
+
 
 $.fn.dataTable.ext.search.push(
   function(settings, data, dataIndex) {
@@ -335,3 +332,16 @@ function renderText(data) {
 $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
   window.table.columns.adjust();
 })
+
+
+
+//register visit handler only once.
+if (!window.samplesLoaded){
+  document.addEventListener("turbolinks:visit", function() {
+    console.log("destroy handler samples");
+    if(window.table) {
+      window.table.destroy();
+    }
+  });
+  window.samplesLoaded = true;
+}
