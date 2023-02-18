@@ -17,7 +17,7 @@ Mutations:&nbsp;&nbsp;
 </select>
 </div>
 <div class="card-body">
-<table class="table table-hover data-table" style="width: 100%;">
+<table id="table-samples" class="table table-hover data-table" style="width: 100%;">
   <thead>
     <th width = "20px"></th>
     <th>Sample</th>
@@ -37,3 +37,47 @@ Mutations:&nbsp;&nbsp;
 </small>
 </div>
 </div>
+
+<script>
+  var samples = {{clades}};
+
+  // create and instanced class only once.
+  if (window.samplesTable == undefined){
+
+    //TODO: move "samples.js" to app.js
+    {{ include "samples.details.js" }}
+    {{ include "samples.table.js" }}
+
+    window.samplesTable = new SamplesTable('table-samples');
+    document.addEventListener("turbolinks:visit", function() {
+      window.samplesTable.destroy();
+    });
+
+  }
+
+  //adjust column size on tab switch
+  $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+    window.samplesTable.autoSize();
+  })
+
+  $('#show_all_mutations').on('change', function() {
+    var value = $(this).val();
+    if (value == '') {
+      window.samplesTable.setMaxMutations(8);
+    } else {
+      window.samplesTable.setMaxMutations(500);
+    }
+  })
+
+  $("#show_samples").change(function(e) {
+    var filter = $('#show_samples').val();
+    window.samplesTable.setSampleFilter(filter);
+  });
+
+  window.samplesTable.setSamples(samples);
+  window.samplesTable.setSampleFilter('all');
+  window.samplesTable.setMaxMutations(8);
+  window.samplesTable.setPhylotree("{{job.getPhylotree()}}");
+  window.samplesTable.render();
+
+</script>
