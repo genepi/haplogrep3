@@ -44,10 +44,6 @@ Mutations:&nbsp;&nbsp;
   // create and instanced class only once.
   if (window.samplesTable == undefined){
 
-    //TODO: move "samples.js" to app.js
-    {{ include "samples.details.js" }}
-    {{ include "samples.table.js" }}
-
     window.samplesTable = new SamplesTable('table-samples');
     document.addEventListener("turbolinks:visit", function() {
       window.samplesTable.destroy();

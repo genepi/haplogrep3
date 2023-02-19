@@ -32,6 +32,7 @@ public class WebApp extends AbstractWebApp {
 		route("groups_show", new GroupsShowHandler());
 		route("mutations_show", new MutationsShowHandler(false));
 		route("mutations_with_clade_show", new MutationsShowHandler(true));
+		staticFileTemplate("/app.js");
 	}
 
 	@Override
