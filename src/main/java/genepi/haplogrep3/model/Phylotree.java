@@ -432,7 +432,7 @@ public class Phylotree {
 				Map<String, String> result = reader.query(annotation.getChr(), polymorphism.getPosition(),
 						polymorphism.getRef(), polymorphism.getAlt());
 				if (result != null) {
-					polymorphism.getAnnotations().putAll(result);
+					polymorphism.setAnnotations(result);
 				}
 
 			}

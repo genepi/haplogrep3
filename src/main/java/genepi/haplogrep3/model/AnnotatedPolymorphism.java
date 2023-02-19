@@ -1,6 +1,5 @@
 package genepi.haplogrep3.model;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import core.Polymorphism;
@@ -15,7 +14,7 @@ public class AnnotatedPolymorphism {
 
 	private String type = "";
 
-	private Map<String, String> annotations = new HashMap<>();
+	private Map<String, String> annotations = null;
 
 	private int position;
 
