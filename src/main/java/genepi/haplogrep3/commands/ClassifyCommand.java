@@ -11,9 +11,9 @@ import genepi.haplogrep3.model.Phylotree;
 import genepi.haplogrep3.model.PhylotreeRepository;
 import genepi.haplogrep3.tasks.ClassificationTask;
 import genepi.haplogrep3.tasks.ExportQcReportTask;
-import genepi.haplogrep3.tasks.ExportReportTask;
+import genepi.haplogrep3.tasks.ExportHaplogroupsTask;
 import genepi.haplogrep3.tasks.ExportSequenceTask;
-import genepi.haplogrep3.tasks.ExportReportTask.ExportDataFormat;
+import genepi.haplogrep3.tasks.ExportHaplogroupsTask.ExportDataFormat;
 import genepi.haplogrep3.tasks.ExportSequenceTask.ExportSequenceFormat;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Help.Visibility;
@@ -102,7 +102,7 @@ public class ClassifyCommand extends AbstractCommand {
 
 		if (classificationTask.isSuccess()) {
 
-			ExportReportTask exportTask = new ExportReportTask(classificationTask.getSamples(), output,
+			ExportHaplogroupsTask exportTask = new ExportHaplogroupsTask(classificationTask.getSamples(), output,
 					extendedReport ? ExportDataFormat.EXTENDED : ExportDataFormat.SIMPLE, phylotree.getReference());
 			exportTask.setHits(hits);
 			try {

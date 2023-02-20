@@ -5,9 +5,11 @@ function waitDialog() {
   });
 }
 
+//TODO: find correct parameter
+bootbox.animate = false;
 
-document.addEventListener("turbolinks:visit", function() {
-  if(window.table){
-    window.table.destroy();
-  }
-});
+{{ include "../jobs/cards/haplogroups.js" }}
+{{ include "../jobs/cards/samples.table.js" }}
+{{ include "../jobs/cards/samples.details.js" }}
+
+console.log("Loaded app.js");

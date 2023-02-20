@@ -19,6 +19,36 @@
     {{end}}
     <p>{{tree.description}}</p>
     <p><small class="text-muted"><i class="far fa-clock"></i> Last Update: {{tree.lastUpdate}}&nbsp;&nbsp;<a href="{{tree.url}}"><i class="fab fa-github"></i> View on GitHub</a></small></p>
+
+
+    <hr>
+
+    {{include "search.form.html"}}
+
+
+
+{{if tree.getGroups() != null}}
+      {{for group in tree.getGroups().getGroups() }}
+      <hr>
+      <h3>{{group.name}} ({{group.getLabels().size()}})</h3>
+      <p>This classification includes the following <b> {{group.getLabels().size()}} clusters</b>:</p>
+            <p style="line-height: 250%">
+      {{for label in group.getLabels()}}
+      <a href="{{routeUrl("groups_show",{phylotree: tree.getIdWithVersion(), group: group.name, label: label})}}" class="btn btn-outline-primary btn-sm"><i class="fas fa-folder"></i> {{label}} ({{group.getHaplogroupsByLabel(label).size()}})</a>&nbsp;
+      {{end}}
+      </p>
+      {{end}}
+      {{else}}
+      <h3>Haplogroups ({{clades.size()}})</h3>
+      <p>
+      {{for clade in clades}}
+        <a class="badge badge-primary" href="{{routeUrl("clades_show", {phylotree:tree.getIdWithVersion(), clade:clade.toString()})}}">{{clade}}</a>
+      {{end}}
+      </p>
+  {{end}}
+    <br><br>
+
+
     <p><b>Citation: </b></p>
     <p>Please cite the following papers if you use this phylogeny in your publication:</p>
     <ul>
@@ -27,13 +57,6 @@
       {{end}}
     </ul>
 
-    <p>
-      <b>Haplogroups ({{clades.size()}}):</b><br>
-      {{for clade in clades}}
-        <a class="badge badge-primary" href="{{routeUrl("clades_show", {phylotree:tree.getIdWithVersion(), clade:clade.toString()})}}">{{clade}}</a>
-      {{end}}
-    </p>
-    <br><br>
   </div>
 </div>
 

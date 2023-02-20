@@ -1,5 +1,7 @@
 package genepi.haplogrep3.model;
 
+import java.util.Map;
+
 import core.Polymorphism;
 
 public class AnnotatedPolymorphism {
@@ -12,8 +14,18 @@ public class AnnotatedPolymorphism {
 
 	private String type = "";
 
-	public AnnotatedPolymorphism(Polymorphism polymorphism) {
+	private Map<String, String> annotations = null;
 
+	private int position;
+
+	private String ref;
+
+	private String alt;
+
+	public AnnotatedPolymorphism(Polymorphism polymorphism) {
+		position = polymorphism.getPosition();
+		ref = polymorphism.getReferenceBase().getMutation().toString();
+		alt = polymorphism.getMutation().toString();
 	}
 
 	public String getAac() {
@@ -46,6 +58,38 @@ public class AnnotatedPolymorphism {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public Map<String, String> getAnnotations() {
+		return annotations;
+	}
+
+	public void setAnnotations(Map<String, String> annotations) {
+		this.annotations = annotations;
+	}
+
+	public void setAlt(String alt) {
+		this.alt = alt;
+	}
+
+	public String getAlt() {
+		return alt;
+	}
+
+	public void setPosition(int position) {
+		this.position = position;
+	}
+
+	public int getPosition() {
+		return position;
+	}
+
+	public void setRef(String ref) {
+		this.ref = ref;
+	}
+
+	public String getRef() {
+		return ref;
 	}
 
 }

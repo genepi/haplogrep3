@@ -1,7 +1,6 @@
 package genepi.haplogrep3.web.util;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -10,16 +9,22 @@ import java.util.function.Function;
 
 import com.google.gson.Gson;
 
-import genepi.io.FileUtil;
+import genepi.haplogrep3.App;
 import genepi.haplogrep3.web.WebApp;
 import genepi.haplogrep3.web.util.functions.DecimalFunction;
 import genepi.haplogrep3.web.util.functions.DoubleFormatFunction;
+import genepi.haplogrep3.web.util.functions.FromJsonFunction;
 import genepi.haplogrep3.web.util.functions.IncludeScriptFunction;
 import genepi.haplogrep3.web.util.functions.IncludeStyleFunction;
 import genepi.haplogrep3.web.util.functions.IsRouteActiveFunction;
+import genepi.haplogrep3.web.util.functions.NumberFormatFunction;
 import genepi.haplogrep3.web.util.functions.PercentageFunction;
 import genepi.haplogrep3.web.util.functions.RouteFunction;
 import genepi.haplogrep3.web.util.functions.ToJsonFunction;
+import genepi.haplogrep3.web.util.functions.ToNumberFunction;
+import genepi.haplogrep3.web.util.functions.widgets.DatatableFunction;
+import genepi.haplogrep3.web.util.functions.widgets.PieChartFunction;
+import genepi.io.FileUtil;
 import io.javalin.http.Context;
 import io.javalin.http.HandlerType;
 import io.javalin.http.staticfiles.Location;
@@ -41,6 +46,14 @@ public class BasisTemplateFileRenderer implements FileRenderer {
 
 	private AbstractWebApp server;
 
+	private boolean selfContained = false;
+
+	public BasisTemplateFileRenderer() {
+		this(App.isDevelopmentSystem() ? "src/main/resources" : "",
+				App.isDevelopmentSystem() ? Location.EXTERNAL : Location.CLASSPATH, null);
+		this.selfContained = true;
+	}
+
 	public BasisTemplateFileRenderer(String root, Location location, AbstractWebApp server) {
 
 		this.root = root;
@@ -52,6 +65,14 @@ public class BasisTemplateFileRenderer implements FileRenderer {
 		}
 
 		this.server = server;
+	}
+
+	public boolean isSelfContained() {
+		return selfContained;
+	}
+
+	public Location getLocation() {
+		return location;
 	}
 
 	public String render(String filePath, Map<String, Object> model, Context context) throws Exception {
@@ -70,21 +91,28 @@ public class BasisTemplateFileRenderer implements FileRenderer {
 
 		// Add default functions
 		templateContext.set("percentage", new PercentageFunction());
+		templateContext.set("toNumber", new ToNumberFunction());
 		templateContext.set("decimal", new DecimalFunction());
 		templateContext.set("formatDouble", new DoubleFormatFunction());
-		templateContext.set("includeScript", new IncludeScriptFunction());
-		templateContext.set("includeStyle", new IncludeStyleFunction());
+		templateContext.set("formatNumber", new NumberFormatFunction());
+		templateContext.set("includeScript", new IncludeScriptFunction(this));
+		templateContext.set("includeStyle", new IncludeStyleFunction(this));
 		templateContext.set("json", new ToJsonFunction());
+		templateContext.set("fromJson", new FromJsonFunction());
+		// widgets
+		templateContext.set("datatable", new DatatableFunction());
+		templateContext.set("piechart", new PieChartFunction());
+		
 		templateContext.set("routeUrl", new RouteFunction(server));
 
-		if (context.handlerType() != HandlerType.BEFORE) {
+		if (context != null && server != null && context.handlerType() != HandlerType.BEFORE) {
 			String path = context.endpointHandlerPath();
 			String route = server.getNameByPath(path);
 			templateContext.set("route", route != null ? route : "");
 			templateContext.set("isRouteActive", new IsRouteActiveFunction(route != null ? route : ""));
 		} else {
 			templateContext.set("route", "");
-			templateContext.set("isRouteActive", new Function<String, Boolean>() {				
+			templateContext.set("isRouteActive", new Function<String, Boolean>() {
 				@Override
 				public Boolean apply(String arg0) {
 					return false;
@@ -104,6 +132,12 @@ public class BasisTemplateFileRenderer implements FileRenderer {
 
 	}
 
+	public String render(String filePath, Map<String, Object> model) throws Exception {
+
+		return render(filePath, model, null);
+
+	}
+
 	public Template loadTemplate(String path) {
 		String filename = "";
 		if (path.startsWith("/")) {
@@ -114,16 +148,19 @@ public class BasisTemplateFileRenderer implements FileRenderer {
 		return loader.load(filename);
 	}
 
-	/** A TemplateLoader to load templates from the classpath. Extended to support relative paths with ../ **/
+	/**
+	 * A TemplateLoader to load templates from the classpath. Extended to support
+	 * relative paths with ../
+	 **/
 	public static class MyClasspathTemplateLoader extends CachingTemplateLoader {
 		@Override
-		protected Source loadSource (String path) {
+		protected Source loadSource(String path) {
 			try {
-								
-				String filename = FileUtil.getFilename(path);				
+
+				String filename = FileUtil.getFilename(path);
 				URI uri = URI.create(path);
-				String resolvedPath =  uri.resolve("").toString() + filename;
-				
+				String resolvedPath = uri.resolve("").toString() + filename;
+
 				return new Source(path, MyStreamUtils.readString(WebApp.class.getResourceAsStream(resolvedPath)));
 			} catch (Throwable t) {
 				t.printStackTrace();
@@ -132,9 +169,9 @@ public class BasisTemplateFileRenderer implements FileRenderer {
 			}
 		}
 	}
-	
+
 	static class MyStreamUtils {
-		private static String readString (InputStream in) throws IOException {
+		private static String readString(InputStream in) throws IOException {
 			byte[] buffer = new byte[1024 * 10];
 			int read = 0;
 			ByteArrayOutputStream out = new ByteArrayOutputStream();

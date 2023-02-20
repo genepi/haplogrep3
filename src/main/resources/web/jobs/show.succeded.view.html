@@ -1,66 +1,70 @@
 {{ title = "Results" }}
+{{ scripts = ["haplogroups.js"] }}
 {{include "../layouts/header.view.html"}}
 
-<div id="page-content">
+<div style="padding-top: 70px; width: 100%; background-color: rgb(239,239,239);">
+  <ul class="nav nav-tabs" id="myTab" role="tablist" style="width: 100%; padding-left: 30px; padding-right: 30px;">
+    <li class="nav-item" role="presentation">
+      <a class="nav-link active" id="summary-tab" data-toggle="tab" href="#summary" type="button" role="tab" aria-controls="summary" aria-selected="true">
+        <i class="fas fa-analytics"></i> Summary
+      </a>
+    </li>
+    <li class="nav-item" role="presentation">
+      <a class="nav-link" id="samples-tab" data-toggle="tab" href="#samples" type="button" role="tab" aria-controls="samples" aria-selected="false">
+        Samples ({{job.samples}})
+      </a>
+    </li>
 
-  <div class="btn-group" role="group">
-    <button id="btnGroupDrop1" type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      <i class="fas fa-download"></i> Export
-    </button>
-    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-      <a class="dropdown-item" href="{{routeUrl("jobs_download", {job: job.id, file: "haplogroups.csv"})}}" target="_blank"><i class="fas fa-file-csv"></i> Haplogroups (CSV)</a>
-      <a class="dropdown-item" href="{{routeUrl("jobs_download", {job: job.id, file: "haplogroups.extended.csv"})}}" target="_blank"><i class="fas fa-file-csv"></i> Haplogroups (Extended CSV)</a>
-      <a class="dropdown-item" href="{{routeUrl("jobs_download", {job: job.id, file: "samples.qc.txt"})}}" target="_blank"><i class="fas fa-file-csv"></i> Quality Control (CSV)</a>
+    {{if !selfContained}}
+    <li class="nav-item dropdown ml-auto">
+      <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fas fa-download"></i> Export</a>
 
-      {{ if job.isAdditionalOutput() }}
-      <div class="dropdown-divider"></div>
-      <a class="dropdown-item" href="{{routeUrl("jobs_download", {job: job.id, file: "sequence.fasta"})}}" target="_blank"><i class="fas fa-file"></i> Fasta</a>
-      <a class="dropdown-item" href="{{routeUrl("jobs_download", {job: job.id, file: "sequence_MSA.fasta"})}}" target="_blank"><i class="fas fa-file"></i> MSA Fasta</a>
-      {{ end }}
-    </div>
-  </div>
+      <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+        <a class="dropdown-item" href="{{routeUrl("jobs_download", {job: job.id, file: "haplogroups.csv"})}}" target="_blank"><i class="fas fa-file-csv"></i> Haplogroups (CSV)</a>
+        <a class="dropdown-item" href="{{routeUrl("jobs_download", {job: job.id, file: "haplogroups.extended.csv"})}}" target="_blank"><i class="fas fa-file-csv"></i> Haplogroups (Extended CSV)</a>
+        <a class="dropdown-item" href="{{routeUrl("jobs_download", {job: job.id, file: "samples.qc.txt"})}}" target="_blank"><i class="fas fa-file-csv"></i> Quality Control (CSV)</a>
 
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Samples:
-  &nbsp;&nbsp;
-  <select  id="show_samples" class="form-control" style="width: 150px; display: inline;">
-    <option value="all">All ({{job.samples}})</option>
-    <option disabled>-------------</option>
-    <option value="ok">Passed ({{job.samplesOk}})</option>
-    <option value="warning">Warnings ({{job.samplesWarning}})</option>
-    <option value="error">Errors ({{job.samplesError}})</option>
-  </select>
-  &nbsp;&nbsp;
-  Mutations:
-  &nbsp;&nbsp;
-  <select  id="show_all_mutations" class="form-control" style="width: 180px; display: inline;">
-    <option value="">first 8 mutations</option>
-    <option value="all">All</option>
-  </select>
-  &nbsp;&nbsp;
-  Phylotree:&nbsp;{{job.phylotree}}
-  &nbsp;&nbsp;
-  Distance:&nbsp;{{job.distance.getLabel()}}
+        {{ if job.isAdditionalOutput() }}
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="{{routeUrl("jobs_download", {job: job.id, file: "sequence.fasta"})}}" target="_blank"><i class="fas fa-file"></i> Fasta</a>
+        <a class="dropdown-item" href="{{routeUrl("jobs_download", {job: job.id, file: "sequence_MSA.fasta"})}}" target="_blank"><i class="fas fa-file"></i> MSA Fasta</a>
+        {{ end }}
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="{{routeUrl("jobs_download", {job: job.id, file: "haplogroups.zip"})}}" target="_blank"><i class="fas fa-file-archive"></i> Report and Data (Zip)</a>
 
-  <table class="table table-hover data-table">
-    <thead>
-      <th></th>
-      <th>Sample</th>
-      <th>Haplogroup</th>
-      <th>Quality</th>
-      <th>Ns</th>
-      <th>Coverage</th>
-      <th>Range</th>
-      <th>Mutations</th>
-    </thead>
-  </table>
-  <br><br>
-  <small class="text-muted">
-    Classification Time: {{ job.executionTime / 1000 }} sec
-  </small>
+      </div>
+    </li>
+    {{end}}
+
+  </ul>
 </div>
 
-<script>
-{{include "show.succeded.view.js"}}
-</script>
+
+<div id="" style="padding: 30px;">
+
+    <!-- Summary !-->
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane active" id="summary" role="tabpanel" aria-labelledby="summary-tab"  style="width: 100%">
+        <div class="card-deck">
+
+          {{include "cards/haplogroups.html"}}
+
+          <div>
+            {{include "cards/quality-control.html"}}<br>
+            {{include "cards/details.html"}}<br>
+            {{if !selfContained}}
+              {{include "cards/share-url.html"}}
+            {{end}}
+          </div>
+        </div>
+    </div>
+
+    <!-- Samples !-->
+    <div class="tab-pane" id="samples" role="tabpanel" aria-labelledby="samples-tab" style="width: 100%">
+      {{include "cards/samples.html"}}
+    </div>
+
+  </div>
+</div>
 
 {{include "../layouts/footer.view.html"}}

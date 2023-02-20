@@ -1,0 +1,79 @@
+<div class="card">
+  <div class="card-header">
+Samples:&nbsp;&nbsp;
+<select  id="show_samples" class="form-control" style="width: 150px; display: inline;">
+  <option value="all">All ({{job.samples}})</option>
+  <option disabled>-------------</option>
+  <option value="ok">Passed ({{job.samplesOk}})</option>
+  <option value="warning">Warnings ({{job.samplesWarning}})</option>
+  <option value="error">Errors ({{job.samplesError}})</option>
+</select>
+&nbsp;&nbsp;
+
+Mutations:&nbsp;&nbsp;
+<select  id="show_all_mutations" class="form-control" style="width: 180px; display: inline;">
+  <option value="">first 8 mutations</option>
+  <option value="all">All</option>
+</select>
+</div>
+<div class="card-body">
+<table id="table-samples" class="table table-hover data-table" style="width: 100%;">
+  <thead>
+    <th width = "20px"></th>
+    <th>Sample</th>
+    <th>Haplogroup</th>
+    <th>Quality</th>
+    <th>Ns</th>
+    <th>Coverage</th>
+    <th>Range</th>
+    <th>Mutations</th>
+  </thead>
+</table>
+
+<br><br>
+
+<small class="text-muted">
+  Classification Time: {{ job.executionTime / 1000 }} sec
+</small>
+</div>
+</div>
+
+<script>
+  var samples = {{clades}};
+
+  // create and instanced class only once.
+  if (window.samplesTable == undefined){
+
+    window.samplesTable = new SamplesTable('table-samples');
+    document.addEventListener("turbolinks:visit", function() {
+      window.samplesTable.destroy();
+    });
+
+  }
+
+  //adjust column size on tab switch
+  $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+    window.samplesTable.autoSize();
+  })
+
+  $('#show_all_mutations').on('change', function() {
+    var value = $(this).val();
+    if (value == '') {
+      window.samplesTable.setMaxMutations(8);
+    } else {
+      window.samplesTable.setMaxMutations(500);
+    }
+  })
+
+  $("#show_samples").change(function(e) {
+    var filter = $('#show_samples').val();
+    window.samplesTable.setSampleFilter(filter);
+  });
+
+  window.samplesTable.setSamples(samples);
+  window.samplesTable.setSampleFilter('all');
+  window.samplesTable.setMaxMutations(8);
+  window.samplesTable.setPhylotree("{{job.getPhylotree()}}");
+  window.samplesTable.render();
+
+</script>
