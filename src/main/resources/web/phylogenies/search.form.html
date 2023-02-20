@@ -1,0 +1,16 @@
+<form id="form" action="{{routeUrl("phylogenies_search",{phylotree: tree.getIdWithVersion()})}}">
+  <div class="form-row align-items-center">
+    <div class="col-auto my-1">
+  <input name="query" type="text" autocomplete="off" placeholder="Search for haplogroup or mutation" autofocus="autofocus" class="form-control" style="width: 300px;">
+  </div>
+  <div class="col-auto my-1">
+  <button type="submit" class="btn btn-primary">Search</button>
+  </div>
+  </div>
+</form>
+<small>
+  Examples:
+  <a href="{{routeUrl("phylogenies_search",{phylotree: tree.getIdWithVersion()})}}?query=H100">H100</a>
+  or
+  <a href="{{routeUrl("phylogenies_search",{phylotree: tree.getIdWithVersion()})}}?query=489-T-C">489-T-C</a>
+</small>

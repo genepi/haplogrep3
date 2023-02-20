@@ -1,0 +1,33 @@
+{{ title = tree.name + " " + tree.version }}
+{{include "../layouts/header.view.html"}}
+
+<div id="page-content">
+  <div class="container">
+
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{routeUrl("phylogenies_index",{})}}">Phylogenies</a></li>
+        <li class="breadcrumb-item"><a href="{{routeUrl("phylogenies_show",{phylotree: tree.getIdWithVersion()})}}">{{tree.name}} {{tree.version}}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Search</li>
+      </ol>
+    </nav>
+
+    <h1>{{tree.name}} {{tree.version}}</h1>
+    {{if tree.deprecated}}
+      <div class="alert alert-warning" role="alert">
+        <i class="fas fa-exclamation-triangle"></i> This phylogeny is depracated. Please use it only for reproducibility.
+      </div>
+    {{end}}
+    <p>{{tree.description}}</p>
+    <p><small class="text-muted"><i class="far fa-clock"></i> Last Update: {{tree.lastUpdate}}&nbsp;&nbsp;<a href="{{tree.url}}"><i class="fab fa-github"></i> View on GitHub</a></small></p>
+
+    <hr>
+
+    {{include "search.form.html"}}
+
+      <hr>
+      <br
+      <p><i>We coudn't find what you wanted.</i></p>
+      <br><br><br>
+
+{{include "../layouts/footer.view.html"}}

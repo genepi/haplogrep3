@@ -70,7 +70,7 @@ public class MutationsShowHandler extends AbstractHandler {
 			}
 		}
 
-		String details = "";
+		String details = "<i>No annotations found</i>";
 		if (phylotree.getTemplate() != null) {
 			File template = new File(phylotree.getTemplate());
 

@@ -19,13 +19,12 @@
     {{end}}
     <p>{{tree.description}}</p>
     <p><small class="text-muted"><i class="far fa-clock"></i> Last Update: {{tree.lastUpdate}}&nbsp;&nbsp;<a href="{{tree.url}}"><i class="fab fa-github"></i> View on GitHub</a></small></p>
-    <p><b>Citation: </b></p>
-    <p>Please cite the following papers if you use this phylogeny in your publication:</p>
-    <ul>
-      {{for source in tree.source}}
-        <li>{{source}}</li>
-      {{end}}
-    </ul>
+
+
+    <hr>
+
+    {{include "search.form.html"}}
+
 
 
 {{if tree.getGroups() != null}}
@@ -48,6 +47,16 @@
       </p>
   {{end}}
     <br><br>
+
+
+    <p><b>Citation: </b></p>
+    <p>Please cite the following papers if you use this phylogeny in your publication:</p>
+    <ul>
+      {{for source in tree.source}}
+        <li>{{source}}</li>
+      {{end}}
+    </ul>
+
   </div>
 </div>
 
