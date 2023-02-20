@@ -49,6 +49,9 @@ public class PhylogeniesSearchHandler extends AbstractHandler {
 		}
 		
 		String[] tiles = query.split("-");
+		if (tiles.length != 3) {
+			tiles = query.split(" ");
+		}
 		if (tiles.length == 3) {
 			//TODO: check if pos is integer, ref und alt...
 			Map<String, Object> params = new HashMap<>();
