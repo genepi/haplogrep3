@@ -14,18 +14,30 @@ public class Page extends HashMap<String, Object> {
 	protected String template;
 
 	public Page(Context context, String template) {
-
+		this();
 		this.context = context;
 		this.template = template;
-		
+	}
+
+	public Page() {
 		put("application", App.NAME);
 		put("version", App.VERSION);
 		put("baseUrl", App.getDefault().getConfiguration().getBaseUrl());
 		put("debug", App.isDevelopmentSystem());
-
+		put("selfContained", false);
+		put("minimal", false);
 	}
-	
+
 	public void render() {
+
+		if (context == null) {
+			throw new RuntimeException("Rendering of page not possible: no context set.");
+		}
+
+		if (template == null) {
+			throw new RuntimeException("Rendering of page not possible: no template set.");
+		}
+
 		context.render(template, this);
 	}
 

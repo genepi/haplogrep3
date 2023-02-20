@@ -20,8 +20,10 @@
   {{includeScript(baseUrl + "/vendor/bootbox/bootbox.min.js")}}
   {{includeScript(baseUrl + "/vendor/datatables/datatables.min.js")}}
   {{includeScript(baseUrl + "/vendor/pekeUpload/pekeUpload.min.js")}}
-  {{includeScript("https://dreampuf.github.io/GraphvizOnline/viz.js")}}
-  {{includeScript(baseUrl + "//d3js.org/d3.v5.min.js")}}
+
+  {{includeScript("https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.2.1/chart.umd.js")}}
+
+  {{includeScript("https://d3js.org/d3.v5.min.js")}}
   {{includeScript("https://unpkg.com/@hpcc-js/wasm@0.3.11/dist/index.min.js")}}
   {{includeScript("https://unpkg.com/d3-graphviz@3.0.5/build/d3-graphviz.js")}}
 
@@ -30,9 +32,10 @@
 </head>
 
 
-<body class="bg-light">
+<body>
 
-
+  {{if (!minimal)}}
   {{include "navbar.view.html"}}
 
   <div id="wrapper">
+  {{end}}

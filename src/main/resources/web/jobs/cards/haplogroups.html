@@ -1,0 +1,41 @@
+<div class="card">
+  <div class="card-header">
+    Haplogroups
+  </div>
+  <div class="card-body">
+    <select  id="update-plot-haplogroups" class="form-control" style="width: 180px; display: inline;">
+    {{for index,group in job.statistics.groups}}
+      <option value="{{index}}">{{group.name}}</option>
+    {{end}}
+    </select>
+
+      <canvas id="plot-haplogroups" style="max-height: 500px;"></canvas>
+
+  </div>
+</div>
+
+<script>
+
+  var statistics = {{json(job.statistics)}};
+
+  // create and instanced class only once.
+  if (window.haplogroups == undefined){
+
+    window.haplogroups = new Haplogroups('plot-haplogroups');
+    document.addEventListener("turbolinks:visit", function() {
+      window.haplogroups.destroy();
+    });
+  }
+  window.haplogroups.setDataset(statistics);
+  window.haplogroups.setIndex(0);
+  window.haplogroups.draw();
+
+  function onChangeClassification(){
+    var index = $(this).val();
+    window.haplogroups.setIndex(index);
+    window.haplogroups.draw();
+  }
+
+  $('#update-plot-haplogroups').on('change', onChangeClassification);
+
+</script>

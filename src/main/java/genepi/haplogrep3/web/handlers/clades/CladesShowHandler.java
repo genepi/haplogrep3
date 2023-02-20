@@ -1,18 +1,22 @@
 package genepi.haplogrep3.web.handlers.clades;
 
 import java.util.List;
+import java.util.Vector;
 
 import core.Haplogroup;
 import core.Polymorphism;
 import genepi.haplogrep3.App;
 import genepi.haplogrep3.config.Configuration;
+import genepi.haplogrep3.haplogrep.io.annotation.AnnotationColumn;
 import genepi.haplogrep3.model.AnnotatedPolymorphism;
 import genepi.haplogrep3.model.Phylotree;
 import genepi.haplogrep3.model.PhylotreeRepository;
 import genepi.haplogrep3.tasks.AnnotationTask;
+import genepi.haplogrep3.tasks.PhylotreeGraphBuilder;
 import genepi.haplogrep3.web.handlers.phylogenies.PhylogeniesIndexHandler;
 import genepi.haplogrep3.web.util.AbstractHandler;
 import genepi.haplogrep3.web.util.Page;
+import genepi.haplogrep3.web.util.graph.Graph;
 import io.javalin.http.Context;
 import io.javalin.http.HandlerType;
 
@@ -47,10 +51,16 @@ public class CladesShowHandler extends AbstractHandler {
 		annotationTask.loadFiles();
 		List<AnnotatedPolymorphism> annotatedPolymorphisms = annotationTask.getAminoAcidsFromPolys(polymorphisms, null);
 
+		Graph graph = PhylotreeGraphBuilder.buildGraph(phylotree, haplogroup.toString());
+
+		phylotree.annotate(annotatedPolymorphisms);
+
 		Page page = new Page(context, TEMPLATE);
 		page.put("tree", phylotree);
 		page.put("clade", haplogroup);
+		page.put("annotations", phylotree.getAnnotations());
 		page.put("polymorphisms", annotatedPolymorphisms);
+		page.put("graph", graph);
 		page.render();
 
 	}

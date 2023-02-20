@@ -6,15 +6,18 @@ import java.util.function.Consumer;
 
 import genepi.haplogrep3.App;
 import io.javalin.Javalin;
+import io.javalin.http.Context;
+import io.javalin.http.Handler;
+import io.javalin.http.HandlerType;
 import io.javalin.http.staticfiles.Location;
 import io.javalin.http.staticfiles.StaticFileConfig;
 import io.javalin.plugin.rendering.JavalinRenderer;
 
 public abstract class AbstractWebApp {
 
-	private static final String VIEW_EXTENSION = ".html";
+	private static final String[] VIEW_EXTENSIONS = { ".html", ".js" };
 
-	public final String ROOT_DIR = "/web/public";
+	public static final String ROOT_DIR = "/web/public";
 
 	private int port;
 
@@ -46,7 +49,7 @@ public abstract class AbstractWebApp {
 				}
 			});
 			JavalinRenderer.register(new BasisTemplateFileRenderer("src/main/resources", Location.EXTERNAL, this),
-					VIEW_EXTENSION);
+					VIEW_EXTENSIONS);
 
 		} else {
 			server._conf.addStaticFiles(new Consumer<StaticFileConfig>() {
@@ -58,7 +61,7 @@ public abstract class AbstractWebApp {
 					config.location = Location.CLASSPATH;
 				}
 			});
-			JavalinRenderer.register(new BasisTemplateFileRenderer("", Location.CLASSPATH, this), VIEW_EXTENSION);
+			JavalinRenderer.register(new BasisTemplateFileRenderer("", Location.CLASSPATH, this), VIEW_EXTENSIONS);
 
 		}
 
@@ -90,6 +93,18 @@ public abstract class AbstractWebApp {
 		server.addHandler(handler.getType(), handler.getPath(), handler);
 		namedRoutes.put(route, handler);
 		pathRoutes.put(handler.getPath(), route);
+	}
+
+	public void staticFileTemplate(String filename) {
+		server.addHandler(HandlerType.GET, filename, new Handler() {
+
+			@Override
+			public void handle(Context context) throws Exception {
+				String template = ROOT_DIR + filename;
+				Page page = new Page(context, template);
+				page.render();
+			}
+		});
 	}
 
 	public AbstractHandler getHandlerByName(String name) {
