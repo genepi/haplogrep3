@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -445,7 +446,7 @@ public class Phylotree {
 
 	}
 
-	public Haplogroup getNearestCluster(String[] cluster, String haplogroup) throws Exception {
+	public String getNearestCluster(List<Cluster> clusters, String haplogroup) throws Exception {
 
 		phylotree.Phylotree haplogrepPhylotree = getPhylotreeInstance();
 		Haplogroup haplogroupObject = new Haplogroup(haplogroup);
@@ -453,27 +454,32 @@ public class Phylotree {
 		int distanceTmp = -1;
 		String topLevelTmp = null;
 
-		for (String topLevelHaplogroup : cluster) {
+		for (Cluster cluster : clusters) {
 
-			boolean hit = new Haplogroup(topLevelHaplogroup).isSuperHaplogroup(haplogrepPhylotree, haplogroupObject);
+			//top level haplogroup
+			String label = cluster.getLabel();
 
-			if (hit) {
+			for (String node : cluster.getNodes()) {
 
-				int distance = haplogrepPhylotree.getDistanceBetweenHaplogroups(new Haplogroup(topLevelHaplogroup),
-						haplogroupObject);
+				boolean hit = new Haplogroup(node).isSuperHaplogroup(haplogrepPhylotree, haplogroupObject);
 
-				if (distanceTmp == -1 || distance <= distanceTmp) {
+				if (hit) {
+					new Haplogroup(label);
+					int distance = haplogrepPhylotree.getDistanceBetweenHaplogroups(new Haplogroup(node),
+							haplogroupObject);
 
-					topLevelTmp = topLevelHaplogroup;
-					distanceTmp = distance;
+					if (distanceTmp == -1 || distance <= distanceTmp) {
 
+						topLevelTmp = label.toString();
+						distanceTmp = distance;
+
+					}
 				}
 			}
-
 		}
 
 		if (topLevelTmp != null) {
-			return new Haplogroup(topLevelTmp);
+			return topLevelTmp;
 		} else {
 			return null;
 		}
