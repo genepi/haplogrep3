@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -433,6 +434,8 @@ public class Phylotree {
 						polymorphism.getRef(), polymorphism.getAlt());
 				if (result != null) {
 					polymorphism.setAnnotations(result);
+				}else {
+					polymorphism.setAnnotations(new HashMap<>());
 				}
 
 			}
