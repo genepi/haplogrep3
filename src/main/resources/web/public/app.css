@@ -95,3 +95,7 @@ body {
 .selected-mutation {
 border: 2px solid #000000;
 }
+
+.dataTables_filter {
+    display: none;
+}
