@@ -465,10 +465,11 @@ public class Phylotree {
 				if (distanceTmp == -1 || distance <= distanceTmp) {
 
 					topLevelTmp = topLevelHaplogroup;
+					distanceTmp = distance;
 
 				}
-
 			}
+
 		}
 
 		if (topLevelTmp != null) {
