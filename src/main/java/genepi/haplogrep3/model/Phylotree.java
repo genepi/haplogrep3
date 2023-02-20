@@ -434,7 +434,7 @@ public class Phylotree {
 						polymorphism.getRef(), polymorphism.getAlt());
 				if (result != null) {
 					polymorphism.setAnnotations(result);
-				}else {
+				} else {
 					polymorphism.setAnnotations(new HashMap<>());
 				}
 
@@ -443,6 +443,39 @@ public class Phylotree {
 			reader.close();
 		}
 
+	}
+
+	public Haplogroup getNearestCluster(String[] cluster, String haplogroup) throws Exception {
+
+		phylotree.Phylotree haplogrepPhylotree = getPhylotreeInstance();
+		Haplogroup haplogroupObject = new Haplogroup(haplogroup);
+
+		int distanceTmp = -1;
+		String topLevelTmp = null;
+
+		for (String topLevelHaplogroup : cluster) {
+
+			boolean hit = new Haplogroup(topLevelHaplogroup).isSuperHaplogroup(haplogrepPhylotree, haplogroupObject);
+
+			if (hit) {
+
+				int distance = haplogrepPhylotree.getDistanceBetweenHaplogroups(new Haplogroup(topLevelHaplogroup),
+						haplogroupObject);
+
+				if (distanceTmp == -1 || distance <= distanceTmp) {
+
+					topLevelTmp = topLevelHaplogroup;
+
+				}
+
+			}
+		}
+
+		if (topLevelTmp != null) {
+			return new Haplogroup(topLevelTmp);
+		} else {
+			return null;
+		}
 	}
 
 }
