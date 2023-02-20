@@ -13,6 +13,7 @@ import genepi.haplogrep3.App;
 import genepi.haplogrep3.web.WebApp;
 import genepi.haplogrep3.web.util.functions.DecimalFunction;
 import genepi.haplogrep3.web.util.functions.DoubleFormatFunction;
+import genepi.haplogrep3.web.util.functions.FromJsonFunction;
 import genepi.haplogrep3.web.util.functions.IncludeScriptFunction;
 import genepi.haplogrep3.web.util.functions.IncludeStyleFunction;
 import genepi.haplogrep3.web.util.functions.IsRouteActiveFunction;
@@ -97,6 +98,7 @@ public class BasisTemplateFileRenderer implements FileRenderer {
 		templateContext.set("includeScript", new IncludeScriptFunction(this));
 		templateContext.set("includeStyle", new IncludeStyleFunction(this));
 		templateContext.set("json", new ToJsonFunction());
+		templateContext.set("fromJson", new FromJsonFunction());
 		// widgets
 		templateContext.set("datatable", new DatatableFunction());
 		templateContext.set("piechart", new PieChartFunction());
