@@ -50,9 +50,7 @@ public class ClusterHaplogroupsCommand extends AbstractCommand {
 
 		Phylotree phylotree = loadPhylotree(tree);
 
-		List<Cluster> clusters = loadClusters();
-
-		new HaplogroupClustering(phylotree, clusters, output);
+		new HaplogroupClustering(phylotree, phylotree.getClusters(), output);
 
 		return 0;
 
@@ -63,20 +61,6 @@ public class ClusterHaplogroupsCommand extends AbstractCommand {
 		Configuration configuration = Configuration.loadFromFile(new File(CONFIG_FILE), "");
 		repository.loadFromConfiguration(configuration);
 		return repository.getById(id);
-	}
-
-	public List<Cluster> loadClusters() {
-		List<Cluster> clusters = new ArrayList<Cluster>();
-		Cluster cluster = new Cluster("B", new String[] { "B6", "B5", "B4" }, "red");
-		clusters.add(cluster);
-
-		cluster = new Cluster("L0", new String[] { "L0" }, "blue");
-		clusters.add(cluster);
-		// TODO: check with hansi, H2a2a1 for missing haplogroups
-		cluster = new Cluster("H", new String[] { "H", "H2a2a1" }, "blue");
-		clusters.add(cluster);
-
-		return clusters;
 	}
 
 }
