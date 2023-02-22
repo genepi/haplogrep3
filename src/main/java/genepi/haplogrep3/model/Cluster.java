@@ -1,20 +1,22 @@
 package genepi.haplogrep3.model;
 
-public class Cluster {
+public class Cluster implements Comparable<Cluster>{
 
 	private String label;
 
 	private String[] nodes = new String[0];
 
-	private String colour;
+	private String color;
 
-	public Cluster(String label, String[] nodes, String colour) {
+	public Cluster() {
+
+	}
+
+	public Cluster(String label, String[] nodes, String color) {
 
 		this.label = label;
-
 		this.nodes = nodes;
-		
-		this.colour = colour;
+		this.color = color;
 
 	}
 
@@ -27,6 +29,11 @@ public class Cluster {
 	}
 
 	public String[] getNodes() {
+
+		if (nodes == null || nodes.length == 0) {
+			return new String[] { label };
+		}
+
 		return nodes;
 	}
 
@@ -34,12 +41,17 @@ public class Cluster {
 		this.nodes = nodes;
 	}
 
-	public String getColour() {
-		return colour;
+	public String getColor() {
+		return color;
 	}
 
-	public void setColour(String colour) {
-		this.colour = colour;
+	public void setColor(String color) {
+		this.color = color;
+	}
+
+	@Override
+	public int compareTo(Cluster o) {
+		return label.compareTo(o.label);
 	}
 
 }

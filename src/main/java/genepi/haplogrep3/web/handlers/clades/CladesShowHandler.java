@@ -46,6 +46,11 @@ public class CladesShowHandler extends AbstractHandler {
 			throw new Exception("Clade " + clade + " not found.");
 		}
 
+		String cluster = "";
+		if (phylotree.hasClusters()) {
+			cluster = phylotree.getNearestCluster(phylotree.getClusters(), clade);
+		}
+
 		List<Polymorphism> polymorphisms = phylotree.getPolymorphisms(haplogroup);
 		AnnotationTask annotationTask = new AnnotationTask(null, phylotree);
 		annotationTask.loadFiles();
@@ -57,6 +62,7 @@ public class CladesShowHandler extends AbstractHandler {
 
 		Page page = new Page(context, TEMPLATE);
 		page.put("tree", phylotree);
+		page.put("cluster", cluster);
 		page.put("clade", haplogroup);
 		page.put("annotations", phylotree.getAnnotations());
 		page.put("polymorphisms", annotatedPolymorphisms);

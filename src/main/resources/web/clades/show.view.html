@@ -8,11 +8,14 @@
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{routeUrl("phylogenies_index",{})}}">Phylogenies</a></li>
         <li class="breadcrumb-item"><a href="{{routeUrl("phylogenies_show",{phylotree: tree.getIdWithVersion()})}}">{{tree.name}} {{tree.version}}</a></li>
+        {{if cluster != ""}}
+        <li class="breadcrumb-item"><a href="{{routeUrl("groups_show",{phylotree: tree.getIdWithVersion(), label: cluster})}}">{{cluster}}</a></li>
+        {{end}}
         <li class="breadcrumb-item active" aria-current="page">{{clade}}</li>
       </ol>
     </nav>
 
-    <h1>{{clade}}</h1>
+    <h1>Haplogroup {{clade}}</h1>
 
     <h4>Phylogenetic Tree</h4>
 

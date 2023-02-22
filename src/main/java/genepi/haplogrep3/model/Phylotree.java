@@ -4,11 +4,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Vector;
 
 import com.esotericsoftware.yamlbeans.YamlReader;
@@ -17,8 +18,6 @@ import core.Haplogroup;
 import core.Polymorphism;
 import core.Reference;
 import core.SampleFile;
-import genepi.haplogrep3.haplogrep.io.LabelsReader;
-import genepi.haplogrep3.haplogrep.io.LabelsSettings;
 import genepi.haplogrep3.haplogrep.io.annotation.AnnotationColumn;
 import genepi.haplogrep3.haplogrep.io.annotation.AnnotationFileReader;
 import genepi.haplogrep3.haplogrep.io.annotation.AnnotationSettings;
@@ -70,11 +69,9 @@ public class Phylotree {
 
 	private HashSet<String> hotspots = new HashSet<>();
 
-	private LabelsSettings labels;
-
-	private LabelsReader groups;
-
 	private String template;
+
+	private List<Cluster> clusters = new Vector<Cluster>();
 
 	private List<AnnotationSettings> annotations = new Vector<AnnotationSettings>();
 
@@ -231,24 +228,12 @@ public class Phylotree {
 		this.hotspots = hotspots;
 	}
 
-	public void setLabels(LabelsSettings labels) {
-		this.labels = labels;
-	}
-
-	public LabelsSettings getLabels() {
-		return labels;
-	}
-
 	public List<AnnotationSettings> getAnnotations() {
 		return annotations;
 	}
 
 	public void setAnnotations(List<AnnotationSettings> annotations) {
 		this.annotations = annotations;
-	}
-
-	public LabelsReader getGroups() {
-		return groups;
 	}
 
 	public phylotree.Phylotree getPhylotreeInstance() {
@@ -261,6 +246,18 @@ public class Phylotree {
 
 	public void setTemplate(String template) {
 		this.template = template;
+	}
+
+	public void setClusters(List<Cluster> clusters) {
+		this.clusters = clusters;
+	}
+
+	public List<Cluster> getClusters() {
+		return clusters;
+	}
+
+	public boolean hasClusters() {
+		return clusters != null && !clusters.isEmpty();
 	}
 
 	public void classify(SampleFile sampleFile, Distance distance, int hits, boolean skipAlignmentRules)
@@ -343,9 +340,6 @@ public class Phylotree {
 		if (alignmentRules != null) {
 			alignmentRules = FileUtil.path(parent, alignmentRules);
 		}
-		if (labels != null) {
-			labels.setFilename(FileUtil.path(parent, labels.getFilename()));
-		}
 		if (template != null) {
 			template = FileUtil.path(parent, template);
 		}
@@ -358,6 +352,7 @@ public class Phylotree {
 
 		YamlReader reader = new YamlReader(new FileReader(file));
 		reader.getConfig().setPropertyElementType(Phylotree.class, "annotations", AnnotationSettings.class);
+		reader.getConfig().setPropertyElementType(Phylotree.class, "clusters", Cluster.class);
 		reader.getConfig().setPropertyElementType(AnnotationSettings.class, "properties", AnnotationColumn.class);
 
 		Phylotree phylotree = reader.read(Phylotree.class);
@@ -366,16 +361,12 @@ public class Phylotree {
 		Reference reference = new Reference(phylotree.getFasta());
 		phylotree.setReference(reference);
 
-		phylotree.loadLabels();
+		if (phylotree.hasClusters()) {
+			Collections.sort(phylotree.getClusters());
+		}
 
 		return phylotree;
 
-	}
-
-	public void loadLabels() {
-		if (labels != null) {
-			groups = new LabelsReader(labels.getFilename(), labels.getGroups());
-		}
 	}
 
 	public List<Haplogroup> getHaplogroups() {
@@ -456,7 +447,7 @@ public class Phylotree {
 
 		for (Cluster cluster : clusters) {
 
-			//top level haplogroup
+			// top level haplogroup
 			String label = cluster.getLabel();
 
 			for (String node : cluster.getNodes()) {
@@ -483,6 +474,42 @@ public class Phylotree {
 		} else {
 			return null;
 		}
+	}
+
+	public Cluster getClusterByLabel(String label) {
+		for (Cluster cluster : clusters) {
+			if (cluster.getLabel().equals(label)) {
+				return cluster;
+			}
+		}
+		return null;
+	}
+
+	public Set<String> getHaplogroupsByCluster(Cluster cluster) throws Exception {
+		Set<String> haplogroups = new HashSet<String>();
+		for (String label : cluster.getNodes()) {
+			PhyloTreeNode node = getHaplogroupTreeNode(label);
+			if (node == null) {
+				return new HashSet<String>();
+			}
+			addChilds(cluster, node, haplogroups, 1);
+		}
+		return haplogroups;
+	}
+
+	private void addChilds(Cluster cluster, PhyloTreeNode root, Set<String> haplogroups, int level) throws Exception {
+
+		List<PhyloTreeNode> childs = root.getSubHaplogroups();
+
+		for (PhyloTreeNode child : childs) {
+			String haplogroup = child.getHaplogroup().toString();
+			String nearestCluster = getNearestCluster(clusters, haplogroup);
+			if (nearestCluster != null && nearestCluster.equals(cluster.getLabel())) {
+				haplogroups.add(child.getHaplogroup().toString());
+				addChilds(cluster, child, haplogroups, level++);
+			}
+		}
+
 	}
 
 }

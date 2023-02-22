@@ -27,25 +27,21 @@
 
 
 
-{{if tree.getGroups() != null}}
-      {{for group in tree.getGroups().getGroups() }}
-      <hr>
-      <h3>{{group.name}} ({{group.getLabels().size()}})</h3>
-      <p>This classification includes the following <b> {{group.getLabels().size()}} clusters</b>:</p>
-            <p style="line-height: 250%">
-      {{for label in group.getLabels()}}
-      <a href="{{routeUrl("groups_show",{phylotree: tree.getIdWithVersion(), group: group.name, label: label})}}" class="btn btn-outline-primary btn-sm"><i class="fas fa-folder"></i> {{label}} ({{group.getHaplogroupsByLabel(label).size()}})</a>&nbsp;
+    {{ if tree.hasClusters() }}
+    <h3>Clusters</h3>
+      {{for cluster in tree.getClusters() }}
+          <a href="{{routeUrl("groups_show",{phylotree: tree.getIdWithVersion(), label: cluster.getLabel()})}}" class="btn btn-sm btn-outline-primary"">
+            <i class="fas fa-folder" style="color: {{cluster.getColor()}}"></i> {{cluster.getLabel()}} ({{tree.getHaplogroupsByCluster(cluster).size() + cluster.getNodes().length}})
+          </a>&nbsp;
       {{end}}
-      </p>
-      {{end}}
-      {{else}}
+    {{else}}
       <h3>Haplogroups ({{clades.size()}})</h3>
       <p>
       {{for clade in clades}}
         <a class="badge badge-primary" href="{{routeUrl("clades_show", {phylotree:tree.getIdWithVersion(), clade:clade.toString()})}}">{{clade}}</a>
       {{end}}
       </p>
-  {{end}}
+    {{end}}
     <br><br>
 
 
