@@ -503,7 +503,7 @@ public class Phylotree {
 
 		for (PhyloTreeNode child : childs) {
 			String haplogroup = child.getHaplogroup().toString();
-			String nearestCluster = getNearestCluster(clusters, haplogroup);
+			String nearestCluster = getNearestCluster(clusters, haplogroup);			
 			if (nearestCluster != null && nearestCluster.equals(cluster.getLabel())) {
 				haplogroups.add(child.getHaplogroup().toString());
 				addChilds(cluster, child, haplogroups, level++);

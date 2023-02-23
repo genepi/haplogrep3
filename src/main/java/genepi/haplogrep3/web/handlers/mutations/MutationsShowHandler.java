@@ -88,6 +88,7 @@ public class MutationsShowHandler extends AbstractHandler {
 			model.put("reference", phylotree.getCategory());
 			model.put("phylotree", phylotree.getName() + " (" + phylotree.getVersion() + ")");
 			model.put("minimal", minimal);
+			model.put("tree", phylotree);
 			details = render.render(template.getName(), model);
 		}
 
