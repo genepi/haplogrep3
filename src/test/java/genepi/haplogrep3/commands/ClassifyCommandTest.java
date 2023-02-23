@@ -4,7 +4,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
 
 import org.junit.Test;
 
@@ -165,6 +168,95 @@ public class ClassifyCommandTest {
 		assertFalse(set.contains("309.1C"));
 		assertFalse(set.contains("309.2C"));
 		assertFalse(set.contains("315.1C"));
+	}
+
+	@Test
+	public void testHSDtoFASTAWithAlignmentRules() throws Exception {
+
+		String output = "test-data/Phylotree17_FU1a";
+		FileUtil.deleteDirectory(output);
+		FileUtil.createDirectory(output);
+
+		// 1. classify the HSD, write extended report to compare and write FASTA file
+		ClassifyCommand command = new ClassifyCommand();
+		command.input = "test-data/hsd/Phylotree17_FU1a.hsd";
+		command.phylotreeId = PHYLOTREE;
+		command.writeFasta = true;
+		command.extendedReport = true;
+		command.output = FileUtil.path(output, "Phylotree17_FU1a.txt");
+
+		int exitCode = command.call();
+
+		command = new ClassifyCommand();
+		command.input = FileUtil.path(output, "Phylotree17_FU1a.fasta");
+		command.phylotreeId = PHYLOTREE;
+		command.extendedReport = true;
+		command.output = FileUtil.path(output, "Phylotree17_FU1a_fromFasta.txt");
+
+		exitCode = command.call();
+
+		assertEquals(0, exitCode);
+
+		CsvTableReader readerHSDout = new CsvTableReader(FileUtil.path(output, "Phylotree17_FU1a.txt"), '\t');
+		assertTrue(readerHSDout.next());
+		HashMap<String, String> setHSD = new HashMap<String, String>();
+
+		while (readerHSDout.next()) {
+			for (String polymorphism : readerHSDout.getString("Not_Found_Polys").split(" ")) {
+				String key= readerHSDout.getString("SampleID");
+				if (setHSD.get(key)==null){
+					setHSD.put(key, polymorphism);
+				}
+				else {
+					setHSD.put(key, setHSD.get(key) + " "+ polymorphism);
+				}
+				
+			}
+		}
+		readerHSDout.close();
+
+		CsvTableReader readerFASTAout = new CsvTableReader(FileUtil.path(output, "Phylotree17_FU1a_fromFasta.txt"),
+				'\t');
+		assertTrue(readerFASTAout.next());
+
+		HashMap<String, String> setFASTAmiss = new HashMap<String, String>();
+		HashMap<String, String> setFASTAremaining = new HashMap<String, String>();
+
+		while (readerFASTAout.next()) {
+			for (String polymorphism : readerFASTAout.getString("Not_Found_Polys").split(" ")) {
+				String key= readerFASTAout.getString("SampleID");
+				if (setFASTAmiss.get(key)==null){
+					setFASTAmiss.put(key, polymorphism);
+				}
+				else {
+					setFASTAmiss.put(key, setFASTAmiss.get(key) + " "+ polymorphism);
+				}
+				
+			}
+			for (String polymorphism : readerFASTAout.getString("Remaining_Polys").split(" ")) {
+				String key =  readerFASTAout.getString("SampleID");
+				
+				if (setFASTAremaining.get(key)==null){
+					setFASTAremaining.put(key, polymorphism);
+				}
+				else {
+					setFASTAremaining.put(key, setFASTAremaining.get(key) + " "+ polymorphism);
+				}
+			}
+		}
+		readerFASTAout.close();
+
+		for (Map.Entry<String, String> set : setFASTAmiss.entrySet()) {
+			String missingFasta = set.getValue();
+			String missingHSD = setHSD.get(set.getKey());
+			if (!missingFasta.equals(missingHSD)) {
+				System.out.print(set.getKey() + "\t" + set.getValue());
+				System.out.println("\t" + setHSD.get(set.getKey()) + "\t" + setFASTAremaining.get(set.getKey()));
+			}
+		}
+		System.out.println(setHSD.size());
+		assertEquals(setHSD.size(), setFASTAmiss.size());
+
 	}
 
 	@Test
