@@ -16,8 +16,17 @@
       <i class="fas fa-exclamation-triangle text-warning"></i> Warnings: {{job.samplesWarning}}&nbsp;&nbsp;
       <i class="fas fa-exclamation-circle text-danger"></i> Failed: {{job.samplesError}}
     </div>
-    <div>
-      {{job.getCounters()}}
+    <div style="margin-top: 15px;">
+      <table class="table table-sm">
+        <tbody>
+      {{for key in job.getCounters().keySet()}}
+      <tr class="small">
+        <td>{{key}}</td>
+        <td>{{job.getCounters().get(key)}}</td>
+      </tr>
+      {{end}}
+      </tbody>
+      </table>
     </div>
   </div>
 </div>
