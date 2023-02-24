@@ -22,6 +22,7 @@ import genepi.haplogrep3.web.util.functions.PercentageFunction;
 import genepi.haplogrep3.web.util.functions.RouteFunction;
 import genepi.haplogrep3.web.util.functions.ToJsonFunction;
 import genepi.haplogrep3.web.util.functions.ToNumberFunction;
+import genepi.haplogrep3.web.util.functions.widgets.PieChartDataFunction;
 import genepi.haplogrep3.web.util.functions.widgets.DatatableFunction;
 import genepi.haplogrep3.web.util.functions.widgets.PieChartFunction;
 import genepi.io.FileUtil;
@@ -102,6 +103,7 @@ public class BasisTemplateFileRenderer implements FileRenderer {
 		// widgets
 		templateContext.set("datatable", new DatatableFunction());
 		templateContext.set("piechart", new PieChartFunction());
+		templateContext.set("piechartData", new PieChartDataFunction());
 		
 		templateContext.set("routeUrl", new RouteFunction(server));
 

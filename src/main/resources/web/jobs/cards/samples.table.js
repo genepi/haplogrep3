@@ -12,6 +12,8 @@ class SamplesTable {
 
   filter = 'all';
 
+  server = '';
+
   constructor(id) {
     this.id = id;
   }
@@ -22,6 +24,10 @@ class SamplesTable {
 
   setPhylotree(phylotree) {
     this.phylotree = phylotree;
+  }
+
+  setServer(serverUrl) {
+    this.serverUrl = serverUrl;
   }
 
   render() {
@@ -104,7 +110,7 @@ class SamplesTable {
 
     $('#' + this.id + ' tbody').on('click', 'tr', function() {
       var data = self.table.row(this).data();
-      new SamplesDetails(self.phylotree, data).show();
+      new SamplesDetails(self.phylotree, data, self.serverUrl).show();
     });
 
   }

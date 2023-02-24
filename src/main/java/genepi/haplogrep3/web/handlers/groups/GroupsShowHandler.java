@@ -7,7 +7,7 @@ import java.util.Vector;
 
 import genepi.haplogrep3.App;
 import genepi.haplogrep3.config.Configuration;
-import genepi.haplogrep3.haplogrep.io.Group;
+import genepi.haplogrep3.model.Cluster;
 import genepi.haplogrep3.model.Phylotree;
 import genepi.haplogrep3.model.PhylotreeRepository;
 import genepi.haplogrep3.tasks.PhylotreeGraphBuilder;
@@ -20,7 +20,7 @@ import io.javalin.http.HandlerType;
 
 public class GroupsShowHandler extends AbstractHandler {
 
-	public static final String PATH = PhylogeniesIndexHandler.PATH + "/{phylotree}/groups/{group}/{label}";
+	public static final String PATH = PhylogeniesIndexHandler.PATH + "/{phylotree}/clusters/{label}";
 
 	public static final HandlerType TYPE = HandlerType.GET;
 
@@ -38,23 +38,25 @@ public class GroupsShowHandler extends AbstractHandler {
 			throw new Exception("Phylotree " + phylotreeId + " not found.");
 		}
 
-		String groupName = context.pathParam("group");
-
-		Group group = phylotree.getGroups().getGroupByName(groupName);
-
 		String label = context.pathParam("label");
 
-		Set<String> haplogroups = group.getHaplogroupsByLabel(label);
+		Cluster cluster = phylotree.getClusterByLabel(label);
+		if (cluster == null) {
+			throw new Exception("Cluster " + label + " not found.");
+		}
+
+		Set<String> haplogroups = phylotree.getHaplogroupsByCluster(cluster);
+		for (String node: cluster.getNodes()) {
+			haplogroups.add(node);
+		}
 		Graph graph = PhylotreeGraphBuilder.build(phylotree, haplogroups);
-		
+
 		List<String> sortedHaplogroups = new Vector<String>(haplogroups);
 		Collections.sort(sortedHaplogroups);
-		
-		
+
 		Page page = new Page(context, TEMPLATE);
 		page.put("tree", phylotree);
-		page.put("group", group);
-		page.put("label", label);
+		page.put("cluster", cluster);
 		page.put("clades", sortedHaplogroups);
 		page.put("graph", graph);
 		page.render();

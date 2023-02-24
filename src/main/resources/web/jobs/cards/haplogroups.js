@@ -35,7 +35,7 @@ class Haplogroups {
         label: 'Samples',
         data: group.values,
         hoverOffset: 4,
-        backgroundColor: this.colors
+        backgroundColor: group.colors ? group.colors : this.colors
       }]
     };
 
