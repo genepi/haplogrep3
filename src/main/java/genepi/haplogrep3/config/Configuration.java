@@ -30,8 +30,10 @@ public class Configuration {
 	private List<Dataset> examples = new Vector<Dataset>();
 
 	private List<String> repositories = new Vector<String>();
-	
+
 	private String baseUrl = "";
+
+	private String url = "";
 
 	public Configuration() {
 
@@ -118,8 +120,16 @@ public class Configuration {
 		return baseUrl;
 	}
 
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
 	public static Configuration loadFromFile(File file, String parent) throws IOException {
-		
+
 		YamlReader reader = new YamlReader(new FileReader(file));
 		reader.getConfig().setPropertyElementType(Configuration.class, "phylotrees", String.class);
 		reader.getConfig().setPropertyElementType(Configuration.class, "examples", Dataset.class);
@@ -129,11 +139,11 @@ public class Configuration {
 		for (Dataset dataset : configuration.getExamples()) {
 			dataset.updateParent(parent);
 		}
-		
+
 		return configuration;
 
 	}
-	
+
 	public void save(File file) throws IOException {
 		YamlWriter writer = new YamlWriter(new FileWriter(file));
 		writer.getConfig().setPropertyElementType(Configuration.class, "phylotrees", String.class);

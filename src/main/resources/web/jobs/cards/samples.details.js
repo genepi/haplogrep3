@@ -4,15 +4,15 @@ class SamplesDetails {
 
   selectedMutation = undefined;
 
-  constructor(phylotree, data) {
+  constructor(phylotree, data, serverUrl) {
     this.phylotree = phylotree;
     this.data = data;
+    this.serverUrl = serverUrl;
   }
 
   show() {
 
     var self = this;
-    console.log(self.data);
     var dialog = bootbox.dialog({
       title: self.renderIcon(self.data) + '&nbsp;' + self.data.sample,
       onEscape: true,
@@ -47,14 +47,13 @@ class SamplesDetails {
     dialog.find("div.modal-dialog").addClass("scroll-modal-body-horizontal");
 
     $(".mutation").on("click", function() {
-      self.showMutationDetails(this);
+      self.showMutationDetails(this, self.serverUrl);
     });
 
   }
 
 
-  showMutationDetails(source) {
-    console.log("open mutation");
+  showMutationDetails(source, server) {
     if (this.selectedMutation) {
       $(this.selectedMutation).removeClass("selected-mutation");
     }
@@ -63,7 +62,7 @@ class SamplesDetails {
     $(source).addClass("selected-mutation");
     var mutation = $(source).data("mutation");
     var clade = $(source).data("clade");
-    var url = '/phylogenies/' + this.phylotree + '/haplogroups/' + clade + '/mutations/' + mutation + '?minimal=true';
+    var url = server + '/phylogenies/' + this.phylotree + '/haplogroups/' + clade + '/mutations/' + mutation + '?minimal=true';
     $("#details").attr('src', url);
   }
 
