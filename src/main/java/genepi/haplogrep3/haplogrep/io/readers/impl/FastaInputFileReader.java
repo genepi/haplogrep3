@@ -9,6 +9,7 @@ import org.apache.commons.lang.SystemUtils;
 
 import core.SampleFile;
 import genepi.haplogrep3.haplogrep.io.readers.AbstractInputFileReader;
+import genepi.haplogrep3.haplogrep.io.readers.SampleFileWithStatistics;
 import genepi.haplogrep3.model.Phylotree;
 import importer.FastaImporter;
 
@@ -24,12 +25,12 @@ public class FastaInputFileReader extends AbstractInputFileReader {
 		return hasFileExtensions(files, ".fasta", ".fasta.gz", ".fa", ".fa.gz");
 	}
 
-	public SampleFile read(List<File> files, Phylotree phylotree) throws Exception {
+	public SampleFileWithStatistics read(List<File> files, Phylotree phylotree) throws Exception {
 
 		if (SystemUtils.IS_OS_WINDOWS) {
 			throw new IOException("Fasta is no supported on Windows");
 		}
-		
+
 		ArrayList<String> lines = new ArrayList<String>();
 		FastaImporter importer = new FastaImporter();
 		for (File file : files) {
@@ -46,7 +47,7 @@ public class FastaInputFileReader extends AbstractInputFileReader {
 
 		}
 
-		return sampleFile;
+		return new SampleFileWithStatistics(sampleFile, null);
 
 	}
 

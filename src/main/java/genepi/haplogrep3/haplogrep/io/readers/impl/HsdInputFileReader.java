@@ -6,6 +6,7 @@ import java.util.List;
 
 import core.SampleFile;
 import genepi.haplogrep3.haplogrep.io.readers.AbstractInputFileReader;
+import genepi.haplogrep3.haplogrep.io.readers.SampleFileWithStatistics;
 import genepi.haplogrep3.model.Phylotree;
 import importer.HsdImporter;
 
@@ -15,7 +16,7 @@ public class HsdInputFileReader extends AbstractInputFileReader {
 		return hasFileExtensions(files, ".hsd", ".txt");
 	}
 
-	public SampleFile read(List<File> files, Phylotree phylotree) throws Exception {
+	public SampleFileWithStatistics read(List<File> files, Phylotree phylotree) throws Exception {
 
 		ArrayList<String> lines = new ArrayList<String>();
 		HsdImporter importer = new HsdImporter();
@@ -24,7 +25,7 @@ public class HsdInputFileReader extends AbstractInputFileReader {
 		}
 
 		SampleFile sampleFile = new SampleFile(lines, phylotree.getReference());
-		return sampleFile;
+		return new SampleFileWithStatistics(sampleFile, null);
 
 	}
 

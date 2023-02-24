@@ -2,10 +2,12 @@ package genepi.haplogrep3.tasks;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import core.SampleFile;
 import genepi.haplogrep3.haplogrep.io.readers.InputFileReaderFactory;
+import genepi.haplogrep3.haplogrep.io.readers.SampleFileWithStatistics;
 import genepi.haplogrep3.model.AnnotatedSample;
 import genepi.haplogrep3.model.Distance;
 import genepi.haplogrep3.model.Phylotree;
@@ -41,6 +43,8 @@ public class ClassificationTask {
 	private int samplesWarning = 0;
 
 	private int samplesError = 0;
+
+	private Map<String, Object> counters = new HashMap<String, Object>();
 
 	public ClassificationTask(Phylotree phylotree, List<File> files, Distance distance) {
 		this.phylotree = phylotree;
@@ -81,11 +85,14 @@ public class ClassificationTask {
 			reader.setHetLevel(hetLevel);
 			reader.setSkipAlignmentRules(skipAlignmentRules);
 
-			SampleFile sampleFile = reader.read(files, phylotree);
+			SampleFileWithStatistics sampleFile = reader.read(files, phylotree);
+			if (sampleFile.getStatistics() !=null) {
+				counters = sampleFile.getStatistics().getCounters();
+			}
 
-			phylotree.classify(sampleFile, distance, hits, skipAlignmentRules);
+			phylotree.classify(sampleFile.getSampleFile(), distance, hits, skipAlignmentRules);
 
-			AnnotationTask annotationTask = new AnnotationTask(sampleFile, phylotree);
+			AnnotationTask annotationTask = new AnnotationTask(sampleFile.getSampleFile(), phylotree);
 			annotationTask.run();
 			samples = annotationTask.getAnnotatedSamples();
 			for (AnnotatedSample sample : samples) {
@@ -138,6 +145,10 @@ public class ClassificationTask {
 
 	public int getSamplesWarning() {
 		return samplesWarning;
+	}
+
+	public Map<String, Object> getCounters() {
+		return counters;
 	}
 
 }

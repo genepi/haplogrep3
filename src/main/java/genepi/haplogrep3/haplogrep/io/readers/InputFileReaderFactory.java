@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Vector;
 
-import core.SampleFile;
 import genepi.haplogrep3.haplogrep.io.readers.impl.FastaInputFileReader;
 import genepi.haplogrep3.haplogrep.io.readers.impl.HsdInputFileReader;
 import genepi.haplogrep3.haplogrep.io.readers.impl.VcfInputFileReader;
@@ -27,7 +26,7 @@ public class InputFileReaderFactory {
 		return readers;
 	}
 
-	public SampleFile read(List<File> files, Phylotree phylotree) throws Exception {
+	public SampleFileWithStatistics read(List<File> files, Phylotree phylotree) throws Exception {
 
 		for (AbstractInputFileReader reader : getSupportedReaders()) {
 			if (reader.accepts(files, phylotree)) {

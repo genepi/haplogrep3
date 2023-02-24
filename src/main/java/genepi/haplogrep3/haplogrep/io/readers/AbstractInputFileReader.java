@@ -10,7 +10,7 @@ public abstract class AbstractInputFileReader {
 
 	public abstract boolean accepts(List<File> files, Phylotree phylotree);
 
-	public abstract SampleFile read(List<File> files, Phylotree phylotree) throws Exception;
+	public abstract SampleFileWithStatistics read(List<File> files, Phylotree phylotree) throws Exception;
 
 	public boolean hasFileExtensions(List<File> files, String... extensions) {
 		for (File file : files) {
