@@ -192,8 +192,34 @@ public class ClassificationTaskTest {
 		AnnotatedSample firstSample = task.getSamples().get(0);
 		assertEquals("Sample1", firstSample.getSample());
 		assertEquals("H100", firstSample.getClade());
+		assertEquals(14, task.getCounters().get("Variants"));
+		
 		assertEquals(0, firstSample.getNs());
 		assertEquals(1, firstSample.getRanges().length);
+	}
+	
+	@Test
+	public void testVcfStatistics() throws Exception {
+
+		Phylotree phylotree = loadPhylotree(PHYLOTREE);
+
+		List<File> files = new ArrayList<File>();
+		files.add(new File("test-data/vcf/H100_complex.vcf"));
+
+		ClassificationTask task = new ClassificationTask(phylotree, files, Distance.KULCZYNSKI);
+		task.run();
+
+		assertTrue(task.isSuccess());
+		assertEquals(1, task.getCounters().get("Samples"));
+		assertEquals(0.71, Double.valueOf((Double)task.getCounters().get("Reference Overlap (%)")), 0.01);
+		assertEquals(14, task.getCounters().get("Variants"));
+		assertEquals(1, task.getCounters().get("Out Of Range Variants"));
+		assertEquals(1, task.getCounters().get("Multiallelic Variants"));
+		assertEquals(0, task.getCounters().get("Flagged Variants"));
+		assertEquals(1, task.getCounters().get("Duplicate Variants"));
+		assertEquals(0, task.getCounters().get("Low Sample Call Rate"));
+		assertEquals(2, task.getCounters().get("Variant Call Rate < 90%"));
+		
 	}
 
 	@Test
