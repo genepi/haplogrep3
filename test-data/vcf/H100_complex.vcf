@@ -3,6 +3,7 @@
 ##INFO=<ID=AC,Number=A,Type=Integer,Description="Allele count in genotypes, for each ALT allele, in the same order as listed">
 ##INFO=<ID=AN,Number=1,Type=Integer,Description="Total number of alleles in called genotypes">
 ##contig=<ID=MT,length=16569,md5=5d155a500975d0115cbea18770554f48>
+##FILTER=<ID=fa,Description="Genotypes called from fasta file">
 ##reference=file:rCRS.fa
 ##reference=rCRS
 #CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	Sample1
@@ -17,6 +18,6 @@ MT	9410	.	A	G	.	DUP	.	GT	1/1
 MT	12358	.	A	G	.	.	.	GT	1/1
 MT	13656	.	T	C	.	.	.	GT	1/1
 MT	15326	.	A	G	.	.	.	GT	1/1
-MT	16189	.	T	C	.	.	.	GT	1/1
+MT	16189	.	A	C	.	PASS	.	GT	1/1
 MT	16192	.	C	T	.	.	.	GT	./.
 MT	16519	.	T	C	.	.	.	GT	./.

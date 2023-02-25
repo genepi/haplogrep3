@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
 import core.Reference;
 import genepi.haplogrep3.haplogrep.io.readers.SampleFileStatistics;
 import htsjdk.variant.variantcontext.Genotype;
@@ -32,6 +34,8 @@ public class VcfSampleFileStatistics extends SampleFileStatistics {
 	private int duplicates = 0;
 
 	private int filterFlags = 0;
+
+	private int strandFlips = 0;
 
 	private int multiallelics = 0;
 
@@ -79,6 +83,25 @@ public class VcfSampleFileStatistics extends SampleFileStatistics {
 				continue;
 			}
 
+			if (refAllele.equals(refAlleleSample)) {
+				matches++;
+			}
+			
+			if (isStrandFlip(refAllele, refAlleleSample)) {
+				strandFlips++;
+				continue;
+			}
+			
+			if (isFiltered(vc)) {
+
+				if (vc.getFilters().contains("DUP")) {
+					duplicates++;
+				} else {
+					filterFlags++;
+				}
+				continue;
+			}
+			
 			if (vc.getAlternateAlleles().size() > 1) {
 				multiallelics++;
 				continue;
@@ -87,19 +110,6 @@ public class VcfSampleFileStatistics extends SampleFileStatistics {
 			if (vc.isIndel() || vc.isComplexIndel()) {
 				indels++;
 				continue;
-			}
-
-			if (vc.isFiltered()) {
-				if (vc.getFilters().contains("DUP")) {
-					duplicates++;
-				} else {
-					filterFlags++;
-				}
-				continue;
-			}
-
-			if (refAllele.equals(refAlleleSample)) {
-				matches++;
 			}
 
 			if (1 - (vc.getNoCallCount() / (double) vc.getNSamples()) < VARIANT_CALL_RATE) {
@@ -129,6 +139,11 @@ public class VcfSampleFileStatistics extends SampleFileStatistics {
 
 	}
 
+	public boolean isFiltered(VariantContext vc) {
+		Set<String> filters = vc.getFilters();
+		return vc.isFiltered() && !filters.contains("PASS") && !filters.contains(".") && !filters.contains("fa");
+	}
+
 	@Override
 	public boolean isFailed() {
 		return invalidAlleles > 0;
@@ -137,21 +152,25 @@ public class VcfSampleFileStatistics extends SampleFileStatistics {
 	@Override
 	public Map<String, Object> getCounters() {
 		Map<String, Object> statistics = new HashMap<String, Object>();
+		
+		double referenceOverlap = (matches / (double) variants) * 100;
+		 
 		statistics.put("Files", files.size());
-		statistics.put("Samples", samples);
-		statistics.put("Variants", variants);
-		statistics.put("Reference Overlap (%)", (double) matches / variants);
-		statistics.put("Out Of Range Variants", outOfRange);
-		statistics.put("Multiallelic Variants", multiallelics);
-		statistics.put("Indel Variants", indels);
-		statistics.put("Flagged Variants", filterFlags);
-		statistics.put("Duplicate Variants", duplicates);
-		statistics.put("Low Sample Call Rate", lowSampleCallRate);
-		statistics.put("Variant Call Rate < 90%", lowVariantCallRate);
+		statistics.put("Samples", String.format("%d", samples));
+		statistics.put("Input Variants", String.format("%d", variants));
+		statistics.put("Reference Overlap (%)", String.format("%.2f", referenceOverlap));
+		statistics.put("Strand Flips", String.format("%d", strandFlips));
+		statistics.put("Out Of Range Variants", String.format("%d", outOfRange));
+		statistics.put("Multiallelic Variants", String.format("%d", multiallelics));
+		statistics.put("Indel Variants", String.format("%d", indels));
+		statistics.put("VCF Filtered Variants", String.format("%d", filterFlags));
+		statistics.put("Duplicate Variants", String.format("%d", duplicates));
+		statistics.put("Low Sample Call Rate", String.format("%d", lowSampleCallRate));
+		statistics.put("Variant Call Rate < 90%", String.format("%d", lowVariantCallRate));
 		return statistics;
 	}
 
-	public static boolean strandFlip(String reference, String refAlleleSample) {
+	public static boolean isStrandFlip(String reference, String refAlleleSample) {
 
 		if (refAlleleSample.equals("A")) {
 			return reference.equals("T");
