@@ -20,7 +20,7 @@
       <table class="table table-sm">
         <tbody>
       {{for counter in job.getCounters()}}
-      <tr class="small">
+      <tr class="small {{if counter.getType().toString() == "WARNING"}}font-weight-bold{{end}}">
         <td>
           {{if counter.getType().toString() == "WARNING"}}
             <i class="fas fa-exclamation-triangle text-warning"></i>&nbsp;
