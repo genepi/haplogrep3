@@ -3,11 +3,10 @@ package genepi.haplogrep3.tasks;
 import java.io.File;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import com.google.gson.Gson;
 
-import genepi.haplogrep3.haplogrep.io.readers.SampleFileStatistics;
+import genepi.haplogrep3.haplogrep.io.readers.StatisticCounter;
 import genepi.haplogrep3.model.AnnotatedSample;
 import genepi.haplogrep3.model.Distance;
 import genepi.haplogrep3.model.HaplogroupStatistics;
@@ -61,12 +60,12 @@ public class Job implements Runnable {
 
 	private HaplogroupStatistics statistics;
 
-	private Map<String, Object> counters;
-	
+	private List<StatisticCounter> counters;
+
 	private boolean additionalOutput = false;
 
 	public static long EXPIRES_HOURS = 24 * 7;
-	
+
 	private Job() {
 
 	}
@@ -74,8 +73,7 @@ public class Job implements Runnable {
 	public String getId() {
 		return id;
 	}
-	
-	
+
 	public String getShortId() {
 		return id.substring(0, 6);
 	}
@@ -283,7 +281,7 @@ public class Job implements Runnable {
 
 				setSamples(task.getSamples().size());
 				setSamplesOk(task.getSamplesOk());
-				setSamplesWarning(task.getSamplesWarning());				
+				setSamplesWarning(task.getSamplesWarning());
 				setSamplesError(task.getSamplesError());
 				setCounters(task.getCounters());
 
@@ -331,14 +329,22 @@ public class Job implements Runnable {
 		}
 	}
 
-	public void setCounters(Map<String, Object> counters) {
+	public HaplogroupStatistics getStatistics() {
+		return statistics;
+	}
+
+	public void setStatistics(HaplogroupStatistics statistics) {
+		this.statistics = statistics;
+	}
+
+	public void setCounters(List<StatisticCounter> counters) {
 		this.counters = counters;
 	}
-	
-	public Map<String, Object> getCounters() {
+
+	public List<StatisticCounter> getCounters() {
 		return counters;
 	}
-	
+
 	protected synchronized void save() {
 		String jobFilename = FileUtil.path(_workspace, getId() + ".json");
 		Gson gson = new Gson();

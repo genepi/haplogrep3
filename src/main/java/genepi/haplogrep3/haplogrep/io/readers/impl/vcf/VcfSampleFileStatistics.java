@@ -1,13 +1,13 @@
 package genepi.haplogrep3.haplogrep.io.readers.impl.vcf;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
+import java.util.Vector;
 
 import core.Reference;
 import genepi.haplogrep3.haplogrep.io.readers.SampleFileStatistics;
+import genepi.haplogrep3.haplogrep.io.readers.StatisticCounter;
 import htsjdk.variant.variantcontext.Genotype;
 import htsjdk.variant.variantcontext.VariantContext;
 import htsjdk.variant.vcf.VCFFileReader;
@@ -86,12 +86,12 @@ public class VcfSampleFileStatistics extends SampleFileStatistics {
 			if (refAllele.equals(refAlleleSample)) {
 				matches++;
 			}
-			
+
 			if (isStrandFlip(refAllele, refAlleleSample)) {
 				strandFlips++;
 				continue;
 			}
-			
+
 			if (isFiltered(vc)) {
 
 				if (vc.getFilters().contains("DUP")) {
@@ -101,7 +101,7 @@ public class VcfSampleFileStatistics extends SampleFileStatistics {
 				}
 				continue;
 			}
-			
+
 			if (vc.getAlternateAlleles().size() > 1) {
 				multiallelics++;
 				continue;
@@ -150,23 +150,26 @@ public class VcfSampleFileStatistics extends SampleFileStatistics {
 	}
 
 	@Override
-	public Map<String, Object> getCounters() {
-		Map<String, Object> statistics = new HashMap<String, Object>();
-		
+	public List<StatisticCounter> getCounters() {
+
+		List<StatisticCounter> statistics = new Vector<StatisticCounter>();
+
 		double referenceOverlap = (matches / (double) variants) * 100;
-		 
-		statistics.put("Files", files.size());
-		statistics.put("Samples", String.format("%d", samples));
-		statistics.put("Input Variants", String.format("%d", variants));
-		statistics.put("Reference Overlap (%)", String.format("%.2f", referenceOverlap));
-		statistics.put("Strand Flips", String.format("%d", strandFlips));
-		statistics.put("Out Of Range Variants", String.format("%d", outOfRange));
-		statistics.put("Multiallelic Variants", String.format("%d", multiallelics));
-		statistics.put("Indel Variants", String.format("%d", indels));
-		statistics.put("VCF Filtered Variants", String.format("%d", filterFlags));
-		statistics.put("Duplicate Variants", String.format("%d", duplicates));
-		statistics.put("Low Sample Call Rate", String.format("%d", lowSampleCallRate));
-		statistics.put("Variant Call Rate < 90%", String.format("%d", lowVariantCallRate));
+
+		statistics.add(new StatisticCounter("Files", files.size()));
+		statistics.add(new StatisticCounter("Samples", samples));
+		statistics.add(new StatisticCounter("Input Variants", variants));
+		statistics.add(new StatisticCounter("Reference Overlap (%)", referenceOverlap));
+		statistics.add(new StatisticCounter("Strand Flips", strandFlips, 0));
+		statistics.add(new StatisticCounter("Out Of Range Variants", outOfRange));
+		statistics.add(new StatisticCounter("Multiallelic Variants", multiallelics));
+		statistics.add(new StatisticCounter("Indel Variants", indels));
+		statistics.add(new StatisticCounter("VCF Filtered Variants", filterFlags));
+		statistics.add(new StatisticCounter("Duplicate Variants", duplicates));
+		statistics.add(new StatisticCounter("Low Sample Call Rate", lowSampleCallRate));
+		// TODO: use VARIANT_CALL_RATE instead of 90% and extract labels to constants
+		statistics.add(new StatisticCounter("Variant Call Rate < 90%", lowVariantCallRate));
+
 		return statistics;
 	}
 

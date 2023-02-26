@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import genepi.haplogrep3.haplogrep.io.readers.InputFileReaderFactory;
 import genepi.haplogrep3.haplogrep.io.readers.SampleFileWithStatistics;
+import genepi.haplogrep3.haplogrep.io.readers.StatisticCounter;
 import genepi.haplogrep3.model.AnnotatedSample;
 import genepi.haplogrep3.model.Distance;
 import genepi.haplogrep3.model.Phylotree;
@@ -44,7 +46,7 @@ public class ClassificationTask {
 
 	private int samplesError = 0;
 
-	private Map<String, Object> counters = new HashMap<String, Object>();
+	private List<StatisticCounter> counters = new Vector<StatisticCounter>();
 
 	public ClassificationTask(Phylotree phylotree, List<File> files, Distance distance) {
 		this.phylotree = phylotree;
@@ -86,7 +88,7 @@ public class ClassificationTask {
 			reader.setSkipAlignmentRules(skipAlignmentRules);
 
 			SampleFileWithStatistics sampleFile = reader.read(files, phylotree);
-			if (sampleFile.getStatistics() !=null) {
+			if (sampleFile.getStatistics() != null) {
 				counters = sampleFile.getStatistics().getCounters();
 			}
 
@@ -108,6 +110,7 @@ public class ClassificationTask {
 			end = System.currentTimeMillis();
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			setError(e.getMessage());
 			return;
 		}
@@ -147,8 +150,20 @@ public class ClassificationTask {
 		return samplesWarning;
 	}
 
-	public Map<String, Object> getCounters() {
+	public List<StatisticCounter> getCounters() {
 		return counters;
+	}
+
+	public StatisticCounter getCounterByLabel(String label) {
+		if (counters == null) {
+			return null;
+		}
+		for (StatisticCounter counter : counters) {
+			if (counter.getLabel().equals(label)) {
+				return counter;
+			}
+		}
+		return null;
 	}
 
 }

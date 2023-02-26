@@ -19,10 +19,15 @@
     <div style="margin-top: 15px;">
       <table class="table table-sm">
         <tbody>
-      {{for key in job.getCounters().keySet()}}
+      {{for counter in job.getCounters()}}
       <tr class="small">
-        <td>{{key}}</td>
-        <td>{{job.getCounters().get(key)}}</td>
+        <td>
+          {{if counter.getType().toString() == "WARNING"}}
+            <i class="fas fa-exclamation-triangle text-warning"></i>&nbsp;
+          {{end}}
+          {{counter.getLabel()}}
+        </td>
+        <td>{{counter.getValue()}}</td>
       </tr>
       {{end}}
       </tbody>

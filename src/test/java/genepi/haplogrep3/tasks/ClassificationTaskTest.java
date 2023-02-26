@@ -14,6 +14,7 @@ import java.util.List;
 import org.junit.Test;
 
 import genepi.haplogrep3.config.Configuration;
+import genepi.haplogrep3.haplogrep.io.readers.impl.StatisticCounterType;
 import genepi.haplogrep3.model.AnnotatedSample;
 import genepi.haplogrep3.model.Distance;
 import genepi.haplogrep3.model.Phylotree;
@@ -191,7 +192,7 @@ public class ClassificationTaskTest {
 		AnnotatedSample firstSample = task.getSamples().get(0);
 		assertEquals("Sample1", firstSample.getSample());
 		assertEquals("H100", firstSample.getClade());
-		assertEquals(14, Integer.parseInt((String) task.getCounters().get("Input Variants")));
+		assertEquals("14", task.getCounterByLabel("Input Variants"));
 
 		assertEquals(0, firstSample.getNs());
 		assertEquals(1, firstSample.getRanges().length);
@@ -210,16 +211,19 @@ public class ClassificationTaskTest {
 		assertNull(task.getError());
 		assertTrue(task.isSuccess());
 
-		assertEquals(1, Integer.parseInt((String) task.getCounters().get("Samples")));
-		assertEquals(85.71, Double.parseDouble((String) task.getCounters().get("Reference Overlap (%)")), 0.0);
-		assertEquals(14, Integer.parseInt((String) task.getCounters().get("Input Variants")));
-		assertEquals(1, Integer.parseInt((String) task.getCounters().get("Out Of Range Variants")));
-		assertEquals(1, Integer.parseInt((String) task.getCounters().get("Multiallelic Variants")));
-		assertEquals(0, Integer.parseInt((String) task.getCounters().get("VCF Filtered Variants")));
-		assertEquals(1, Integer.parseInt((String) task.getCounters().get("Duplicate Variants")));
-		assertEquals(0, Integer.parseInt((String) task.getCounters().get("Low Sample Call Rate")));
-		assertEquals(2, Integer.parseInt((String) task.getCounters().get("Variant Call Rate < 90%")));
-		assertEquals(1, Integer.parseInt((String) task.getCounters().get("Strand Flips")));
+		assertEquals("1", task.getCounterByLabel("Samples").getValue());
+		assertEquals("85.71", task.getCounterByLabel("Reference Overlap (%)").getValue());
+		assertEquals("14", task.getCounterByLabel("Input Variants").getValue());
+		assertEquals("1", task.getCounterByLabel("Out Of Range Variants").getValue());
+		assertEquals("1", task.getCounterByLabel("Multiallelic Variants").getValue());
+		assertEquals("0", task.getCounterByLabel("VCF Filtered Variants").getValue());
+		assertEquals("1", task.getCounterByLabel("Duplicate Variants").getValue());
+		assertEquals("0", task.getCounterByLabel("Low Sample Call Rate").getValue());
+		assertEquals("2", task.getCounterByLabel("Variant Call Rate < 90%").getValue());
+		assertEquals("1", task.getCounterByLabel("Strand Flips").getValue());
+		
+		assertEquals(StatisticCounterType.WARNING, task.getCounterByLabel("Strand Flips").getType());
+		assertEquals(StatisticCounterType.INFO, task.getCounterByLabel("Samples").getType());
 
 	}
 
@@ -234,10 +238,10 @@ public class ClassificationTaskTest {
 		ClassificationTask task = new ClassificationTask(phylotree, files, Distance.KULCZYNSKI);
 		task.run();
 		assertTrue(task.isSuccess());
-		assertEquals(50, Integer.parseInt((String) task.getCounters().get("Samples")));
-		assertEquals(96.89, Double.parseDouble((String) task.getCounters().get("Reference Overlap (%)")), 0.0);
-		assertEquals(3892, Integer.parseInt((String) task.getCounters().get("Input Variants")));
-		assertEquals(20, Integer.parseInt((String) task.getCounters().get("Indel Variants")));
+		assertEquals("50", task.getCounterByLabel("Samples").getValue());
+		assertEquals("96.89", task.getCounterByLabel("Reference Overlap (%)").getValue());
+		assertEquals("3,892", task.getCounterByLabel("Input Variants").getValue());
+		assertEquals("20", task.getCounterByLabel("Indel Variants").getValue());
 	}
 
 	@Test
