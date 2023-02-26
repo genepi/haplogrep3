@@ -192,7 +192,7 @@ public class ClassificationTaskTest {
 		AnnotatedSample firstSample = task.getSamples().get(0);
 		assertEquals("Sample1", firstSample.getSample());
 		assertEquals("H100", firstSample.getClade());
-		assertEquals("14", task.getCounterByLabel("Input Variants"));
+		assertEquals("14", task.getCounterByLabel("Input Variants").getValue());
 
 		assertEquals(0, firstSample.getNs());
 		assertEquals(1, firstSample.getRanges().length);
