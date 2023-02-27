@@ -29,11 +29,13 @@
 
     {{ if tree.hasClusters() }}
     <h3>Clusters</h3>
+      <p style="line-height: 250%;">
       {{for cluster in tree.getClusters() }}
           <a href="{{routeUrl("groups_show",{phylotree: tree.getIdWithVersion(), label: cluster.getLabel()})}}" class="btn btn-sm btn-outline-primary"">
             <i class="fas fa-folder" style="color: {{cluster.getColor()}}"></i> {{cluster.getLabel()}} ({{tree.getHaplogroupsByCluster(cluster).size() + cluster.getNodes().length}})
           </a>&nbsp;
       {{end}}
+      </p>
     {{else}}
       <h3>Haplogroups ({{clades.size()}})</h3>
       <p>

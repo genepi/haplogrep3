@@ -14,6 +14,21 @@
 
     <h1>Cluster {{cluster.label}}</h1>
 
+    {{if cluster.hasFrequencies()}}
+    <h4>Population Frequencies</h4>
+    <div style="margin: 20px;">
+    <div class="progress">
+      {{frequencies = cluster.getFrequencies()}}
+      {{for population in tree.getPopulations()}}
+      {{if frequencies.get(population.getId()) != null}}
+      <div class="progress-bar" style="width:{{toNumber(frequencies.get(population.getId())) * 100.0}}%; background-color: {{population.getColor()}}">
+      </div>
+      {{end}}
+      {{end}}
+    </div>
+    </div>
+    {{end}}
+
     <h4>Phylogenetic Tree</h4>
     <div id="graph" style="width: 100%; height: 552px; border: 1px; border-style: solid;">
     </div>
@@ -40,6 +55,7 @@
 
 <script>
 {{include "show.view.js"}}
+
 </script>
 
 {{include "../layouts/footer.view.html"}}

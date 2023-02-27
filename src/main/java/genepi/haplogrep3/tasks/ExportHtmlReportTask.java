@@ -38,7 +38,8 @@ public class ExportHtmlReportTask {
 		String clades = FileUtil.path(workspace, job.getId(), "clades.json");
 		page.put("clades", FileUtil.readFileAsString(clades));
 		page.put("selfContained", true);
-
+		page.put("phylotree", phylotree);
+		
 		BasisTemplateFileRenderer renderer = new BasisTemplateFileRenderer();
 		String content = renderer.render(template, page);
 

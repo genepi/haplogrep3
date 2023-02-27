@@ -1,12 +1,17 @@
 package genepi.haplogrep3.model;
 
-public class Cluster implements Comparable<Cluster>{
+import java.util.HashMap;
+import java.util.Map;
+
+public class Cluster implements Comparable<Cluster> {
 
 	private String label;
 
 	private String[] nodes = new String[0];
 
 	private String color;
+
+	private Map<String, Double> frequencies = new HashMap<String, Double>();
 
 	public Cluster() {
 
@@ -47,6 +52,18 @@ public class Cluster implements Comparable<Cluster>{
 
 	public void setColor(String color) {
 		this.color = color;
+	}
+
+	public boolean hasFrequencies() {
+		return frequencies != null & frequencies.size() > 0;
+	}
+
+	public void setFrequencies(Map<String, Double> frequencies) {
+		this.frequencies = frequencies;
+	}
+
+	public Map<String, Double> getFrequencies() {
+		return frequencies;
 	}
 
 	@Override
