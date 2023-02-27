@@ -2,6 +2,7 @@ package genepi.haplogrep3.tasks;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -13,6 +14,7 @@ import java.util.List;
 import org.junit.Test;
 
 import genepi.haplogrep3.config.Configuration;
+import genepi.haplogrep3.haplogrep.io.readers.impl.StatisticCounterType;
 import genepi.haplogrep3.model.AnnotatedSample;
 import genepi.haplogrep3.model.Distance;
 import genepi.haplogrep3.model.Phylotree;
@@ -102,7 +104,7 @@ public class ClassificationTaskTest {
 		// this H100 sample expects 15 variants according rCRS
 		assertEquals(15, firstSample.getAnnotatedPolymorphisms().size());
 	}
-	
+
 	@Test
 	public void testWithPhylotree15FromOnlineRepository() throws Exception {
 
@@ -125,9 +127,8 @@ public class ClassificationTaskTest {
 		assertEquals(0, firstSample.getNs());
 
 		assertEquals(14, firstSample.getAnnotatedPolymorphisms().size());
-	}	
-	
-	
+	}
+
 	@Test
 	public void testWithPhylotree17_fu() throws Exception {
 
@@ -146,13 +147,12 @@ public class ClassificationTaskTest {
 
 		AnnotatedSample firstSample = task.getSamples().get(0);
 		assertEquals("L3i2*2", firstSample.getSample());
-		
-		//haplogroup only present in phylotree 17 FU (not in previous versions)
+
+		// haplogroup only present in phylotree 17 FU (not in previous versions)
 		assertEquals("L3i2*2", firstSample.getClade());
 		assertEquals(0, firstSample.getNs());
 
 	}
-	
 
 	@Test
 	public void testWithFasta() throws Exception {
@@ -192,8 +192,56 @@ public class ClassificationTaskTest {
 		AnnotatedSample firstSample = task.getSamples().get(0);
 		assertEquals("Sample1", firstSample.getSample());
 		assertEquals("H100", firstSample.getClade());
+		assertEquals("14", task.getCounterByLabel("Input Variants").getValue());
+
 		assertEquals(0, firstSample.getNs());
 		assertEquals(1, firstSample.getRanges().length);
+	}
+
+	@Test
+	public void testVcfStatistics() throws Exception {
+
+		Phylotree phylotree = loadPhylotree(PHYLOTREE);
+
+		List<File> files = new ArrayList<File>();
+		files.add(new File("test-data/vcf/H100_complex.vcf"));
+
+		ClassificationTask task = new ClassificationTask(phylotree, files, Distance.KULCZYNSKI);
+		task.run();
+		assertNull(task.getError());
+		assertTrue(task.isSuccess());
+
+		assertEquals("1", task.getCounterByLabel("Samples").getValue());
+		assertEquals("85.71", task.getCounterByLabel("Reference Overlap (%)").getValue());
+		assertEquals("14", task.getCounterByLabel("Input Variants").getValue());
+		assertEquals("1", task.getCounterByLabel("Out Of Range Variants").getValue());
+		assertEquals("1", task.getCounterByLabel("Multiallelic Variants").getValue());
+		assertEquals("0", task.getCounterByLabel("VCF Filtered Variants").getValue());
+		assertEquals("1", task.getCounterByLabel("Duplicate Variants").getValue());
+		assertEquals("0", task.getCounterByLabel("Low Sample Call Rate").getValue());
+		assertEquals("2", task.getCounterByLabel("Variant Call Rate < 90%").getValue());
+		assertEquals("1", task.getCounterByLabel("Strand Flips").getValue());
+		
+		assertEquals(StatisticCounterType.WARNING, task.getCounterByLabel("Strand Flips").getType());
+		assertEquals(StatisticCounterType.INFO, task.getCounterByLabel("Samples").getType());
+
+	}
+
+	@Test
+	public void testVcfStatisticsWGS() throws Exception {
+
+		Phylotree phylotree = loadPhylotree(PHYLOTREE);
+
+		List<File> files = new ArrayList<File>();
+		files.add(new File("data/examples/example-wgs.vcf"));
+
+		ClassificationTask task = new ClassificationTask(phylotree, files, Distance.KULCZYNSKI);
+		task.run();
+		assertTrue(task.isSuccess());
+		assertEquals("50", task.getCounterByLabel("Samples").getValue());
+		assertEquals("96.89", task.getCounterByLabel("Reference Overlap (%)").getValue());
+		assertEquals("3,892", task.getCounterByLabel("Input Variants").getValue());
+		assertEquals("20", task.getCounterByLabel("Indel Variants").getValue());
 	}
 
 	@Test

@@ -64,7 +64,6 @@ public class HaplogroupStatistics {
 
 	protected HashMap<String, Object> assignClusters(List<AnnotatedSample> samples, Phylotree phylotree) {
 
-
 		List<Cluster> clusters = phylotree.getClusters();
 
 		Map<String, ClusterCount> frequencies = new HashMap<>();

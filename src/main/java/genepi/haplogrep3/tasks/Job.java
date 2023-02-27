@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.google.gson.Gson;
 
+import genepi.haplogrep3.haplogrep.io.readers.StatisticCounter;
 import genepi.haplogrep3.model.AnnotatedSample;
 import genepi.haplogrep3.model.Distance;
 import genepi.haplogrep3.model.HaplogroupStatistics;
@@ -59,6 +60,8 @@ public class Job implements Runnable {
 
 	private HaplogroupStatistics statistics;
 
+	private List<StatisticCounter> counters;
+
 	private boolean additionalOutput = false;
 
 	public static long EXPIRES_HOURS = 24 * 7;
@@ -69,6 +72,10 @@ public class Job implements Runnable {
 
 	public String getId() {
 		return id;
+	}
+
+	public String getShortId() {
+		return id.substring(0, 6);
 	}
 
 	public void setId(String id) {
@@ -276,6 +283,7 @@ public class Job implements Runnable {
 				setSamplesOk(task.getSamplesOk());
 				setSamplesWarning(task.getSamplesWarning());
 				setSamplesError(task.getSamplesError());
+				setCounters(task.getCounters());
 
 				statistics = new HaplogroupStatistics(task.getSamples(), _phylotree);
 
@@ -321,12 +329,20 @@ public class Job implements Runnable {
 		}
 	}
 
+	public HaplogroupStatistics getStatistics() {
+		return statistics;
+	}
+
 	public void setStatistics(HaplogroupStatistics statistics) {
 		this.statistics = statistics;
 	}
 
-	public HaplogroupStatistics getHaplogroupStatistics() {
-		return statistics;
+	public void setCounters(List<StatisticCounter> counters) {
+		this.counters = counters;
+	}
+
+	public List<StatisticCounter> getCounters() {
+		return counters;
 	}
 
 	protected synchronized void save() {

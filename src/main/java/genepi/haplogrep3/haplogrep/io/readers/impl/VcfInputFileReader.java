@@ -7,6 +7,8 @@ import java.util.List;
 
 import core.SampleFile;
 import genepi.haplogrep3.haplogrep.io.readers.AbstractInputFileReader;
+import genepi.haplogrep3.haplogrep.io.readers.SampleFileWithStatistics;
+import genepi.haplogrep3.haplogrep.io.readers.impl.vcf.VcfSampleFileStatistics;
 import genepi.haplogrep3.model.Phylotree;
 import importer.VcfImporter;
 import util.ExportUtils;
@@ -27,8 +29,10 @@ public class VcfInputFileReader extends AbstractInputFileReader {
 		return hasFileExtensions(files, ".vcf", ".vcf.gz");
 	}
 
-	public SampleFile read(List<File> files, Phylotree phylotree) throws Exception {
+	public SampleFileWithStatistics read(List<File> files, Phylotree phylotree) throws Exception {
 
+		VcfSampleFileStatistics statistics = new VcfSampleFileStatistics(files, phylotree.getReference());
+		
 		ArrayList<String> lines = new ArrayList<String>();
 		VcfImporter importerVcf = new VcfImporter();
 		for (File file : files) {
@@ -37,8 +41,9 @@ public class VcfInputFileReader extends AbstractInputFileReader {
 
 		}
 
-		SampleFile sampleFile = new SampleFile(lines, phylotree.getReference());
-		return sampleFile;
+		SampleFile sampleFile = new SampleFile(lines, phylotree.getReference());			 
+		
+		return new SampleFileWithStatistics(sampleFile, statistics);
 
 	}
 
