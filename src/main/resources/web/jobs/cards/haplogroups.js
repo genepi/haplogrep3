@@ -40,12 +40,11 @@ class Haplogroups {
     };
 
     var config = {
-      type: 'pie',
+      type: 'doughnut',
       data: data,
       options: {
         plugins: {
           legend: {
-            position: 'right',
             labels: {
               boxWidth: 20
             }

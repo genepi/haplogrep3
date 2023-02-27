@@ -54,6 +54,7 @@ public class JobsShowHandler extends AbstractHandler {
 			Page page = new Page(context, template);
 			page.put("job", job);
 			page.put("genes", phylotree.getGenes());
+			page.put("phylotree", phylotree);
 			
 			String clades = FileUtil.path(workspace, cleanName, "clades.json");
 			page.put("clades", FileUtil.readFileAsString(clades));

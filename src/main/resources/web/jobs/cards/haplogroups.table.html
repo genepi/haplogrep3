@@ -1,0 +1,50 @@
+{{if phylotree.hasClusters()}}
+<div class="card">
+  <div class="card-header">
+    Clusters
+  </div>
+  <div style="height: 568px; overflow-y: auto;">
+    <table class="card-body table table-sm">
+      <thead>
+        <tr class="small">
+          <th style="width: 60px; padding-left: 15px">Cluster</th>
+          <th style="width: 40px">Count</th>
+          <th>Percentage</th>
+          <th   style="width: 200px">Population Frequencies</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{clusters = job.statistics.getGroups().get(0)}}
+        {{for index,cluster in clusters.get("clades")}}
+          {{counts = clusters.get("values").get(index)}}
+          {{color = clusters.get("colors").get(index)}}
+          <tr class="small">
+            <td style="padding-left: 15px;">
+              <b>
+                {{if !selfContained}}<a href="{{routeUrl("groups_show",{phylotree: phylotree.getIdWithVersion(), label: cluster})}}" target="_blank">{{end}}
+                  {{cluster}}
+                {{if !selfContained}}</a>{{end}}
+              </b>
+            </td>
+            <td>{{decimal(counts)}}</td>
+            <td>{{formatDouble(counts * 100 / job.samples)}}%</td>
+            <td>
+              <div class="progress">
+                {{frequencies = phylotree.getClusterByLabel(cluster).getFrequencies()}}
+                  {{for population in phylotree.getPopulations()}}
+                    {{if frequencies.get(population.getId()) != null}}
+                      <div class="progress-bar" style="width:{{toNumber(frequencies.get(population.getId())) * 100.0}}%; background-color: {{population.getColor()}}"
+                      title="{{population.getLabel()}}">
+                    </div>
+                  {{end}}
+                {{end}}
+              </div>
+            </td>
+          </tr>
+        {{end}}
+      </tbody>
+    </table>
+    <span class="text-right"><small>Source: gnomAD</small></span>
+  </div>
+</div>
+{{end}}

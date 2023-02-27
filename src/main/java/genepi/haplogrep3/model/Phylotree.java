@@ -75,6 +75,8 @@ public class Phylotree {
 
 	private List<AnnotationSettings> annotations = new Vector<AnnotationSettings>();
 
+	private List<Population> populations = new Vector<Population>();
+
 	public Phylotree() {
 
 	}
@@ -353,6 +355,7 @@ public class Phylotree {
 		YamlReader reader = new YamlReader(new FileReader(file));
 		reader.getConfig().setPropertyElementType(Phylotree.class, "annotations", AnnotationSettings.class);
 		reader.getConfig().setPropertyElementType(Phylotree.class, "clusters", Cluster.class);
+		reader.getConfig().setPropertyElementType(Phylotree.class, "populations", Population.class);
 		reader.getConfig().setPropertyElementType(AnnotationSettings.class, "properties", AnnotationColumn.class);
 
 		Phylotree phylotree = reader.read(Phylotree.class);
@@ -503,13 +506,30 @@ public class Phylotree {
 
 		for (PhyloTreeNode child : childs) {
 			String haplogroup = child.getHaplogroup().toString();
-			String nearestCluster = getNearestCluster(clusters, haplogroup);			
+			String nearestCluster = getNearestCluster(clusters, haplogroup);
 			if (nearestCluster != null && nearestCluster.equals(cluster.getLabel())) {
 				haplogroups.add(child.getHaplogroup().toString());
 				addChilds(cluster, child, haplogroups, level++);
 			}
 		}
 
+	}
+
+	public List<Population> getPopulations() {
+		return populations;
+	}
+
+	public void setPopulations(List<Population> populations) {
+		this.populations = populations;
+	}
+
+	public Population getPopulationById(String id) {
+		for (Population population : populations) {
+			if (population.getId().equalsIgnoreCase(id)) {
+				return population;
+			}
+		}
+		return null;
 	}
 
 }
