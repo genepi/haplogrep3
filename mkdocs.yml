@@ -12,6 +12,7 @@ nav:
 - Details:
   - Input Formats: input-formats.md
   - Mutation Colouring: mutations.md
+  - Annotations: annotations.md
   - Kulczynski Measure: kulczynski.md
   - Errors and Warnings: errors-warnings.md
 - FAQ: faq.md

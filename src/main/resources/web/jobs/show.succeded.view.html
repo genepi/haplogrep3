@@ -44,17 +44,23 @@
 
     <!-- Summary !-->
     <div class="tab-content" id="myTabContent">
+
       <div class="tab-pane active" id="summary" role="tabpanel" aria-labelledby="summary-tab"  style="width: 100%">
-        <div class="card-deck">
-
-          {{include "cards/haplogroups.html"}}
-
-          <div>
-            {{include "cards/quality-control.html"}}<br>
-            {{include "cards/details.html"}}<br>
-            {{if !selfContained}}
-              {{include "cards/share-url.html"}}
-            {{end}}
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-4 col-sm-12">
+              {{include "cards/haplogroups.html"}}
+            </div>
+            <div class="col-md-4  col-sm-12">
+              {{include "cards/haplogroups.table.html"}}
+            </div>
+            <div class="col-md-4  col-sm-12">
+              {{include "cards/quality-control.html"}}<br>
+              {{include "cards/details.html"}}<br>
+              {{if !selfContained}}
+                {{include "cards/share-url.html"}}
+              {{end}}
+            </div>
           </div>
         </div>
     </div>

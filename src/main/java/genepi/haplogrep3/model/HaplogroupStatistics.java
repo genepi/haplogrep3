@@ -1,5 +1,7 @@
 package genepi.haplogrep3.model;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,17 +64,9 @@ public class HaplogroupStatistics {
 
 	protected HashMap<String, Object> assignClusters(List<AnnotatedSample> samples, Phylotree phylotree) {
 
-		List<String> clades = new Vector<String>();
-		List<Integer> values = new Vector<Integer>();
-		List<String> colors = new Vector<String>();
-
 		List<Cluster> clusters = phylotree.getClusters();
 
-		for (Cluster cluster : clusters) {
-			clades.add(cluster.getLabel());
-			values.add(0);
-			colors.add(cluster.getColor());
-		}
+		Map<String, ClusterCount> frequencies = new HashMap<>();
 
 		for (AnnotatedSample sample : samples) {
 
@@ -87,16 +81,38 @@ public class HaplogroupStatistics {
 				e.printStackTrace();
 			}
 
-			int index = clades.indexOf(label);
-			if (index == -1) {
-				clades.add(label);
-				values.add(1);
+			ClusterCount clusterCount = frequencies.get(label);
+
+			if (clusterCount == null) {
+				Cluster cluster = phylotree.getClusterByLabel(label);
+				clusterCount = new ClusterCount();
+				clusterCount.label = label;
+				clusterCount.value = 1;
+				clusterCount.color = cluster.getColor();
+				frequencies.put(label, clusterCount);
+
 			} else {
-				int count = values.get(index);
-				values.set(index, count + 1);
+				clusterCount.value++;
 			}
 		}
 
+		List<ClusterCount> sortedFrequencies = new Vector<ClusterCount>(frequencies.values());
+		Collections.sort(sortedFrequencies, new Comparator<ClusterCount>() {
+			@Override
+			public int compare(ClusterCount o1, ClusterCount o2) {
+				return -Integer.compare(o1.value, o2.value);
+			}
+		});
+
+		List<String> clades = new Vector<String>();
+		List<Integer> values = new Vector<Integer>();
+		List<String> colors = new Vector<String>();
+		for (ClusterCount clusterCount: sortedFrequencies) {
+			clades.add(clusterCount.label);
+			values.add(clusterCount.value);
+			colors.add(clusterCount.color);
+		}
+		
 		HashMap<String, Object> object = new HashMap<String, Object>();
 		object.put("name", "Clusters");
 		object.put("clades", clades);
@@ -104,6 +120,16 @@ public class HaplogroupStatistics {
 		object.put("colors", colors);
 
 		return object;
+
+	}
+
+	class ClusterCount {
+
+		String label;
+
+		String color;
+
+		int value;
 
 	}
 

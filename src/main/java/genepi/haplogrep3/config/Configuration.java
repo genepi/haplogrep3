@@ -35,6 +35,8 @@ public class Configuration {
 
 	private String url = "";
 
+	private List<NavbarLink> navbar = new Vector<NavbarLink>();
+
 	public Configuration() {
 
 	}
@@ -126,6 +128,14 @@ public class Configuration {
 
 	public String getUrl() {
 		return url;
+	}
+
+	public List<NavbarLink> getNavbar() {
+		return navbar;
+	}
+
+	public void setNavbar(List<NavbarLink> navbar) {
+		this.navbar = navbar;
 	}
 
 	public static Configuration loadFromFile(File file, String parent) throws IOException {

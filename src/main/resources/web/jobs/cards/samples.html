@@ -15,8 +15,13 @@ Mutations:&nbsp;&nbsp;
   <option value="">first 8 mutations</option>
   <option value="all">All</option>
 </select>
+&nbsp;&nbsp;
+
+Search:&nbsp;&nbsp;
+<input id="search_table" class="form-control" style="width: 180px; display: inline;">
+
 </div>
-<div class="card-body">
+<div class="card-body" style="padding: 0px">
 <table id="table-samples" class="table table-hover data-table" style="width: 100%;">
   <thead>
     <th width = "20px"></th>
@@ -69,6 +74,11 @@ Mutations:&nbsp;&nbsp;
     var filter = $('#show_samples').val();
     window.samplesTable.setSampleFilter(filter);
   });
+
+  $('#search_table').keyup(function(){
+    var query = $(this).val();
+    window.samplesTable.search(query);
+  })
 
   window.samplesTable.setSamples(samples);
   window.samplesTable.setSampleFilter('all');

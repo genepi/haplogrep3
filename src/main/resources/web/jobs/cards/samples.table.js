@@ -129,6 +129,10 @@ class SamplesTable {
     }
   }
 
+  search(query){
+    this.table.search(query).draw() ;
+  }
+
   formatMutations(data) {
     var result = '';
     for (var i = 0; i < data.length && i < this.maxMutations; i++) {
