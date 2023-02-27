@@ -15,17 +15,24 @@
     <h1>Cluster {{cluster.label}}</h1>
 
     {{if cluster.hasFrequencies()}}
-    <h4>Population Frequencies</h4>
+    <h4>Population Frequencies  <a target="_blank" href="https://haplogrep.readthedocs.io/en/latest/annotations/#clusters-and-population-frequencies">  <i class="fas fa-question-circle"></i></a></h4>
     <div style="margin: 20px;">
-    <div class="progress">
-      {{frequencies = cluster.getFrequencies()}}
-      {{for population in tree.getPopulations()}}
-      {{if frequencies.get(population.getId()) != null}}
-      <div class="progress-bar" style="width:{{toNumber(frequencies.get(population.getId())) * 100.0}}%; background-color: {{population.getColor()}}">
+      <div class="progress">
+        {{frequencies = cluster.getFrequencies()}}
+        {{for population in tree.getPopulations()}}
+        {{if frequencies.get(population.getId()) != null}}
+        <div class="progress-bar" style="width:{{toNumber(frequencies.get(population.getId())) * 100.0}}%; background-color: {{population.getColor()}}" title="{{population.getLabel()}} ({{toNumber(frequencies.get(population.getId())) * 100.0}}%)">
+        </div>
+        {{end}}
+        {{end}}
       </div>
+      <div style="margin-top: 10px;">
+      {{for population in tree.getPopulations()}}
+        <small>
+          <span style="background-color: {{population.getColor()}}">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;&nbsp;{{population.getLabel()}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </small>
       {{end}}
-      {{end}}
-    </div>
+      </div>
     </div>
     {{end}}
 

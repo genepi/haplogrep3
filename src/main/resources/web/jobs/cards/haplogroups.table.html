@@ -10,7 +10,7 @@
           <th style="width: 60px; padding-left: 15px">Cluster</th>
           <th style="width: 40px">Count</th>
           <th>Percentage</th>
-          <th   style="width: 200px">Population Frequencies</th>
+          <th style="width: 200px">Population Frequencies <a target="_blank" href="https://haplogrep.readthedocs.io/en/latest/annotations/#clusters-and-population-frequencies">  <i class="fas fa-question-circle"></i></a></th>
         </tr>
       </thead>
       <tbody>
@@ -34,7 +34,7 @@
                   {{for population in phylotree.getPopulations()}}
                     {{if frequencies.get(population.getId()) != null}}
                       <div class="progress-bar" style="width:{{toNumber(frequencies.get(population.getId())) * 100.0}}%; background-color: {{population.getColor()}}"
-                      title="{{population.getLabel()}}">
+                      title="{{population.getLabel()}} ({{toNumber(frequencies.get(population.getId())) * 100.0}}%)">
                     </div>
                   {{end}}
                 {{end}}
