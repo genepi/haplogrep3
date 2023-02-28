@@ -24,7 +24,9 @@ repositories:
 
 phylotrees:
   - phylotree-fu-rcrs@1.1
+  - phylotree-fu-rcrs@1.0
   - phylotree-rcrs@17.1
+  - phylotree-rcrs@17.0
   - phylotree-rsrs@17.0
   - phylotree-rcrs@16.0
   - phylotree-rcrs@15.0
