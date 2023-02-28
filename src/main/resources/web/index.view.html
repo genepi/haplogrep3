@@ -67,7 +67,12 @@
         <br>
 
         <div class="form-group">
-          <label for="phylotree">Choose the phylogenetic tree:</label>
+          <label for="phylotree">
+            Choose the phylogenetic tree:
+            <a href="https://haplogrep.readthedocs.io/en/latest/available-trees/" target="_blank" title="Help" class="col-form-label">
+              <i class="fas fa-question-circle"></i>
+            </a>
+          </label>
           <select id="phylotree" name="phylotree" class="form-control" required>
             {{for category in categories}}
               <option value="" disabled>{{category}}</option>

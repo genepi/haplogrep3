@@ -186,7 +186,7 @@ class SamplesDetails {
       var quality = this.data.otherQualities[i];
       var url = '/phylogenies/' + this.phylotree + '/haplogroups/' + hit;
       var link = '<a href="' + url + '" target="_blank">' + hit + '</a>';
-      result += '<li>' + hit + ' (' + quality.toFixed(2) * 100 + '%)</li>';
+      result += '<li>' + link + ' (' + quality.toFixed(2) * 100 + '%)</li>';
     };
     result += '</ol>' +
       '</small>' +
