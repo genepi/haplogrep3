@@ -8,7 +8,7 @@ Free mtDNA Haplogroup Classification Service
 
 We provide Haplogrep 3 as a [web-service](https://haplogrep.i-med.ac.at/haplogrep3) at the Medical University of Innsbruck. The service allows you upload the data to our service and run Haplogrep without any registration. Your input data is deleted right after classification. The results are available via a unique and shareable link for 7 days.
 
-## Documenation
+## Documentation
 The documentation can be found [here](https://haplogrep.readthedocs.io/).
 
 ## Standalone Version
