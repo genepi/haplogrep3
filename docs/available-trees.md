@@ -1,0 +1,2 @@
+# Available Trees
+Haplogrep currently supports different mitochonddrial (mtDNA) phylogenies (e.g. Phylotree 15 - 17, Phylotree Forensic Update) which are provided for different references (rCRS and RSRS). A list of available trees is available [here](https://genepi.github.io/haplogrep-trees). For reproducibility, each tree is hosted in its on repository (e.g. [Phylotree 17](https://github.com/genepi/phylotree-rcrs-17)).
