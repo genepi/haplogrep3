@@ -31,7 +31,7 @@ public class VcfInputFileReader extends AbstractInputFileReader {
 
 	public SampleFileWithStatistics read(List<File> files, Phylotree phylotree) throws Exception {
 
-		VcfSampleFileStatistics statistics = new VcfSampleFileStatistics(files, phylotree.getReference());
+		VcfSampleFileStatistics statistics = new VcfSampleFileStatistics(files, phylotree);
 		
 		ArrayList<String> lines = new ArrayList<String>();
 		VcfImporter importerVcf = new VcfImporter();

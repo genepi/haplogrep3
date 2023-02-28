@@ -212,8 +212,9 @@ public class ClassificationTaskTest {
 		assertTrue(task.isSuccess());
 
 		assertEquals("1", task.getCounterByLabel("Samples").getValue());
-		assertEquals("85.71", task.getCounterByLabel("Reference Overlap (%)").getValue());
-		assertEquals("14", task.getCounterByLabel("Input Variants").getValue());
+		assertEquals("1", task.getCounterByLabel("Reference Mismatches").getValue());
+		assertEquals("78.57", task.getCounterByLabel("Tree Overlap (%)").getValue());
+		assertEquals("15", task.getCounterByLabel("Input Variants").getValue());
 		assertEquals("1", task.getCounterByLabel("Out Of Range Variants").getValue());
 		assertEquals("1", task.getCounterByLabel("Multiallelic Variants").getValue());
 		assertEquals("0", task.getCounterByLabel("VCF Filtered Variants").getValue());
@@ -221,6 +222,7 @@ public class ClassificationTaskTest {
 		assertEquals("0", task.getCounterByLabel("Low Sample Call Rate").getValue());
 		assertEquals("2", task.getCounterByLabel("Variant Call Rate < 90%").getValue());
 		assertEquals("1", task.getCounterByLabel("Strand Flips").getValue());
+		assertEquals("3", task.getCounterByLabel("Monomorphic Variants").getValue());
 		
 		assertEquals(StatisticCounterType.WARNING, task.getCounterByLabel("Strand Flips").getType());
 		assertEquals(StatisticCounterType.INFO, task.getCounterByLabel("Samples").getType());
@@ -239,7 +241,7 @@ public class ClassificationTaskTest {
 		task.run();
 		assertTrue(task.isSuccess());
 		assertEquals("50", task.getCounterByLabel("Samples").getValue());
-		assertEquals("96.89", task.getCounterByLabel("Reference Overlap (%)").getValue());
+		assertEquals("0", task.getCounterByLabel("Reference Mismatches").getValue());
 		assertEquals("3,892", task.getCounterByLabel("Input Variants").getValue());
 		assertEquals("20", task.getCounterByLabel("Indel Variants").getValue());
 	}

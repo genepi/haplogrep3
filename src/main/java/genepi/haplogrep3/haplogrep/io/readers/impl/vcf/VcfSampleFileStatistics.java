@@ -5,9 +5,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
+import core.Polymorphism;
 import core.Reference;
 import genepi.haplogrep3.haplogrep.io.readers.SampleFileStatistics;
 import genepi.haplogrep3.haplogrep.io.readers.StatisticCounter;
+import genepi.haplogrep3.model.Phylotree;
+import htsjdk.variant.variantcontext.Allele;
 import htsjdk.variant.variantcontext.Genotype;
 import htsjdk.variant.variantcontext.VariantContext;
 import htsjdk.variant.vcf.VCFFileReader;
@@ -19,17 +22,21 @@ public class VcfSampleFileStatistics extends SampleFileStatistics {
 
 	private static final double SAMPLE_CALL_RATE = 0.5;
 
+	private int lines = 0;
+
 	private int variants = 0;
 
 	private int samples = 0;
 
-	private int matches = 0;
+	private int misMatches = 0;
 
 	private int invalidAlleles = 0;
 
 	private int outOfRange = 0;
 
 	private int indels = 0;
+
+	private int passed = 0;
 
 	private int duplicates = 0;
 
@@ -43,22 +50,29 @@ public class VcfSampleFileStatistics extends SampleFileStatistics {
 
 	private int lowVariantCallRate = 0;
 
+	private int treeHits = 0;
+
+	private int monomorphics = 0;
+
 	private Reference reference;
 
 	private int[] snpsPerSampleCount;
 
 	private List<File> files;
 
-	public VcfSampleFileStatistics(List<File> files, Reference reference) {
+	private Phylotree phylotree;
+
+	public VcfSampleFileStatistics(List<File> files, Phylotree phylotree) {
 		this.files = files;
-		this.reference = reference;
+		this.phylotree = phylotree;
+		this.reference = phylotree.getReference();
 
 		for (File file : files) {
-			processVcfFile(file, reference);
+			processVcfFile(file);
 		}
 	}
 
-	private void processVcfFile(File file, Reference reference) {
+	private void processVcfFile(File file) {
 
 		final VCFFileReader vcfReader = new VCFFileReader(file, false);
 		VCFHeader vcfHeader = vcfReader.getFileHeader();
@@ -72,19 +86,37 @@ public class VcfSampleFileStatistics extends SampleFileStatistics {
 
 		for (final VariantContext vc : vcfReader) {
 
-			variants++;
+			lines++;
 
 			int position = vc.getStart();
 			String refAllele = reference.getReferenceBase(position);
 			String refAlleleSample = vc.getReference().getBaseString();
+			
+			for (Allele allele : vc.getAlternateAlleles()) {
+				// ignore insertions
+				if (allele.getBaseString().length() != 1) {
+					continue;
+				}
+				String variant = position + allele.getBaseString();
+
+				if (phylotree.getPhylotreeInstance().isHotspot(variant)) {
+					continue;
+				}
+				
+				variants++;
+				
+				if (phylotree.getPhylotreeInstance().isTreePosition(variant)) {
+					treeHits++;
+				}
+			}
 
 			if (refAllele == null) {
 				outOfRange++;
 				continue;
 			}
 
-			if (refAllele.equals(refAlleleSample)) {
-				matches++;
+			if (refAlleleSample.length() == 1 && !refAllele.equals(refAlleleSample)) {
+				misMatches++;
 			}
 
 			if (isStrandFlip(refAllele, refAlleleSample)) {
@@ -112,6 +144,12 @@ public class VcfSampleFileStatistics extends SampleFileStatistics {
 				continue;
 			}
 
+			passed++;
+
+			if ((vc.getHomRefCount() + vc.getNoCallCount() == vc.getNSamples())) {
+				monomorphics++;
+			}
+
 			if (1 - (vc.getNoCallCount() / (double) vc.getNSamples()) < VARIANT_CALL_RATE) {
 				lowVariantCallRate++;
 			}
@@ -129,7 +167,7 @@ public class VcfSampleFileStatistics extends SampleFileStatistics {
 
 		for (int i = 0; i < snpsPerSampleCount.length; i++) {
 			int snps = snpsPerSampleCount[i];
-			double sampleCallRate = (double) snps / matches;
+			double sampleCallRate = (double) snps / passed;
 			if (sampleCallRate < SAMPLE_CALL_RATE) {
 				lowSampleCallRate++;
 			}
@@ -154,21 +192,23 @@ public class VcfSampleFileStatistics extends SampleFileStatistics {
 
 		List<StatisticCounter> statistics = new Vector<StatisticCounter>();
 
-		double referenceOverlap = (matches / (double) variants) * 100;
+		double treeOverlap = (treeHits / (double) variants) * 100;
 
 		statistics.add(new StatisticCounter("Files", files.size()));
 		statistics.add(new StatisticCounter("Samples", samples));
-		statistics.add(new StatisticCounter("Input Variants", variants));
-		statistics.add(new StatisticCounter("Reference Overlap (%)", referenceOverlap));
+		statistics.add(new StatisticCounter("Input Variants", lines));
+		statistics.add(new StatisticCounter("Reference Mismatches", misMatches, 0));
+		statistics.add(new StatisticCounter("Tree Overlap (%)", treeOverlap));
 		statistics.add(new StatisticCounter("Strand Flips", strandFlips, 0));
 		statistics.add(new StatisticCounter("Out Of Range Variants", outOfRange));
 		statistics.add(new StatisticCounter("Multiallelic Variants", multiallelics));
 		statistics.add(new StatisticCounter("Indel Variants", indels));
 		statistics.add(new StatisticCounter("VCF Filtered Variants", filterFlags));
 		statistics.add(new StatisticCounter("Duplicate Variants", duplicates));
-		statistics.add(new StatisticCounter("Low Sample Call Rate", lowSampleCallRate));
+		statistics.add(new StatisticCounter("Low Sample Call Rate", lowSampleCallRate,0));
+		statistics.add(new StatisticCounter("Monomorphic Variants", monomorphics,0));
 		// TODO: use VARIANT_CALL_RATE instead of 90% and extract labels to constants
-		statistics.add(new StatisticCounter("Variant Call Rate < 90%", lowVariantCallRate));
+		statistics.add(new StatisticCounter("Variant Call Rate < 90%", lowVariantCallRate,0));
 
 		return statistics;
 	}
