@@ -27,7 +27,7 @@
               </b>
             </td>
             <td>{{decimal(counts)}}</td>
-            <td>{{formatDouble(counts * 100 / job.samples)}}%</td>
+            <td>{{formatDouble(toNumber(counts * 100.0 / job.samples))}}%</td>
             <td>
               <div class="progress">
                 {{frequencies = phylotree.getClusterByLabel(cluster).getFrequencies()}}
