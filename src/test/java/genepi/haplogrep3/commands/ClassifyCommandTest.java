@@ -33,7 +33,26 @@ public class ClassifyCommandTest {
 		assertEquals(FileUtil.readFileAsString("test-data/expected/H100/H100.txt"),
 				FileUtil.readFileAsString(FileUtil.path(output, "H100.txt")));
 	}
+	
+	@Test
+	public void testWithHsdNoFoundSampleVariants() throws Exception {
 
+		String output = "test-output";
+		FileUtil.deleteDirectory(output);
+		FileUtil.createDirectory(output);
+
+		ClassifyCommand command = new ClassifyCommand();
+		command.input = "test-data/hsd/R.hsd";
+		command.phylotreeId = PHYLOTREE;
+		command.output = FileUtil.path(output, "R.txt");
+
+		int exitCode = command.call();
+
+		assertEquals(0, exitCode);
+		assertEquals(FileUtil.readFileAsString("test-data/expected/R/R.txt"),
+				FileUtil.readFileAsString(FileUtil.path(output, "R.txt")));
+	}
+	
 	@Test
 	public void testWithFasta() throws Exception {
 
