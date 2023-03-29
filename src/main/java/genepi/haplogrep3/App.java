@@ -26,7 +26,7 @@ public class App implements Runnable {
 
 	public static final String NAME = "Haplogrep 3";
 
-	public static final String VERSION = "3.1.0";
+	public static final String VERSION = "3.2.0";
 
 	public static final String COPYRIGHT = "(c) 2022-2023 Sebastian Schönherr, Hansi Weissensteiner, Lukas Forer";
 
