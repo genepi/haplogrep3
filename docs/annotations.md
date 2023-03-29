@@ -13,16 +13,18 @@ We generated 33 top-level clusters according to PhyloTree and gnomAD and (a) gro
 ![](images/interface/variant_annotations.png)
 
 ## Export 
-Haplogrep allows to export annotations. Currently the following annotations are exported: 
+Haplogrep allows to export annotations. Currently the following annotations are exported. 
 
-* ScorePhastCons100V (PhastCons_100V, MitImpact_db_3.1.0)
-* ScoreMtoolBox (MtoolBox_DS, MitImpact_db_3.1.0)
-* ScoreAPOGEE (APOGEE_score, MitImpact_db_3.1.0)
-* PopFreqGnomeAD (popFreq, gnomAD v3.1 Frequencies)
-* VafGnomADHom (AF_hom, gnomAD v3.1 Annotations)
-* VafGnomADHet (AF_het, gnomAD v3.1 Annotations)
-* Maplocus (Haplogrep Annotation File)
-* AAC (Haplogrep Annotation File)
-* ScoresMutPred (Haplogrep Annotation File)
-* VafHelixHet (Helix_vaf_het, Helix Mitochondrial database 20200327)
-* VafHelixHom (Helix_vaf_hom, Helix Mitochondrial database 20200327)
+* `ScorePhastCons100V` [MitImpact_db_3.1.0 - *PhastCons_100V*] 
+* `ScoreMtoolBox` [MitImpact_db_3.1.0 - *MtoolBox_DS*]
+* `ScoreAPOGEE` [MitImpact_db_3.1.0 - *APOGEE_score*]
+* `PopFreqGnomeAD` [gnomAD v3.1 Frequencies - *popFreq*]
+* `VafGnomADHom` [gnomAD v3.1 Annotations - *AF_hom*]
+* `VafGnomADHet` [gnomAD v3.1 Annotations - *AF_het*]
+* `Maplocus` [Haplogrep Annotation File]
+* `AAC` [Haplogrep Annotation File]
+* `ScoresMutPred` [Haplogrep Annotation File]
+* `VafHelixHet` [Helix Mitochondrial database 20200327 - *Helix_vaf_het*]
+* `VafHelixHom` [Helix Mitochondrial database 20200327 - *Helix_vaf_hom*]
+
+*The source file and source column name are added in brackets.*
