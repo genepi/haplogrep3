@@ -277,6 +277,12 @@ public class Job implements Runnable {
 				ExportQcReportTask exportQcReportTask = new ExportQcReportTask(task.getSamples(), qcReportFilename);
 				exportQcReportTask.run();
 
+				
+				String annotationFilename = FileUtil.path(_workspace, getId(), "snps");
+				ExportAnnotationsTask exportAnnotationsTask = new ExportAnnotationsTask(task.getSamples(), annotationFilename, _phylotree);
+				exportAnnotationsTask.run();
+				
+				
 				save(task.getSamples());
 
 				setSamples(task.getSamples().size());
@@ -298,7 +304,7 @@ public class Job implements Runnable {
 				htmlReportTask.run();
 
 				String[] files = new String[] { extendedReportFilename, qcReportFilename + ".qc.txt",
-						htmlReportFilename };
+						htmlReportFilename, annotationFilename + ".annotations.txt" };
 
 				String zipFilename = FileUtil.path(_workspace, getId(), "haplogroups.zip");
 				CreateZipFileTask createZipFileTask = new CreateZipFileTask(files, zipFilename);

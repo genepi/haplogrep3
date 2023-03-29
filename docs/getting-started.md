@@ -45,6 +45,6 @@ Haplogrep allows to filter your samples according to their status. The screensho
 ![](images/interface/data_filtered.png)
 
 ## Export Options
-Haplogrep provides numerous export options. Currently you can export your data as a (a) csv file, (b) extended csv file including mutation details, (c) fasta or (d) MSA fasta file.
+Haplogrep provides numerous export options. Currently you can export your data as a (a) csv file, (b) extended csv file including mutation details, (c) quality control file (csv), (d) an annotated file and (e) a zip file including the report and the uploaded data. If selected, Haplogrep also provides options for (a) fasta and (b) MSA fasta download. Please click [here](annotations.md) for more information about annotations.  
 
 ![](images/interface/export_options.png)

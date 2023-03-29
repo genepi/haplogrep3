@@ -417,20 +417,24 @@ public class Phylotree {
 	}
 
 	public void annotate(List<AnnotatedPolymorphism> polymorphisms) throws IOException {
-
 		for (AnnotationSettings annotation : annotations) {
 
 			AnnotationFileReader reader = new AnnotationFileReader(annotation.getFilename(), annotation.getProperties(),
 					true, annotation.getRefAllele(), annotation.getAltAllele());
 
 			for (AnnotatedPolymorphism polymorphism : polymorphisms) {
-
 				Map<String, String> result = reader.query(annotation.getChr(), polymorphism.getPosition(),
 						polymorphism.getRef(), polymorphism.getAlt());
 				if (result != null) {
-					polymorphism.setAnnotations(result);
+					if (polymorphism.getAnnotations() != null) {
+						polymorphism.getAnnotations().putAll(result);
+					} else {
+						polymorphism.setAnnotations(result);
+					}
 				} else {
-					polymorphism.setAnnotations(new HashMap<>());
+					if (polymorphism.getAnnotations() == null) {
+						polymorphism.setAnnotations(new HashMap<>());
+					}
 				}
 
 			}
