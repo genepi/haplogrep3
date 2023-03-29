@@ -17,8 +17,8 @@ Haplogrep works on Linux, macOS and Windows. Please note that fasta input files 
 Download and install the latest version from our download page using the following commands:
 
 ```
-wget https://github.com/genepi/haplogrep3/releases/download/v3.1.0/haplogrep3-3.1.0-linux.zip
-unzip haplogrep3-3.1.0-linux.zip
+wget https://github.com/genepi/haplogrep3/releases/download/v3.2.1/haplogrep3-3.2.1-linux.zip
+unzip haplogrep3-3.2.1-linux.zip
 ./haplogrep3
 ```
 
