@@ -11,3 +11,18 @@ We generated 33 top-level clusters according to PhyloTree and gnomAD and (a) gro
  We also display numerous frequencies for each variant mainly derived from [gnomAD](https://gnomad.broadinstitute.org/). Further annotations are available from the [Helix Mitochondrial database](https://www.helix.com/pages/mitochondrial-variant-database) and functional predictions from [MitImpact](https://mitimpact.css-mendel.it/).
 
 ![](images/interface/variant_annotations.png)
+
+## Export 
+Haplogrep allows to export annotations. Currently the following annotations are exported: 
+
+* ScorePhastCons100V (PhastCons_100V, MitImpact_db_3.1.0)
+* ScoreMtoolBox (MtoolBox_DS, MitImpact_db_3.1.0)
+* ScoreAPOGEE (APOGEE_score, MitImpact_db_3.1.0)
+* PopFreqGnomeAD (popFreq, gnomAD v3.1 Frequencies)
+* VafGnomADHom (AF_hom, gnomAD v3.1 Annotations)
+* VafGnomADHet (AF_het, gnomAD v3.1 Annotations)
+* Maplocus (Haplogrep Annotation File)
+* AAC (Haplogrep Annotation File)
+* ScoresMutPred (Haplogrep Annotation File)
+* VafHelixHet (Helix_vaf_het, Helix Mitochondrial database 20200327)
+* VafHelixHom (Helix_vaf_hom, Helix Mitochondrial database 20200327)
