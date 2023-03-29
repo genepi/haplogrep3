@@ -23,6 +23,7 @@
         <a class="dropdown-item" href="{{routeUrl("jobs_download", {job: job.id, file: "haplogroups.csv"})}}" target="_blank"><i class="fas fa-file-csv"></i> Haplogroups (CSV)</a>
         <a class="dropdown-item" href="{{routeUrl("jobs_download", {job: job.id, file: "haplogroups.extended.csv"})}}" target="_blank"><i class="fas fa-file-csv"></i> Haplogroups (Extended CSV)</a>
         <a class="dropdown-item" href="{{routeUrl("jobs_download", {job: job.id, file: "samples.qc.txt"})}}" target="_blank"><i class="fas fa-file-csv"></i> Quality Control (CSV)</a>
+        <a class="dropdown-item" href="{{routeUrl("jobs_download", {job: job.id, file: "snps.annotations.txt"})}}" target="_blank"><i class="fas fa-file-csv"></i> Annotations (CSV)</a>
 
         {{ if job.isAdditionalOutput() }}
         <div class="dropdown-divider"></div>

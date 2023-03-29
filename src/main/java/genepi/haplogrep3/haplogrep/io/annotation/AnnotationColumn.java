@@ -7,6 +7,8 @@ public class AnnotationColumn {
 	private String column;
 
 	private boolean show = false;
+	
+	private String export = null;
 
 	public String getName() {
 		return name;
@@ -32,4 +34,12 @@ public class AnnotationColumn {
 		return show;
 	}
 
+	public void setExport(String export) {
+		this.export = export;
+	}
+	
+	public String getExport() {
+		return export;
+	}
+	
 }
