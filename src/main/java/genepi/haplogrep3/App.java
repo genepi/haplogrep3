@@ -8,6 +8,7 @@ import genepi.haplogrep3.commands.AlignCommand;
 import genepi.haplogrep3.commands.AnnotationIndexCommand;
 import genepi.haplogrep3.commands.BuildTreeCommand;
 import genepi.haplogrep3.commands.ClassifyCommand;
+import genepi.haplogrep3.commands.CleanWorkspaceCommand;
 import genepi.haplogrep3.commands.ClusterHaplogroupsCommand;
 import genepi.haplogrep3.commands.DistanceCommand;
 import genepi.haplogrep3.commands.InstallTreeCommand;
@@ -125,6 +126,7 @@ public class App implements Runnable {
 		commandLine.addSubcommand("install-tree", new InstallTreeCommand());
 		commandLine.addSubcommand("cluster-haplogroups", new ClusterHaplogroupsCommand());
 		commandLine.addSubcommand("annotation-index", new AnnotationIndexCommand());
+		commandLine.addSubcommand("clean-workspace", new CleanWorkspaceCommand());
 		commandLine.setExecutionStrategy(new CommandLine.RunLast());
 		int result = commandLine.execute(args);
 		System.exit(result);
