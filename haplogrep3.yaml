@@ -4,28 +4,28 @@ examples:
   - id: evaluation-data
     name: evaluation-data.hsd
     file: data/examples/evaluation-data.hsd
-    tree: "phylotree-fu-rcrs@1.1"
+    tree: "phylotree-fu-rcrs@1.2"
   - id: evaluation-kg50-microarray-vcf
     name: example-microarray.vcf
     file: data/examples/example-microarray.vcf
-    tree: "phylotree-fu-rcrs@1.1"
+    tree: "phylotree-fu-rcrs@1.2"
     chip: true
   - id: evaluation-kg50-wgs-vcf
     name: example-WGS.vcf
     file: data/examples/example-wgs.vcf
-    tree: "phylotree-fu-rcrs@1.1"
+    tree: "phylotree-fu-rcrs@1.2"
   - id: evaluation-kg50-wgs-fasta
     name: example-WGS.fasta
     file: data/examples/example-wgs.fasta
-    tree: "phylotree-fu-rcrs@1.1"
+    tree: "phylotree-fu-rcrs@1.2"
 
 repositories:
   - https://raw.githubusercontent.com/genepi/haplogrep-trees/main/trees.json
 
 phylotrees:
-  - phylotree-fu-rcrs@1.1
+  - phylotree-fu-rcrs@1.2
   - phylotree-fu-rcrs@1.0
-  - phylotree-rcrs@17.1
+  - phylotree-rcrs@17.2
   - phylotree-rcrs@17.0
   - phylotree-rsrs@17.0
   - phylotree-rcrs@16.0
