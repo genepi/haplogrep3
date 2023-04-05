@@ -1,3 +1,5 @@
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/genepi/haplogrep3)
+[![DOI](https://zenodo.org/badge/564447801.svg)](https://zenodo.org/badge/latestdoi/564447801)
 [![Java CI with Maven](https://github.com/genepi/haplogrep3/actions/workflows/maven.yml/badge.svg)](https://github.com/genepi/haplogrep3/actions/workflows/maven.yml)
 
 # Haplogrep 3
