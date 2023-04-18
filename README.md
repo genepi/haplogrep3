@@ -13,6 +13,9 @@ We provide Haplogrep 3 as a [web-service](https://haplogrep.i-med.ac.at/haplogre
 ## Documentation
 The documentation can be found [here](https://haplogrep.readthedocs.io/).
 
+## Citation
+Schönherr S, Weissensteiner H, Kronenberg F, Forer L. Haplogrep 3 - an interactive haplogroup classification and analysis platform. Nucleic Acids Res. 2023. [https://doi.org/10.1093/nar/gkad284](https://doi.org/10.1093/nar/gkad284)
+
 ## Standalone Version
 
 ### Requirements
