@@ -22,7 +22,7 @@ import picocli.CommandLine.Option;
 @Command
 public class ClassifyCommand extends AbstractCommand {
 
-	@Option(names = { "--input", "--in" }, description = "Input fasta file", required = true)
+	@Option(names = { "--input", "--in" }, description = "Input file (vcf, fasta, hsd)", required = true)
 	protected String input;
 
 	@Option(names = { "--tree" }, description = "Tree Id", required = true)
@@ -70,9 +70,9 @@ public class ClassifyCommand extends AbstractCommand {
 
 		PhylotreeRepository treeRepository = App.getDefault().getTreeRepository();
 
-		File fastaFile = new File(input);
-		if (!fastaFile.exists()) {
-			System.out.println("Error: File '" + fastaFile.getAbsolutePath() + "' not found.");
+		File file = new File(input);
+		if (!file.exists()) {
+			System.out.println("Error: File '" + file.getAbsolutePath() + "' not found.");
 			return 1;
 		}
 
@@ -83,7 +83,7 @@ public class ClassifyCommand extends AbstractCommand {
 		}
 
 		List<File> files = new Vector<File>();
-		files.add(fastaFile);
+		files.add(file);
 
 		ClassificationTask classificationTask = new ClassificationTask(phylotree, files, distance);
 		classificationTask.setChip(chip);
