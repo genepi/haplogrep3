@@ -18,7 +18,7 @@ public class PhylotreeRepository {
 	private List<Phylotree> trees;
 
 	private List<String> categories = new Vector<String>();
-	
+
 	private boolean forceUpdate;
 
 	public static boolean FORCE_UPDATE = false;
@@ -27,12 +27,12 @@ public class PhylotreeRepository {
 		trees = new Vector<Phylotree>();
 	}
 
-	public synchronized void loadFromConfiguration(Configuration configuration)
+	public synchronized void loadFromConfiguration(Configuration configuration, String parent)
 			throws FileNotFoundException, IOException {
 
 		trees = new Vector<Phylotree>();
 
-		PluginRepository repository = new PluginRepository(configuration.getRepositories(), forceUpdate);
+		PluginRepository repository = new PluginRepository(configuration.getRepositories(), forceUpdate, parent);
 
 		for (String id : configuration.getPhylotrees()) {
 
@@ -61,7 +61,9 @@ public class PhylotreeRepository {
 
 	public void install(String id, Configuration configuration) throws IOException {
 
-		PluginRepository repository = new PluginRepository(configuration.getRepositories(), forceUpdate);
+		String parent = ".";
+
+		PluginRepository repository = new PluginRepository(configuration.getRepositories(), forceUpdate, parent);
 
 		Phylotree phylotree = null;
 
@@ -105,11 +107,11 @@ public class PhylotreeRepository {
 	public List<String> getCategories() {
 		return categories;
 	}
-	
-	public List<Phylotree> getByCategory(String category){
-		
+
+	public List<Phylotree> getByCategory(String category) {
+
 		// TODO: use data-structure with O(1), hashmap or so.
-		
+
 		List<Phylotree> result = new Vector<Phylotree>();
 		for (Phylotree tree : trees) {
 			if (tree.getCategory().equals(category)) {

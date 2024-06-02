@@ -29,7 +29,8 @@ public class ClassificationTaskTest {
 	public Phylotree loadPhylotree(String id) throws FileNotFoundException, IOException {
 		PhylotreeRepository repository = new PhylotreeRepository();
 		Configuration configuration = Configuration.loadFromFile(new File(CONFIG_FILE), "");
-		repository.loadFromConfiguration(configuration);
+		String parent = ".";
+		repository.loadFromConfiguration(configuration, parent);
 		return repository.getById(id);
 	}
 
@@ -223,7 +224,7 @@ public class ClassificationTaskTest {
 		assertEquals("2", task.getCounterByLabel("Variant Call Rate < 90%").getValue());
 		assertEquals("1", task.getCounterByLabel("Strand Flips").getValue());
 		assertEquals("3", task.getCounterByLabel("Monomorphic Variants").getValue());
-		
+
 		assertEquals(StatisticCounterType.WARNING, task.getCounterByLabel("Strand Flips").getType());
 		assertEquals(StatisticCounterType.INFO, task.getCounterByLabel("Samples").getType());
 
