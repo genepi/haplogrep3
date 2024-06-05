@@ -1,18 +1,15 @@
 package genepi.haplogrep3.commands;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import genepi.haplogrep3.config.Configuration;
+import genepi.haplogrep3.App;
 import genepi.haplogrep3.haplogrep.io.HaplogroupClustering;
 import genepi.haplogrep3.model.Phylotree;
 import genepi.haplogrep3.model.PhylotreeRepository;
 import picocli.CommandLine.Option;
 
 public class ClusterHaplogroupsCommand extends AbstractCommand {
-
-	public static String CONFIG_FILE = "haplogrep3.yaml";
 
 	@Option(names = { "--tree" }, description = "tree name", required = true)
 	String tree;
@@ -51,12 +48,10 @@ public class ClusterHaplogroupsCommand extends AbstractCommand {
 
 		return 0;
 
-	}
+	} 
 
 	public Phylotree loadPhylotree(String id) throws FileNotFoundException, IOException {
-		PhylotreeRepository repository = new PhylotreeRepository();
-		Configuration configuration = Configuration.loadFromFile(new File(CONFIG_FILE), "");
-		repository.loadFromConfiguration(configuration);
+		PhylotreeRepository repository = App.getDefault().getTreeRepository();
 		return repository.getById(id);
 	}
 
