@@ -28,12 +28,12 @@ public class ClassificationTaskTest {
 
 	public Phylotree loadPhylotree(String id) throws FileNotFoundException, IOException {
 		PhylotreeRepository repository = new PhylotreeRepository();
-		Configuration configuration = Configuration.loadFromFile(new File(CONFIG_FILE), "");
+		Configuration configuration = Configuration.loadFromFile(new File(CONFIG_FILE), ".");
 		repository.loadFromConfiguration(configuration);
 		return repository.getById(id);
 	}
 
-	@Test
+	@Test 
 	public void testWithHsd() throws Exception {
 
 		Phylotree phylotree = loadPhylotree(PHYLOTREE);
@@ -134,7 +134,7 @@ public class ClassificationTaskTest {
 
 		String tree = "phylotree-fu-rcrs@1.0";
 
-		Phylotree phylotree = loadPhylotree(tree);
+		Phylotree phylotree = loadPhylotree(tree); 
 
 		List<File> files = new ArrayList<File>();
 		files.add(new File("test-data/fasta/L3i2_1.fasta"));
