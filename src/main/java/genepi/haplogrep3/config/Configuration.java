@@ -37,6 +37,8 @@ public class Configuration {
 
 	private List<NavbarLink> navbar = new Vector<NavbarLink>();
 
+	private String parent = "";
+
 	public Configuration() {
 
 	}
@@ -146,6 +148,8 @@ public class Configuration {
 		Configuration configuration = reader.read(Configuration.class);
 		reader.close();
 
+		configuration.parent = parent;
+
 		for (Dataset dataset : configuration.getExamples()) {
 			dataset.updateParent(parent);
 		}
@@ -163,4 +167,7 @@ public class Configuration {
 
 	}
 
+    public File getPluginsLocation() {
+		return new File(parent, "trees");
+    }
 }

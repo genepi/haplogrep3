@@ -29,8 +29,7 @@ public class ClassificationTaskTest {
 	public Phylotree loadPhylotree(String id) throws FileNotFoundException, IOException {
 		PhylotreeRepository repository = new PhylotreeRepository();
 		Configuration configuration = Configuration.loadFromFile(new File(CONFIG_FILE), "");
-		String parent = ".";
-		repository.loadFromConfiguration(configuration, parent);
+		repository.loadFromConfiguration(configuration);
 		return repository.getById(id);
 	}
 

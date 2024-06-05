@@ -82,7 +82,7 @@ public class App implements Runnable {
 
 			configuration = Configuration.loadFromFile(configFile, parent);
 			treeRepository = new PhylotreeRepository();
-			treeRepository.loadFromConfiguration(configuration, parent);
+			treeRepository.loadFromConfiguration(configuration);
 
 			jobQueue = new JobQueue(configuration.getThreads());
 

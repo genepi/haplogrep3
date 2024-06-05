@@ -27,12 +27,12 @@ public class PhylotreeRepository {
 		trees = new Vector<Phylotree>();
 	}
 
-	public synchronized void loadFromConfiguration(Configuration configuration, String parent)
+	public synchronized void loadFromConfiguration(Configuration configuration)
 			throws FileNotFoundException, IOException {
 
 		trees = new Vector<Phylotree>();
 
-		PluginRepository repository = new PluginRepository(configuration.getRepositories(), forceUpdate, parent);
+		PluginRepository repository = new PluginRepository(configuration.getRepositories(), forceUpdate, configuration.getPluginsLocation());
 
 		for (String id : configuration.getPhylotrees()) {
 
@@ -61,9 +61,7 @@ public class PhylotreeRepository {
 
 	public void install(String id, Configuration configuration) throws IOException {
 
-		String parent = ".";
-
-		PluginRepository repository = new PluginRepository(configuration.getRepositories(), forceUpdate, parent);
+		PluginRepository repository = new PluginRepository(configuration.getRepositories(), forceUpdate, configuration.getPluginsLocation());
 
 		Phylotree phylotree = null;
 
