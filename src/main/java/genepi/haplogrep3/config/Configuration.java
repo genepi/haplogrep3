@@ -38,6 +38,8 @@ public class Configuration {
 	private List<NavbarLink> navbar = new Vector<NavbarLink>();
 
 	private String parent = "";
+	
+	private File configFile;
 
 	public Configuration() {
 
@@ -149,6 +151,7 @@ public class Configuration {
 		reader.close();
 
 		configuration.parent = parent;
+		configuration.configFile = file;
 
 		for (Dataset dataset : configuration.getExamples()) {
 			dataset.updateParent(parent);
@@ -159,7 +162,7 @@ public class Configuration {
 	}
 
 	public void save(File file) throws IOException {
-		YamlWriter writer = new YamlWriter(new FileWriter(file));
+		YamlWriter writer = new YamlWriter(new FileWriter(configFile));
 		writer.getConfig().setPropertyElementType(Configuration.class, "phylotrees", String.class);
 		writer.getConfig().setPropertyElementType(Configuration.class, "examples", Dataset.class);
 		writer.write(this);
@@ -170,4 +173,6 @@ public class Configuration {
     public File getPluginsLocation() {
 		return new File(parent, "trees");
     }
+   
+    
 }
