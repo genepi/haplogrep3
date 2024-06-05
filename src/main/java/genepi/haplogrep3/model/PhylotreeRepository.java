@@ -79,7 +79,7 @@ public class PhylotreeRepository {
 
 		if (phylotree != null) {
 			configuration.getPhylotrees().add(id);
-			configuration.save(new File(App.CONFIG_FILENAME));
+			configuration.save();
 		}
 	}
 

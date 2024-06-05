@@ -161,7 +161,7 @@ public class Configuration {
 
 	}
 
-	public void save(File file) throws IOException {
+	public void save() throws IOException {
 		YamlWriter writer = new YamlWriter(new FileWriter(configFile));
 		writer.getConfig().setPropertyElementType(Configuration.class, "phylotrees", String.class);
 		writer.getConfig().setPropertyElementType(Configuration.class, "examples", Dataset.class);
