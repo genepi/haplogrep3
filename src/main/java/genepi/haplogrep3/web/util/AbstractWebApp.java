@@ -1,5 +1,6 @@
 package genepi.haplogrep3.web.util;
 
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -34,6 +35,14 @@ public abstract class AbstractWebApp {
 		server = Javalin.create();
 		defaultRoutes();
 		routes();
+
+		//replace //
+		server.before(ctx -> {
+			String path = ctx.path();
+			if (path.contains("//")) {
+				ctx.redirect(path.replaceAll("/{2,}", "/"));
+			}
+		});
 
 		if (App.isDevelopmentSystem()) {
 
