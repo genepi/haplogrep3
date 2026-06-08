@@ -83,7 +83,7 @@ public class ClassificationTaskTest {
 	@Test
 	public void testWithPhylotree16() throws Exception {
 
-		String tree = "phylotree-rcrs@16.0";
+		String tree = "phylotree-rcrs@16.1";
 
 		Phylotree phylotree = loadPhylotree(tree);
 
@@ -108,7 +108,7 @@ public class ClassificationTaskTest {
 	@Test
 	public void testWithPhylotree15FromOnlineRepository() throws Exception {
 
-		String tree = "phylotree-rcrs@15.0";
+		String tree = "phylotree-rcrs@15.1";
 
 		Phylotree phylotree = loadPhylotree(tree);
 
