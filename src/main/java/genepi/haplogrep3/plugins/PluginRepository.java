@@ -24,19 +24,21 @@ public class PluginRepository {
 
 	public File pluginsLocation = new File("trees");
 
+	private List<String> urls;
+
 	private List<List<Plugin>> repositories = new Vector<List<Plugin>>();
+
+	private boolean alreadyUpdated = false;
 
 	public PluginRepository(List<String> urls, boolean forceUpdate, File pluginsLocation) throws IOException {
 		this.pluginsLocation = pluginsLocation;
+		this.urls = urls;
 		pluginsLocation.mkdirs();
-
-		for (String url : urls) {
-			repositories.add(loadFromUrl(url, forceUpdate));
-		}
-
+		updateRepositories(urls, forceUpdate);
 	}
 
-	public PluginRelease findById(String id) {
+
+	public PluginRelease findById(String id) throws IOException {
 		String[] tiles = id.split("@", 2);
 		String name = tiles[0];
 		String version = LATEST_VERSION;
@@ -45,17 +47,23 @@ public class PluginRepository {
 		} else {
 			throw new RuntimeException("Please specify a version. Latest is not yet supported.");
 		}
-		return findByNameAndVersion(name, version);
+		try {
+			return findByNameAndVersion(name, version);
+		} catch (RuntimeException e) {
+			System.out.println("Could not find tree '" + name + "' with version '" + version + "'. Updating tree repositories and trying again.");
+			updateRepositories(urls, true);
+			return findByNameAndVersion(name, version);
+		}
 	}
 
 	public PluginRelease findByNameAndVersion(String name, String version) {
 		List<PluginRelease> releases = findReleasesByName(name);
 		if (releases == null) {
-			throw new RuntimeException("Plugin '" + name + "' not found.");
+			throw new RuntimeException("Tree '" + name + "' not found.");
 		}
 		PluginRelease release = findRelease(releases, version);
 		if (release == null) {
-			throw new RuntimeException("Plugin '" + name + "' found, but version " + version + " not found.");
+			throw new RuntimeException("Tree '" + name + "' found, but version " + version + " not found.");
 		}
 		return release;
 	}
@@ -97,8 +105,10 @@ public class PluginRepository {
 		if (isHttpProtocol(release.getUrl())) {
 			pluginPath.mkdirs();
 			File zipPackage = new File(pluginPath, "package.zip");
+			System.out.println("Download tree from " + release.getUrl() + "...");
 			download(release.getUrl(), zipPackage);
 			extract(zipPackage, pluginPath);
+			System.out.println("Tree " + plugin.getRelease().getPlugin().getId() + "@" + plugin.getRelease().getVersion() + " installed.");
 		} else {
 			plugin.setPath(new File(release.getUrl()));
 		}
@@ -123,20 +133,33 @@ public class PluginRepository {
 		return url.toLowerCase().startsWith("http://") || url.toLowerCase().startsWith("https://");
 	}
 
-	private List<Plugin> loadFromUrl(String url, boolean forceUpdate) throws IOException {
-
-		File indexFile = null;
-
-		if (isHttpProtocol(url)) {
-			indexFile = new File(pluginsLocation, getNameForUrl(url) + ".yaml");
-			if (!indexFile.exists() || forceUpdate) {
-				download(url, indexFile);
-			}
-		} else {
-			indexFile = new File(url);
+	/**
+	 * Update the plugin repositories by downloading the index files from the given urls.
+	 * If the file already exists and forceUpdate is false, the file will not be redownloaded.
+	 * @param urls
+	 * @param forceUpdate
+	 * @throws IOException
+	 */
+	private void updateRepositories(List<String> urls, boolean forceUpdate) throws IOException {
+		if (alreadyUpdated) {
+			return;
 		}
-
-		return loadFromFile(indexFile);
+		repositories = new Vector<List<Plugin>>();
+		for (String url : urls) {
+			File indexFile = null;
+			if (isHttpProtocol(url)) {
+				indexFile = new File(pluginsLocation, getNameForUrl(url) + ".yaml");
+				if(!indexFile.exists() || forceUpdate) {
+					download(url, indexFile);
+				}
+			} else {
+				indexFile = new File(url);
+			}
+			repositories.add(loadFromFile(indexFile));
+		}
+		if (forceUpdate) {
+			alreadyUpdated = true;
+		}
 	}
 
 	private List<Plugin> loadFromFile(File file) throws IOException {
