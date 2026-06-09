@@ -83,7 +83,7 @@ public class ClassificationTaskTest {
 	@Test
 	public void testWithPhylotree16() throws Exception {
 
-		String tree = "phylotree-rcrs@16.1";
+		String tree = "phylotree-rcrs@16.0";
 
 		Phylotree phylotree = loadPhylotree(tree);
 
