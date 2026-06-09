@@ -20,7 +20,6 @@ public class InstallTreeCommand extends AbstractCommand {
 		for (String tree : trees) {
 			PhylotreeRepository treeRepository = App.getDefault().getTreeRepository();
 			treeRepository.install(tree, App.getDefault().getConfiguration());
-			System.out.println("Tree " + tree + " installed.");
 		}
 
 		return 0;
