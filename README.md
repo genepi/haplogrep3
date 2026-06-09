@@ -17,6 +17,14 @@ The documentation can be found [here](https://haplogrep.readthedocs.io/).
 ## Citation
 Schönherr S, Weissensteiner H, Kronenberg F, Forer L. Haplogrep 3 - an interactive haplogroup classification and analysis platform. Nucleic Acids Res. 2023. [https://doi.org/10.1093/nar/gkad284](https://doi.org/10.1093/nar/gkad284)
 
+## Available Trees
+HaploGrep 3 supports multiple phylogenetic trees for haplogroup classification. You can browse all currently available trees and their versions here:
+
+- **Tree catalog:** [genepi.github.io/haplogrep-trees](https://genepi.github.io/haplogrep-trees)
+- **Source repository:** [github.com/genepi/haplogrep-trees](https://github.com/genepi/haplogrep-trees)
+
+Each tree is defined in the [`trees.json`](https://github.com/genepi/haplogrep-trees/blob/main/trees.json) file. To add your own tree, update `trees.json` and open a pull request — once merged, it becomes available in HaploGrep 3.
+
 ## Standalone Version
 
 ### Requirements
