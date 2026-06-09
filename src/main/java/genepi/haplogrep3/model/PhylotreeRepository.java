@@ -12,6 +12,7 @@ import genepi.haplogrep3.config.Configuration;
 import genepi.haplogrep3.plugins.InstalledPlugin;
 import genepi.haplogrep3.plugins.PluginRelease;
 import genepi.haplogrep3.plugins.PluginRepository;
+import genepi.io.FileUtil;
 
 public class PhylotreeRepository {
 
@@ -61,6 +62,17 @@ public class PhylotreeRepository {
 
 	public void install(String id, Configuration configuration) throws IOException {
 
+		if (configuration.getPhylotrees().contains(id)) {
+			System.out.println("Tree " + id + " is already installed. Reinstalling...");
+			String[] tiles = id.split("@", 2);
+			String name = tiles[0];
+			String version = tiles[1];
+			String folder = FileUtil.path(configuration.getPluginsLocation().getAbsolutePath(), name, version);
+			System.out.println("Delete directory " + folder);
+			FileUtil.deleteDirectory(folder);
+			configuration.getPhylotrees().remove(id);
+		}
+
 		PluginRepository repository = new PluginRepository(configuration.getRepositories(), forceUpdate, configuration.getPluginsLocation());
 
 		Phylotree phylotree = null;
@@ -74,7 +86,6 @@ public class PhylotreeRepository {
 			PluginRelease pluginRelease = repository.findById(id);
 			InstalledPlugin plugin = repository.resolveRelease(pluginRelease);
 			phylotree = Phylotree.load(plugin.getPath());
-
 		}
 
 		if (phylotree != null) {
