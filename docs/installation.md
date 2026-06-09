@@ -17,15 +17,17 @@ Haplogrep works on Linux, macOS and Windows. Please note that fasta input files 
 Download and install the latest version from our download page using the following commands:
 
 ```
-cd my-haplogrep3-install-folder
-wget https://github.com/genepi/haplogrep3/releases/download/v3.2.2/haplogrep3-3.2.2-linux.zip
-unzip haplogrep3-3.2.2-linux.zip
+mkdir haplogrep3
+cd haplogrep3
+# Download the latest Linux release from https://github.com/genepi/haplogrep3/releases/latest
+wget https://github.com/genepi/haplogrep3/releases/download/<VERSION>/haplogrep3-<VERSION>-linux.zip
+unzip haplogrep3-<VERSION>-linux.zip
 ./haplogrep3
 ```
 
 ### Windows
 
-Download the [latest Windows version](https://github.com/genepi/haplogrep3/releases/download/v3.2.2/haplogrep3-3.2.2-windows.zip) from our download page.
+- Download the [latest Windows version](https://github.com/genepi/haplogrep3/releases/latest) from the releases page.
 
 - Open the zip file and extract it content to a folder of choice.
 
